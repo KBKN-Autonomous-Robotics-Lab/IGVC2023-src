@@ -30,10 +30,9 @@
         <param name="min_yaw_err"   value="$(arg min_yaw_err)"/>
     </node>
 
-    <!--
+
     <node name="tandem_run_manager" pkg="waypoint_nav" type="tandem_run_manager.py" output="screen">
         <remap from="scan" to="$(arg tandem_scan)"/>
         <param name="waypoints_file" value="$(arg waypoints_file)"/>
     </node>
-    -->
 </launch>

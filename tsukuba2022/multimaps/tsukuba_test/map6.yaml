@@ -1,6 +1,0 @@
-image: ./map6.pgm
-resolution: 0.1
-origin: [-520.549139, 6.169203, 0.0]
-negate: 0
-occupied_thresh: 0.65
-free_thresh: 0.196
