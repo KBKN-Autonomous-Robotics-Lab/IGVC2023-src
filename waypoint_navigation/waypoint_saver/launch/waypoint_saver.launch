@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="scan_topic" default="scan"/>
+    <arg name="joy_config" default="elecom_joy"/>
+    <arg name="joy_dev" default="/dev/input/js0"/>
+    <arg name="waypoints_file" default="$(find waypoint_nav)/waypoints_cfg/waypoints.yaml"/>
+    <arg name="save_joy_button" default="0"/>
+    <arg name="save_joy_pose_button" default="1"/>
+    <arg name="default_rad" default="1.0"/>
+    
+    
+    <node name="waypoint_saver" pkg="waypoint_saver" type="waypoint_saver" output="screen">
+        <param name="save_joy_button"       value="$(arg save_joy_button)"/>
+        <param name="save_joy_pose_button"  value="$(arg save_joy_pose_button)"/>
+        <param name="filename"              value="$(arg waypoints_file)"/>
+        <param name="default_rad"           value="$(arg default_rad)"/>
+        
+        <remap from="waypoints_joy"     to="joy"/>
+        <remap from="waypoints_viz"     to="clicked_point"/>
+        <remap from="finish_pose"       to="move_base_simple/goal"/>
+    </node>
+
+</launch>

@@ -1,0 +1,15 @@
+waypoints:
+- point: {x: -408.942785, y: 134.122705, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -413.562201, y: 133.981642, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -417.637463, y: 133.819701, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -421.30389, y: 133.584564, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -424.521612, y: 133.430208, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -430.668708, y: 133.702132, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -435.373574, y: 133.810129, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -441.438865, y: 133.700044, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -445.513746, y: 133.631622, z: 0, vel: 1, rad: 0.8, stop: false}
+finish_pose:
+  header: {seq: 0, stamp: 1666497569.7515693, frame_id: map}
+  pose:
+    position: {x: -447.90680120213875, y: 133.45884979262743, z: 0}
+    orientation: {x: 0.0, y: 0.0, z: 0.9992669478249188, w: 0.03828272436323098}

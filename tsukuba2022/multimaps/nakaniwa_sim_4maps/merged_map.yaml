@@ -1,0 +1,6 @@
+image: ./merged_map.pgm
+resolution: 0.05
+origin: [-3.460651952072324, -1.9066666065388462, 0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196

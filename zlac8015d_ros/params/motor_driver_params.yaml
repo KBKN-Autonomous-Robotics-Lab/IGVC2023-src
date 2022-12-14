@@ -1,0 +1,30 @@
+# Wheel & Encoder Parameters
+# Default: 8 inches wheel
+###############################
+# Wheel radius
+left_wheel_radius: 0.0974 # meter 0.1015
+right_wheel_radius: 0.0974 # meter 0.1015
+# For odometry computation
+computation_left_wheel_radius: 0.09806 # meter 0.1015
+computation_right_wheel_radius: 0.09794 # meter 0.1015
+# Encoder CPR(counts per revolution)
+cpr: 16385
+###############################
+
+# Distance between Wheels
+wheels_base_width: 0.608 # meter 0.5668
+# Motor automatically stops if no topics are received for a certain period of time
+callback_timeout: 1.0 # seconds
+
+# Time to reach target position
+set_accel_time_left: 600 #500 #1000 # ms 200
+set_accel_time_right: 600 #500 #1000 # ms 200
+set_decel_time_left: 400 #300 #1000 # ms 200
+set_decel_time_right: 400 #300 #1000 # ms 200
+
+# Maximum rpm
+max_left_rpm: 150
+max_right_rpm: 150
+# Width of rpm to be regarded as 0
+# If 3, then -3 to 3 is considered rpm 0
+deadband_rpm: 3

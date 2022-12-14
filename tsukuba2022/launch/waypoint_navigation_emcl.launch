@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="map_file"       default="$(find tsukuba2022)/maps/mymap"/>
+  <arg name="init_pos_file"  default="$(find tsukuba2022)/config/initial_pose.yaml"/>
+  <arg name="waypoints_file" default="$(find tsukuba2022)/config/waypoints/waypoints.yaml"/> 
+  <arg name="odom_topic"     default="combined_odom"/>
+  <arg name="mb_cmd_vel"     default="/move_base/cmd_vel"/>
+  <arg name="wp_cmd_vel"     default="/cmd_vel"/>
+
+
+  <!-- This section depends on the navigation package -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <remap from="/odom"    to="$(arg odom_topic)"/>
+    <remap from="/cmd_vel" to="$(arg wp_cmd_vel)"/>
+    <rosparam file="$(find tsukuba2022)/params/foot_print.yaml"                 command="load" ns="global_costmap"/>
+    <rosparam file="$(find tsukuba2022)/params/foot_print.yaml"                 command="load" ns="local_costmap"/>
+    <rosparam file="$(find tsukuba2022)/params/local_costmap_params.yaml"       command="load"/>
+    <rosparam file="$(find tsukuba2022)/params/global_costmap_params.yaml"      command="load"/>
+    <rosparam file="$(find tsukuba2022)/params/move_base_params.yaml"           command="load"/>
+    <rosparam file="$(find tsukuba2022)/params/base_global_planner_params.yaml" command="load"/>
+    <rosparam file="$(find tsukuba2022)/params/base_local_planner_params.yaml"  command="load"/>
+    <!-- <rosparam file="$(find tsukuba2022)/params/recovery_params.yaml"           command="load"/> -->
+  </node>
+
+
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file).yaml"/>
+
+
+  <node pkg="emcl2" type="emcl2_node" name="emcl2_node">
+    <remap from="scan" to="velodyne_scan"/>
+    <rosparam file="$(find tsukuba2022)/params/emcl_params.yaml"   command="load"/>
+  </node>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++ -->
+  
+
+  <!-- For waypoints navigation -->
+  <include file="$(find waypoint_nav)/launch/waypoint_nav.launch">
+    <arg name="robot_frame"       value="base_footprint"/>
+    <arg name="waypoints_file"    value="$(arg waypoints_file)"/>
+    <arg name="cmd_vel_topic_in"  value="$(arg mb_cmd_vel)"/>
+    <arg name="cmd_vel_topic_out" value="$(arg wp_cmd_vel)"/>
+  </include>
+  
+  
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find tsukuba2022)/rviz_cfg/nav.rviz"/>
+  
+</launch>

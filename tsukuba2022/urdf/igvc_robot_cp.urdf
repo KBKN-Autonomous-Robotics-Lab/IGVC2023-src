@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<!-- Revolute-Revolute Manipulator -->
+<robot name="igvc_robot" xmlns:xacro="http://www.ros.org/wiki/xacro"> 
+  <!-- Constants for robot dimensions -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:macro name="box_inertia" params="m x y z">
+    <inertia ixx="${m*(y*y+z*z)/12.0}" ixy = "0.0" ixz = "0.0"
+             iyy="${m*(z*z+x*x)/12.0}" iyz = "0.0"
+             izz="${m*(x*x+y*y)/12.0}" /> 
+  </xacro:macro>
+
+  <!-- Import gazebo reference -->
+  <xacro:include filename="$(find igvc2022)/urdf/igvc_robot.gazebo"/>
+  
+  <!-- Import 2D LiDAR model -->
+  <xacro:include filename="$(find igvc2022)/urdf/sensors/hokuyo.urdf.xacro"/>
+  <xacro:sensor_hokuyo name="hokuyo" parent="base_link" min_angle="-1.22" max_angle="1.22" samples="720">
+    <origin xyz="0.109 0 -0.0075" rpy="0 0 0"/>
+  </xacro:sensor_hokuyo>
+  
+  <!-- Import 3D LiDAR model -->
+  <xacro:include filename="$(find igvc2022)/urdf/sensors/velodyne.urdf.xacro"/>
+  <xacro:sensor_velodyne name="velodyne" parent="base_link" min_angle="-2.35619" max_angle="2.35619" samples="720">
+    <origin xyz="-0.0355 0 1.013" rpy="0 0 0"/>
+  </xacro:sensor_velodyne>
+  
+  <!-- Import fisheye camera model -->
+  <xacro:include filename="$(find igvc2022)/urdf/sensors/camera.urdf.xacro"/>
+  <xacro:sensor_camera name="camera" parent="base_link">
+    <origin xyz="0.0565 0 1.406" rpy="0 0 0"/>
+  </xacro:sensor_camera>
+  
+  <!-- Import imu model -->
+  <xacro:include filename="$(find igvc2022)/urdf/sensors/imu.urdf.xacro"/>
+  <xacro:sensor_imu name="imu" parent="base_link" size="0.05 0.05 0.05">
+    <origin xyz="-0.409 0 0.177" rpy="0 0 0"/>
+  </xacro:sensor_imu>
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <collision>
+      <origin xyz="-0.1915 0.0 0.369" rpy="0 0 0"/> 
+      <geometry>
+	     <box size=".719 .610 .398"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="-0.1915 0.0 0.369" rpy="0 0 0"/> 
+      <geometry>
+	    <mesh filename="package://igvc2022/meshes/chassis.dae"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+       <mass value="42.4" />
+       <!--
+       <origin xyz="-0.187 0 0.38" rpy="0 0 0"/>
+       <xacro:box_inertia m="45.7" x="0.724" y="0.556" z="0.400" /> 
+       -->
+       <origin xyz="-0.187 0.0 0.13" rpy="0 0 0"/>
+       <xacro:box_inertia m="45.7" x="0.824" y="0.556" z="1.00" />
+       
+    </inertial>
+    
+  </link>
+  
+  
+  <!-- Back wheels -->
+  <link name="left_caster_link">
+  	 <collision>
+  	   <origin xyz="-0.788 0.127 -0.13" rpy="0 ${PI/2} ${PI/2}"/>
+      <geometry>
+        <sphere radius="0.0625"/>
+      </geometry>
+  	 </collision>
+  	 <visual>
+  	   <origin xyz="-0.788 0.127 -0.13" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://igvc2022/meshes/left_back_wheel.dae"/>
+      </geometry>
+  	 </visual>
+  </link>
+  
+  <joint name="left_caster_joint" type ="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <child link="left_caster_link"/>
+    <parent link="base_link"/>
+  </joint>
+  
+  <link name="right_caster_link">
+  	 <collision>
+  	   <origin xyz="-0.788 -0.127 -0.13" rpy="0 ${PI/2} ${PI/2}"/>
+      <geometry>
+        <sphere radius="0.0625"/>
+      </geometry>
+  	 </collision>
+  	 <visual>
+  	   <origin xyz="-0.788 -0.127 -0.13" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://igvc2022/meshes/left_back_wheel.dae"/>
+      </geometry>
+  	 </visual>
+  </link>
+  
+  <joint name="right_caster_joint" type ="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <child link="right_caster_link"/>
+    <parent link="base_link"/>
+  </joint>
+  
+  
+  <!-- Payload -->
+  <link name="payload_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	     <box size="0.2 0.4 0.2"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	     <box size="0.2 0.4 0.2"/>
+      </geometry>
+    </visual>
+    <inertial>
+       <mass value="9.07" />
+       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <xacro:box_inertia m="20" x="0.2" y="0.4" z="0.2" />
+    </inertial>
+  </link>
+  <joint name="payload_joint" type="fixed">
+    <origin xyz="-0.6500 0.0 0.1300" rpy="0 0 0"/>
+    <child link="payload_link"/>
+    <parent link="base_link"/>
+  </joint>
+  
+  
+  <!-- Front wheels -->
+  <link name="left_wheel">
+    <collision name="collision">
+      <origin xyz="0 0.0 0" rpy="0 ${PI/2} ${PI/2}"/>
+      <geometry>
+         <cylinder  length="0.092" radius="0.192"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://igvc2022/meshes/left_wheel.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="2.9" />
+      <origin xyz="0 0.0 0"/>
+      <inertia ixx="0.0267706" ixy="0" ixz="0" iyy="0.0496263" iyz="0" izz="0.0267706" />
+    </inertial>
+  </link>
+  
+  <joint type="revolute" name="left_wheel_hinge">
+    <origin xyz="0 0.335 0" rpy="0 0 0"/>
+    <child link="left_wheel">left_wheel</child>
+    <parent link="base_link">base_link</parent>
+    <axis xyz="0 1 0"/>
+    <limit effort="100" velocity="100.0"  lower="-5000" upper="5000" />
+  </joint> 
+
+  
+  <link name="right_wheel">
+    <collision name="collision">
+      <origin xyz="0 0.0 0" rpy="0 ${PI/2} ${PI/2}"/>
+      <geometry>
+         <cylinder  length="0.092" radius="0.192"/>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://igvc2022/meshes/right_wheel.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="2.9" />
+      <origin xyz="0 0.0 0"/>
+      <inertia ixx="0.0267706" ixy="0" ixz="0" iyy="0.0496263" iyz="0" izz="0.0267706" />
+    </inertial>
+  </link>
+  
+  <joint type="revolute" name="right_wheel_hinge">
+    <origin xyz="0 -0.335 0" rpy="0 0 0"/>
+    <child link="right_wheel">right_wheel</child>
+    <parent link="base_link">base_link</parent>
+    <axis xyz="0 1 0"/>
+    <limit effort="100" velocity="100.0"  lower="-5000" upper="5000" />
+  </joint>
+
+     
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="left_wheel_hinge">
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    </joint>   
+    <actuator name="left_motor">
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="right_wheel_hinge">
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    </joint>  
+    <actuator name="right_motor">
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+</robot>

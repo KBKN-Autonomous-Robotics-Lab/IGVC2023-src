@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>zlac8015d_ros</name>
+  <version>0.1.8</version>
+  <description>The zlac8015d_ros package</description>
+  <maintainer email="Alpaca-zip@todo.todo">Alpacazip</maintainer>
+  <license>GPLv3</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <exec_depend>rospy</exec_depend>
+  <export>
+  </export>
+</package>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<sdf version='1.6'>
+  <world name='default'>
+    <gui fullscreen='0'>
+      <camera name='TopDown'>
+        <pose>-10 8 30 0 1.1 0</pose>
+      </camera>
+    </gui>
+    <scene>
+      <grid>0</grid>
+      <shadows>1</shadows>
+    </scene>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    
+    <include>
+    	<uri>model://sun</uri>
+    </include>
+
+    <include>
+    	<uri>model://hoseicourse</uri>
+    	<pose>7.5 9.4 0 0 0 3.141592</pose>
+    	<name>Course</name>
+    </include>
+  </world>
+</sdf>

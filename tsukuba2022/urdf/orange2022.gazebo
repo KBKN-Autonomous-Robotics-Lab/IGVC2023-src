@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot>
+  
+  <gazebo>
+    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <odometryFrame>odom</odometryFrame>
+      <odometrySource>world</odometrySource>
+
+      <publishTf>true</publishTf> <!-- If false, odom topic is not published -->
+      <publishOdomTF>false</publishOdomTF>
+      <publishWheelTF>false</publishWheelTF>
+
+      <publishOdom>true</publishOdom>
+      
+      <publishWheelJointState>true</publishWheelJointState>
+      
+      <updateRate>30</updateRate>
+      <leftJoint>left_wheel_hinge</leftJoint>
+      <rightJoint>right_wheel_hinge</rightJoint>
+      <wheelSeparation>0.5672</wheelSeparation>
+      <wheelDiameter>0.203</wheelDiameter>
+      <wheelAcceleration>2</wheelAcceleration>
+      <wheelTorque>20</wheelTorque>
+      <rosDebugLevel>na</rosDebugLevel>
+      <legacyMode>false</legacyMode>
+    </plugin>
+  </gazebo>
+  
+  
+  <!-- Left Wheel -->
+  <gazebo reference="left_wheel">
+    <mu1>5.0</mu1>
+    <mu2>5.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+  </gazebo>
+
+  <!-- Right Wheel -->
+  <gazebo reference="right_wheel">
+    <mu1>5.0</mu1>
+    <mu2>5.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+  </gazebo>
+  
+  <!-- Back wheels -->
+  <gazebo reference="left_caster_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
+  
+  <gazebo reference="right_caster_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
+</robot>

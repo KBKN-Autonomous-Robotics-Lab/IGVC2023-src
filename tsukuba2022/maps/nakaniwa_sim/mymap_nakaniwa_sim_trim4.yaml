@@ -1,0 +1,6 @@
+image: ./mymap_nakaniwa_sim_trim4.pgm
+resolution: 0.05
+origin: [-2.900067151959934, -1.6758434798922168, 0.0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196

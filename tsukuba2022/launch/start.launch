@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Arguments -->
+    <arg name="model"            default="$(find xacro)/xacro '$(find tsukuba2022)/urdf/orange2022.xacro'" />
+    <arg name="calibration"      default="$(find tsukuba2022)/params/VLP16db.yaml"/>
+    <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
+    <arg name="imu_dev"          default="/dev/sensors/imu"/>
+    <arg name="cmd_vel"          default="/cmd_vel"/>
+    <arg name="motor_driver_dev" default="/dev/ZLAC8015D"/>
+    <arg name="estop_dev"        default="/dev/E-Stop"/>
+    <arg name="debug"            default="false"/>
+    
+    
+    <!-- Start sensors (hokuyo, velodyne, imu) -->
+    <include file="$(find tsukuba2022)/launch/sensors.launch">
+        <arg name="model"            value="$(arg model)" />
+        <arg name="calibration"      value="$(arg calibration)"/>
+        <arg name="scan_dev"         value="$(arg scan_dev)"/>
+        <arg name="imu_dev"          value="$(arg imu_dev)"/>
+    </include>
+    
+    
+    <!-- Start motor -->
+    <include file="$(find tsukuba2022)/launch/motor.launch">
+        <arg name="cmd_vel"            value="$(arg cmd_vel)" />
+        <arg name="motor_driver_dev"   value="$(arg motor_driver_dev)"/>
+        <arg name="estop_dev"          value="$(arg estop_dev)"/>
+        <arg name="debug"              value="$(arg debug)"/>
+    </include>
+    
+</launch>

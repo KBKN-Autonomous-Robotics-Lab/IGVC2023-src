@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="waypoints_file"     default="waypoints.yaml"/>
+    <arg name="StartFromTheMiddle" default="false"/>
+    <arg name="cmd_vel_topic_in"   default="/move_base/cmd_vel"/>
+    <arg name="cmd_vel_topic_out"  default="/wp_nav/cmd_vel"/>
+    <arg name="robot_frame"        default="base_link"/>
+    <arg name="max_vel_param"      default="/move_base/TrajectoryPlannerROS/max_vel_x"/>
+    <arg name="min_vel_param"      default="/move_base/TrajectoryPlannerROS/min_vel_x"/>
+    <arg name="min_dist_err"       default="0.3"/>
+    <arg name="min_yaw_err"        default="0.3"/>
+    <arg name="tandem_scan"        default="scan"/>
+
+
+    <node name="waypoint_nav" pkg="waypoint_nav" type="waypoint_nav" output="screen">
+        <remap from="/cmd_vel"    to="$(arg cmd_vel_topic_out)"/>
+        <param name="filename"           value="$(arg waypoints_file)"/>
+        <param name="StartFromTheMiddle" value="$(arg StartFromTheMiddle)"/>
+        <param name="robot_frame"        value="$(arg robot_frame)"/>
+    </node>
+
+
+    <node name="velocity_controller" pkg="waypoint_nav" type="velocity_controller" output="screen">
+        <remap from="/cmd_vel_in"   to="$(arg cmd_vel_topic_in)"/>
+        <remap from="/cmd_vel_out"  to="$(arg cmd_vel_topic_out)"/>
+        <param name="max_vel_param" value="$(arg max_vel_param)"/>
+        <param name="min_vel_param" value="$(arg min_vel_param)"/>
+        <param name="min_dist_err"  value="$(arg min_dist_err)"/>
+        <param name="min_yaw_err"   value="$(arg min_yaw_err)"/>
+    </node>
+
+    <!--
+    <node name="tandem_run_manager" pkg="waypoint_nav" type="tandem_run_manager.py" output="screen">
+        <remap from="scan" to="$(arg tandem_scan)"/>
+        <param name="waypoints_file" value="$(arg waypoints_file)"/>
+    </node>
+    -->
+</launch>

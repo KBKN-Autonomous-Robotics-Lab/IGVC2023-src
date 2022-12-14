@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="cmd_vel"          default="cmd_vel"/>
+  <arg name="motor_driver_dev" default="/dev/ZLAC8015D"/>
+  <arg name="estop_dev"        default="/dev/E-Stop"/>
+  <arg name="debug"            default="false"/>
+  
+  
+  
+  <!-- Node to setting up Arduino serial communication for Estop -->
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node_ESTOP">
+    <param name="port" value="$(arg estop_dev)"/>
+    <param name="baud" value="115200"/>
+  </node>
+  
+  
+  <include file="$(find zlac8015d_ros)/launch/motor_driver_node.launch">
+    <arg name="port"                value="$(arg motor_driver_dev)"/>
+    <!--# Control mode
+    # 1: relative position control mode
+    # Default: Subscribe to "/zlac8015d/pos/cmd_deg" and "/zlac8015d/pos/cmd_dist"
+    # 3: Speed rpm control mode
+    # Default: Subscribe to "/zlac8015d/twist/cmd_vel", "/zlac8015d/vel/cmd_vel" and "/zlac8015d/vel/cmd_rpm"-->
+    <arg name="control_mode"        value="3"/>
+    <arg name="twist_cmd_vel_topic" value="$(arg cmd_vel)"/>
+    <arg name="debug"               value="$(arg debug)"/>
+    <arg name="publish_TF"          value="false"/>
+    <arg name="TF_child_frame"      value="base_footprint"/>
+    <arg name="publish_odom"        value="true"/>
+    <arg name="odom_child_frame"    value="base_footprint"/>
+  </include>
+</launch>

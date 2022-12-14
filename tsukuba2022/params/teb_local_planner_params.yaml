@@ -1,0 +1,90 @@
+base_local_planner: teb_local_planner/TebLocalPlannerROS
+
+TebLocalPlannerROS:
+  
+  odom_topic: odom
+  map_frame: /map
+  
+  # Trajectory
+  teb_autosize: True
+  dt_ref: 0.5 軌道の解像度[s]
+  dt_hysteresis: 0.1
+  global_plan_overwrite_orientation: True
+  max_global_plan_lookahead_dist: 5.0 #仮想的なローカルゴールまでの距離
+  feasibility_check_no_poses: 5
+  
+  # Robot
+  max_vel_x: 1.2
+  max_vel_x_backwards: 0.2
+  max_vel_theta: 0.5
+  acc_lim_x: 2.0
+  acc_lim_theta: 1.0
+  min_turning_radius: 0.0
+  footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
+    # type: "polygon"
+    # vertices: [ [0.25, 0.4], [0.25, -0.4], [-0.65, -0.4], [-0.65, 0.4] ]
+    type: "line"
+    line_start: [-0.09, 0.0]
+    line_end: [-0.31, 0.0]
+  
+  # GoalTolerance
+  xy_goal_tolerance: 0.3
+  yaw_goal_tolerance: 0.3
+  free_goal_vel: False
+  
+  # Obstacles
+  min_obstacle_dist: 0.35
+  inflation_dist: 0.5 #0.6
+  include_dynamic_obstacles: False
+  include_costmap_obstacles: True  # False -> 障害物割と無視
+  costmap_obstacles_behind_robot_dist: 0.5 #1.0
+  obstacle_poses_affected: 30 #30  # 障害物に対して考慮する軌道の数？
+  costmap_converter_plugin: ""
+  costmap_converter_spin_thread: True
+  costmap_converter_rate: 5
+  
+  # Optimization
+  no_inner_iterations: 4 #5 反復計算の回数？
+  no_outer_iterations: 3 #4 no_inner_iterations x no_outer_iterations 回だけ計算をする？
+  optimization_activate: True
+  optimization_verbose: False
+  penalty_epsilon: 0.1
+  weight_max_vel_x: 1000 #2
+  weight_max_vel_theta: 1000 #1
+  weight_acc_lim_x: 100 #100 #1
+  weight_acc_lim_theta: 100 #1
+  weight_kinematics_nh: 1000
+  weight_kinematics_forward_drive: 100 #1
+  weight_kinematics_turning_radius: 1
+  weight_optimaltime: 1
+  weight_shortest_path: 40
+  weight_obstacle: 40
+  weight_inflation: 0.1
+  weight_dynamic_obstacle: 10 # not in use yet
+  selection_alternative_time_cost: False # not in use yet
+  
+  # Homotopy Class Planner
+  enable_homotopy_class_planning: False #軌道の複数代替案を計算するかどうか？
+  enable_multithreading: False #True
+  simple_exploration: False
+  max_number_classes: 2 #4 軌道の代替案の計算個数
+  roadmap_graph_no_samples: 15
+  roadmap_graph_area_width: 5
+  h_signature_prescaler: 0.5
+  h_signature_threshold: 0.1
+  obstacle_keypoint_offset: 0.1
+  obstacle_heading_threshold: 0.45
+  visualize_hc_graph: False
+
+
+  # https://mowito-navstack.readthedocs.io/en/latest/step_5c.html
+  # 処理を速くするために
+  # ・costmap_obstacles_behind_robot_dist -> 小さく
+  # ・obstacle_poses_affected -> 小さく
+  # ・footprint_model -> polygonを避ける
+  # ・dt_ref -> 大きく
+  # ・max_global_plan_lookahead_dist -> 小さく
+  # ・no_inner_iterations, no_outer_iterations -> 小さく
+  # ・weight_acc_lim -> 0.0に
+  # ・enable_homotopy_class_planning -> False ※影響大
+  # ・max_number_classes -> 小さく（2で十分？）

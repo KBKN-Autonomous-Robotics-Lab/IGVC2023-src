@@ -1,0 +1,32 @@
+waypoints:
+- point: {x: -450.275322, y: 133.683688, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -454.894682, y: 133.780042, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -459.784499, y: 133.891929, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -464.851925, y: 133.582012, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -475.506616, y: 133.836317, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -478.851714, y: 133.901627, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -484.473928, y: 133.53786, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -487.464833, y: 133.432372, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -492.775231, y: 133.455104, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -496.032441, y: 133.583499, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -499.593216, y: 133.546902, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -502.946749, y: 133.573954, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -506.297572, y: 134.404019, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -510.665423, y: 134.951248, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -515.735787, y: 133.681242, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -520.309548, y: 133.593192, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -524.824528, y: 135.181462, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -529.078442, y: 135.344975, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -540.446539, y: 135.935768, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -551.87025, y: 135.363996, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -555.367168, y: 135.207706, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -564.770438, y: 135.076498, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -570.496865, y: 135.226799, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -575.764798, y: 133.656623, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -582.726863, y: 133.833918, z: 0, vel: 1, rad: 0.8, stop: false}
+- point: {x: -588.930261, y: 136.027109, z: 0, vel: 1, rad: 0.8, stop: false}
+finish_pose:
+  header: {seq: 0, stamp: 1666497569.7515693, frame_id: map}
+  pose:
+    position: {x: -592.510885943929, y: 138.8129128736552, z: 0}
+    orientation: {x: 0.0, y: 0.0, z: 0.6952399520376622, w: 0.718777718832929}
