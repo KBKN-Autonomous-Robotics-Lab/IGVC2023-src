@@ -3,8 +3,10 @@ import tkinter.filedialog
 import math
 import ruamel.yaml
 import gc
+import itertools
 from pathlib import Path
 from tkinter import messagebox
+from PIL import Image, ImageTk
 from lib.mymaplib import MyMap
 from lib.waypointlib import WaypointList, FinishPose, get_waypoint_yaml
 
@@ -94,19 +96,27 @@ class Application(tk.Frame):
         self.master.bind("<Control-Button-3>", self.ctrl_right_click)
         self.master.bind("<Configure>", self.window_resize_callback)
 
-        #### その他必要になる変数 ####
-        self.mymap = None
-        self.waypoints = None
-        self.finish_pose = None
-        self.waypoints_filepath = None
+        #### アイコン ####
+        icon = Image.open(Path(__file__).parent / Path("icons","new_param_btn.png"))
+        icon = icon.resize((30, 30))
+        self.new_param_icon = ImageTk.PhotoImage(image=icon)
+        icon = Image.open(Path(__file__).parent / Path("icons","delete_param_btn.png"))
+        icon = icon.resize((30, 30))
+        self.del_param_icon = ImageTk.PhotoImage(image=icon)
+
+        #### その他必要になる変数,オブジェクト ####
+        self.mymap: MyMap = None
+        self.waypoints: WaypointList = None
+        self.finish_pose: FinishPose = None
+        self.waypoints_filepath: Path = None
         self.editing_waypoint_id = None   # 編集中のウェイポイントを示す図形のオブジェクトID
-        self.moving_waypoint = False   # ウェイポイントをDnDで動かしている最中かどうか
+        self.moving_waypoint = False   # ウェイポイントをmoveで動かしている最中かどうか
         self.setting_finish_pose = 0 # finish pose のセット中かどうか
         self.old_click_point = None   # 最後にカーソルのあった座標を保持
         self.wp_info_win: tk.Toplevel = None   # ウェイポイント情報を表示するウィンドウ
         self.point_rad = 10   # 画像上に示すポイントの半径ピクセル
         self.footprint = [[0.25, 0.4], [0.25, -0.4], [-0.65, -0.4], [-0.65, 0.4]]
-        self.footprint_id = []
+        self.trajectory = []
         return
 
 
@@ -142,6 +152,7 @@ class Application(tk.Frame):
             return
         self.message("Read map file " + map_path)
         self.canvas.delete("all")
+        self.trajectory = []
         if self.waypoints is not None: self.waypoints.number_dict = {}
         ## キャンバスサイズに合わせて画像を表示
         scale = 1
@@ -170,6 +181,7 @@ class Application(tk.Frame):
             self.menu_open_waypoints()
         else:
             self.plot_waypoints()
+            self.draw_trajectory()
         gc.collect()
         return
     
@@ -185,12 +197,6 @@ class Application(tk.Frame):
         elif (self.waypoints is not None):
             self.master.title(str(self.master.title()).replace(self.waypoints_filepath.name + " - ", ""))
 
-        self.canvas.delete("all")
-        self.draw_image()
-        self.plot_origin()
-        if (self.wp_info_win is not None) and (self.wp_info_win.winfo_exists()):
-            self.wp_info_win.destroy()
-
         filepath = tkinter.filedialog.askopenfilename(
             parent=self.master,
             title="Select waypoints yaml file",
@@ -203,11 +209,20 @@ class Application(tk.Frame):
         if (not "waypoints" in wp_yaml.keys()) or (not "finish_pose" in wp_yaml.keys()):
             messagebox.showerror(title="Format error", message="Selected waypoints file is unexpected format.")
             return
+        
+        self.canvas.delete("all")
+        self.trajectory = []
+        self.draw_image()
+        self.plot_origin()
+        if (self.wp_info_win is not None) and (self.wp_info_win.winfo_exists()):
+            self.wp_info_win.destroy()
+            
         del self.waypoints
         self.waypoints = WaypointList(wp_yaml)
         self.finish_pose = FinishPose(wp_yaml)
         self.waypoints_filepath = Path(filepath)
         self.plot_waypoints()
+        self.draw_trajectory()
         self.master.title(self.waypoints_filepath.name + " - " + self.master.title())
         self.message("Read waypoints file " + filepath)
         self.file_menu.entryconfigure("Save", state=tk.NORMAL)
@@ -339,6 +354,7 @@ class Application(tk.Frame):
             sub_win.destroy()
             self.update_title()
             self.plot_waypoints()
+            self.draw_trajectory()
             return
         frame3 = tk.Frame(sub_win)
         set_btn = tk.Button(frame3, text="Set", width=5, command=set_btn_callback)
@@ -403,10 +419,8 @@ class Application(tk.Frame):
                 Y = xy[0]*math.sin(th) + xy[1]*math.cos(th) + y
                 cx, cy = self.real2canvas(float(X), float(Y))
                 polygon.append([cx, cy])
-            id = self.canvas.create_polygon(polygon, fill="", outline="green")
-            self.canvas.lower(id)
-            self.canvas.lift(id, "map_image")
-            self.footprint_id.append(id)
+            id = self.canvas.create_polygon(polygon, fill="", outline="green", tags="footprint")
+            self.canvas.lift("footprint", "map_image")
             return
         ##
         if (self.show_fp.get()):
@@ -417,9 +431,7 @@ class Application(tk.Frame):
             # last waypoint
             create_footprint(float(next_wp["x"]), float(next_wp["y"]), self.finish_pose.x, self.finish_pose.y)
         else:
-            for id in self.footprint_id:
-                self.canvas.delete(id)
-            self.footprint_id = []
+            self.canvas.delete("footprint")
         return
 
 
@@ -433,16 +445,18 @@ class Application(tk.Frame):
     +++++ 地図上の原点に円を描画 +++++
     """
     def plot_origin(self):
-        x, y = self.mymap.transform(self.mymap.img_origin[0], self.mymap.img_origin[1])
+        cx, cy = self.mymap.transform(self.mymap.img_origin[0], self.mymap.img_origin[1])
         r = self.point_rad   # 円の半径（ピクセル）
-        x0 = x - r
-        y0 = y - r
-        x1 = x + r + 1
-        y1 = y + r + 1
+        x0 = cx - r
+        y0 = cy - r
+        x1 = cx + r + 1
+        y1 = cy + r + 1
         if self.canvas.find_withtag("origin"):
             self.canvas.moveto("origin", x0, y0)
+            self.trajectory[0] = [cx, cy]
         else:
             self.canvas.create_oval(x0, y0, x1, y1, tags="origin", fill='cyan', outline='blue')
+            self.trajectory.append([cx, cy])
         return
     
 
@@ -457,7 +471,8 @@ class Application(tk.Frame):
             cx, cy = self.real2canvas(float(wp["x"]), float(wp["y"]))
             x0 = cx - self.point_rad
             y0 = cy - self.point_rad
-            self.canvas.moveto(id, round(x0), round(y0))
+            self.canvas.moveto(id, x0, y0)
+            self.trajectory[self.waypoints.get_num(id)] = [cx, cy]
             return
         
         if len(self.waypoints.get_id_list()) == 0:
@@ -472,7 +487,8 @@ class Application(tk.Frame):
                 cx, cy = self.real2canvas(float(wp["x"]), float(wp["y"]))
                 x0 = cx - self.point_rad
                 y0 = cy - self.point_rad
-                self.canvas.moveto(id, round(x0), round(y0))
+                self.canvas.moveto(id, x0, y0)
+                self.trajectory[self.waypoints.get_num(id)] = [cx, cy]  # trajectory
         # Finish poseを描画
         cx, cy = self.real2canvas(self.finish_pose.x, self.finish_pose.y)
         x0 = cx
@@ -483,31 +499,50 @@ class Application(tk.Frame):
             # movetoだと上手くいかないので、毎回削除、再描画
             self.canvas.delete(self.finish_pose.id)
         self.finish_pose.id = self.canvas.create_line(x0, y0, x1, y1, tags="finish_pose",
-            width=10, arrow=tk.LAST, arrowshape=(12,15,9), fill="#AAF"
+                width=10, arrow=tk.LAST, arrowshape=(12,15,9), fill="#AAF"
         )
+        # trajectory
+        if self.canvas.find_withtag("trajectory"):
+            self.trajectory[-1] = [cx, cy]
+        else:
+            self.trajectory.append([cx, cy])
         return
     
+
+    """
+    +++++ ウェイポイントをつないだ軌道を描画する +++++
+    """
+    def draw_trajectory(self):
+        if self.canvas.find_withtag("trajectory"):
+            self.canvas.coords("trajectory", list(itertools.chain.from_iterable(self.trajectory)))
+        else:
+            self.canvas.create_line(list(itertools.chain.from_iterable(self.trajectory)),
+                    fill="#DF2", width=2, tags="trajectory")
+            self.canvas.lift("trajectory", "map_image")
+        return
+
 
     """
     +++++ キャンバスに新たなウェイポイントを描画する +++++
     """
     def create_waypoint(self, waypoint: dict):
         img_x, img_y = self.mymap.real2image(float(waypoint["x"]), float(waypoint["y"]))
-        cx, cy = self.mymap.transform(img_x, img_y)
-        x0 = round(cx - self.point_rad)
-        y0 = round(cy - self.point_rad)
-        x1 = round(cx + self.point_rad + 1)
-        y1 = round(cy + self.point_rad + 1)
+        cx, cy = self.real2canvas(float(waypoint["x"]), float(waypoint["y"]))
+        x0 = (cx - self.point_rad)
+        y0 = (cy - self.point_rad)
+        x1 = (cx + self.point_rad + 1)
+        y1 = (cy + self.point_rad + 1)
         if (img_x < 0) or (img_y < 0) or (img_x > self.mymap.width()) or (img_y > self.mymap.height()):
-            id = self.canvas.create_oval(x0, y0, x1, y1, fill='#FEE', outline='#FAA', activefill='#F88')
+            id = self.canvas.create_oval(x0, y0, x1, y1, fill='#FEE', outline='#FAA', activefill='#F88', tags="waypoints")
             self.canvas.tag_bind(id, "<Enter>", lambda event, wp_id=id: self.waypoint_enter(event, wp_id))
             self.canvas.tag_bind(id, "<Leave>", self.waypoint_leave)
         else:
-            id = self.canvas.create_oval(x0, y0, x1, y1, fill='#FDD', outline='red', activefill='red')
+            id = self.canvas.create_oval(x0, y0, x1, y1, fill='#FDD', outline='red', activefill='red', tags="waypoints")
             self.canvas.tag_bind(id, "<Button-1>", lambda event, wp_id=id: self.waypoint_clicked(event, wp_id))
             self.canvas.tag_bind(id, "<Enter>", lambda event, wp_id=id: self.waypoint_enter(event, wp_id))
             self.canvas.tag_bind(id, "<Leave>", self.waypoint_leave)
             self.canvas.tag_bind(id, "<B1-Motion>", self.waypoint_click_move)
+        self.trajectory.append([cx, cy]) #trajectory
         return id
     
 
@@ -537,9 +572,9 @@ class Application(tk.Frame):
         delta_y = event.y-self.old_click_point[1]
         self.canvas.move(self.editing_waypoint_id, delta_x, delta_y)
         box = self.canvas.bbox(self.editing_waypoint_id)
-        px = (box[2] + box[0]) / 2  # ウィンドウ上の座標
-        py = (box[3] + box[1]) / 2
-        img_x, img_y = self.mymap.inv_transform(px, py)
+        cx = (box[2] + box[0]) / 2  # ウィンドウ上の座標
+        cy = (box[3] + box[1]) / 2
+        img_x, img_y = self.mymap.inv_transform(cx, cy)
         # マップ画像上の座標を、実際の座標に変換
         x, y = self.mymap.image2real(img_x, img_y)
         # 編集中のウェイポイント情報を更新
@@ -554,6 +589,9 @@ class Application(tk.Frame):
         txt_box.insert(tk.END, y)
         self.old_click_point = [event.x, event.y]
         self.update_title()
+        # trajectory
+        self.trajectory[self.waypoints.get_num(self.editing_waypoint_id)] = [cx, cy]
+        self.draw_trajectory()
         return
 
 
@@ -594,22 +632,24 @@ class Application(tk.Frame):
             txt_box = tk.Entry(self.wp_info_win, width=20, font=("Consolas", 15))
             txt_box.insert(tk.END, str(point[key]).lower())
             txt_box.grid(column=1, row=i, padx=2, pady=2, ipady=3, sticky=tk.EW)
-            del_btn = tk.Button(self.wp_info_win, text="-", width=2, bg="red", fg="white", font=("",13,"bold"))
+            del_btn = tk.Button(self.wp_info_win, image=self.del_param_icon, relief=tk.FLAT)
             del_btn["command"] = lambda name=key, val=str(point[key]).lower(): self.del_param_btn_callback(name, val)
             del_btn.grid(column=2, row=i, padx=5, pady=5)
+        self.wp_info_win.grid_columnconfigure(1, weight=1)
         # New parameter
-        new_param_btn = tk.Button(self.wp_info_win, text="New Parameter", bg="#AFA")
+        new_param_btn = tk.Button(self.wp_info_win, image=self.new_param_icon, relief=tk.FLAT)
         new_param_btn["command"] = self.new_param_btn_callback
-        new_param_btn.grid(column=0, columnspan=2, row=self.wp_info_win.grid_size()[1], pady=10)
-        # Apply, DnD(Drag & Drop), remove ボタン
+        new_param_btn.grid(column=0, columnspan=3, row=self.wp_info_win.grid_size()[1], pady=10)
+        # Apply, Move(Drag & Drop), remove ボタン
         canv = tk.Canvas(self.wp_info_win)
         canv.grid(column=0, columnspan=3, row=self.wp_info_win.grid_size()[1], sticky=tk.EW, pady=5)
         apply_btn = tk.Button(canv, text="Apply", width=5, height=1, bg="#FDD",
                     command=self.apply_btn_callback)
         apply_btn.pack(side=tk.RIGHT, anchor=tk.SE, padx=5, pady=5)
-        dnd_btn = tk.Button(canv, text="DnD", width=5, height=1, bg="#EEE")
-        dnd_btn["command"] = lambda obj=dnd_btn: self.dnd_btn_callback(dnd_btn)
-        dnd_btn.pack(side=tk.RIGHT, anchor=tk.SE, padx=5, pady=5)
+        self.wp_info_win.bind('<KeyPress>', self.apply_btn_callback)
+        move_btn = tk.Button(canv, text="Move", width=5, height=1, bg="#EEE")
+        move_btn["command"] = lambda obj=move_btn: self.move_btn_callback(move_btn)
+        move_btn.pack(side=tk.RIGHT, anchor=tk.SE, padx=5, pady=5)
         remove_btn = tk.Button(canv, text="Remove", width=7, height=1, bg="#F00",
                     command=self.remove_btn_callback)
         remove_btn.pack(side=tk.LEFT, anchor=tk.SE, padx=5, pady=5)
@@ -617,8 +657,8 @@ class Application(tk.Frame):
         self.wp_info_win.update()
         w = self.wp_info_win.winfo_width()
         h = self.wp_info_win.winfo_height()
-        x = self.canvas.winfo_x() + self.canv_w - w
-        y = self.canvas.winfo_y() + self.canv_h - h
+        x = self.canvas.winfo_x() + self.canv_w - w -10
+        y = self.canvas.winfo_y() + self.canv_h - h -10
         self.wp_info_win.lift()
         self.wp_info_win.attributes('-topmost', True)  # サブウィンドウを最前面で固定
         self.wp_info_win.geometry("+{}+{}".format(x, y))
@@ -629,21 +669,26 @@ class Application(tk.Frame):
     """
     +++++ Applyボタンを押したときのコールバック +++++
     """
-    def apply_btn_callback(self):
+    def apply_btn_callback(self, event=None):
+        if (event is not None) and (event.keysym != "Return"): return
         point = self.waypoints.get_waypoint(id=self.editing_waypoint_id)
         for i, key in enumerate(point.keys()):
             txt_box = self.wp_info_win.grid_slaves(column=1, row=i)[0]
-            self.waypoints.set_waypoint_val(self.editing_waypoint_id, key, txt_box.get())
-        self.plot_waypoints(id=self.editing_waypoint_id)
-        self.message("Apply changes of waypoint parameters")
-        self.update_title()
+            val = txt_box.get()
+            if (str(point[key]) == val): continue
+            self.update_title()
+            self.message("Apply changes of waypoint parameters")
+            self.waypoints.set_waypoint_val(self.editing_waypoint_id, key, val)
+            if ((key == "x") or (key == "y")):
+                self.plot_waypoints(self.editing_waypoint_id)
+                self.draw_trajectory()
         return
 
 
     """
-    +++++ ドラッグ&ドロップボタン(DnD)を押したときのコールバック +++++
+    +++++ ドラッグ&ドロップボタン(Moveボタン)を押したときのコールバック +++++
     """
-    def dnd_btn_callback(self, obj=None):
+    def move_btn_callback(self, obj=None):
         if obj is None: return
         btn = obj
         # 押された状態とそうでない状態を切り替える
@@ -664,11 +709,15 @@ class Application(tk.Frame):
     +++++ removeボタンを押したときのコールバック +++++
     """
     def remove_btn_callback(self):
-        self.waypoints.remove(self.editing_waypoint_id)
-        self.canvas.delete(self.editing_waypoint_id)  # ウェイポイントを示す円を削除
-        self.close_wp_info()
-        self.message("Removed waypoint")
-        self.update_title()
+        yn = messagebox.askyesno("Delete parameter", message="Are you sure you want to remove this waypoint?")
+        if (yn == True):
+            self.trajectory.pop(self.waypoints.get_num(self.editing_waypoint_id))
+            self.waypoints.remove(self.editing_waypoint_id)
+            self.canvas.delete(self.editing_waypoint_id)  # ウェイポイントを示す円を削除
+            self.close_wp_info()
+            self.message("Removed waypoint")
+            self.update_title()
+            self.draw_trajectory()
         return
     
 
@@ -794,7 +843,7 @@ class Application(tk.Frame):
             win.attributes('-topmost', True)
             return
         num = int(num)
-        if (num < 0) or (num > len(self.waypoints.waypoints)+1):
+        if (num < 1) or (num > len(self.waypoints.waypoints)+1):
             win.attributes('-topmost', False)
             messagebox.showwarning(title="Warning", message="The number is out of range.")
             win.attributes('-topmost', True)
@@ -811,8 +860,11 @@ class Application(tk.Frame):
             elif (key=="z"): point[key] = 0.0
             else: point[key] = ""
         id = self.create_waypoint(point)
+        cx,cy = self.trajectory.pop(-1)
+        self.trajectory[num:num] = [[cx, cy]]
         self.waypoints.insert(num, point, id=id)
         self.plot_waypoints(id=id)
+        self.draw_trajectory()
         self.editing_waypoint_id = id
         self.canvas.itemconfig(id, fill='red')
         self.disp_waypoint_info(id)
@@ -853,24 +905,6 @@ class Application(tk.Frame):
     
 
     """
-    +++++ マウスホイールを回転したとき（タッチパッドをドラッグしたとき） +++++
-    """
-    def mouse_wheel(self, event):
-        if not self.mymap: return
-        if event.delta > 0:
-            scale = 1.1   # 上に回転（タッチパッドなら下にドラッグ）=> 拡大
-        else:
-            scale = 0.9   # 下に回転（タッチパッドなら上にドラッグ）=> 縮小
-        self.mymap.scale_at(event.x, event.y, scale)
-        self.draw_image()
-        self.plot_origin()
-        self.plot_waypoints()
-        for id in self.footprint_id:
-            self.canvas.scale(id, event.x, event.y, scale, scale)
-        return
-    
-
-    """
     +++++ 左クリックされたとき +++++
     """
     def left_click(self, event):
@@ -902,6 +936,8 @@ class Application(tk.Frame):
             self.finish_pose.id = self.canvas.create_line(x0, y0, x1, y1, tags="finish_pose",
                 width=10, arrow=tk.LAST, arrowshape=(12,15,9), fill="#AAF"
             )
+            self.trajectory[-1] = [x0, y0]
+            self.draw_trajectory()
             img_x, img_y = self.mymap.inv_transform(x0, y0)
             real_x, real_y = self.mymap.image2real(img_x, img_y)
             self.finish_pose.x = real_x
@@ -932,9 +968,14 @@ class Application(tk.Frame):
         # origin, waypoints finish_pose を平行移動
         self.canvas.move("origin", delta_x, delta_y)
         if self.waypoints:
-            for id in list(self.waypoints.get_id_list()) + self.footprint_id:
-                self.canvas.move(id, delta_x, delta_y)
+            self.canvas.move("waypoints", delta_x, delta_y)
             self.canvas.move("finish_pose", delta_x, delta_y)
+            self.canvas.move("trajectory", delta_x, delta_y)
+            self.canvas.lift("trajectory", "map_image")
+            self.canvas.move("footprint", delta_x, delta_y)
+            for i in range(0, len(self.trajectory)):
+                self.trajectory[i][0] = self.trajectory[i][0] + delta_x
+                self.trajectory[i][1] = self.trajectory[i][1] + delta_y
         self.old_click_point = [event.x, event.y]
         return
     
@@ -986,8 +1027,8 @@ class Application(tk.Frame):
         self.draw_image()
         self.plot_origin()
         self.plot_waypoints()
-        for id in self.footprint_id:
-            self.canvas.scale(id, event.x, event.y, scale, scale)
+        self.canvas.scale("footprint", event.x, event.y, scale, scale)
+        self.canvas.scale("trajectory", event.x, event.y, scale, scale)
         self.message("Zoom In")
         return
 
@@ -1003,11 +1044,29 @@ class Application(tk.Frame):
         self.draw_image()
         self.plot_origin()
         self.plot_waypoints()
-        for id in self.footprint_id:
-            self.canvas.scale(id, event.x, event.y, scale, scale)
+        self.canvas.scale("footprint", event.x, event.y, scale, scale)
+        self.canvas.scale("trajectory", event.x, event.y, scale, scale)
         self.message("Zoom Out")
         return
     
+
+    """
+    +++++ マウスホイールを回転したとき（タッチパッドをドラッグしたとき） +++++
+    """
+    def mouse_wheel(self, event):
+        if not self.mymap: return
+        if event.delta > 0:
+            scale = 1.1   # 上に回転（タッチパッドなら下にドラッグ）=> 拡大
+        else:
+            scale = 0.9   # 下に回転（タッチパッドなら上にドラッグ）=> 縮小
+        self.mymap.scale_at(event.x, event.y, scale)
+        self.draw_image()
+        self.plot_origin()
+        self.plot_waypoints()
+        self.canvas.scale("footprint", event.x, event.y, scale, scale)
+        self.canvas.scale("trajectory", event.x, event.y, scale, scale)
+        return
+
 
     """
     +++++ ウィンドウサイズが変更されたとき、情報を更新する +++++
@@ -1060,14 +1119,14 @@ class Application(tk.Frame):
     def real2canvas(self, x, y):
         img_x, img_y = self.mymap.real2image(x,y)
         cx, cy = self.mymap.transform(img_x, img_y)
-        return cx, cy
+        return round(cx), round(cy)
     
 
     def update_title(self):
         title = self.master.title()
         if title[0] != "*": 
             self.master.title("* "+title)
-
+    
 
 
 
