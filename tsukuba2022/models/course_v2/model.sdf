@@ -1,0 +1,41 @@
+<sdf version="1.4">
+	<model name="course_v2">
+		<static>true</static>
+		
+		<link name="course_v2">
+		
+			<visual name="course_vis">
+				<geometry>
+					<plane>
+						<size>43 37</size>
+					</plane>
+				</geometry>
+				<material>
+					<script>
+						<uri>model://course_v2/materials/scripts/course_v2.material</uri>
+						<uri>model://course_v2/materials/textures/igvc2022_course_image_v2_1400x1200.png</uri>
+						<name>course_v2</name>
+					</script>
+				</material>
+			</visual>
+			
+			<collision name="collision">
+				<geometry>
+					<plane>
+						<size>43 37</size>
+					</plane>
+				</geometry>
+				<surface>
+					<friction>
+						<ode>
+							<mu>1</mu>
+							<mu2>1</mu2>
+						</ode>
+					</friction>
+				</surface>
+			</collision>
+			
+		</link>
+		
+	</model>
+</sdf>
