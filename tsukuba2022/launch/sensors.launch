@@ -5,6 +5,7 @@
     <arg name="calibration"      default="$(find tsukuba2022)/params/VLP16db.yaml"/>
     <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
+    <arg name="use_ekf"          default="true"/>
     
     
     
@@ -77,7 +78,7 @@
     
     
     <!-- Sensor fusion -->
-    <node name="combine_dr_measurements" pkg="robot_pose_ekf" type="robot_pose_ekf">
+    <node name="combine_dr_measurements" pkg="robot_pose_ekf" type="robot_pose_ekf" if="$(arg use_ekf)">
         <remap from="odom"     to="/odom"/>
         <remap from="imu_data" to="imu"/>
         <param name="freq"                  value="30.0"/>
