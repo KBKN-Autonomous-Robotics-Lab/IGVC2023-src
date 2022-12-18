@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+	<model name="barricade">
+		<static>True</static>
+		
+		<link name="box">
+			<pose>0 0 1.5 0 0 0</pose>
+			<visual name="box1_vis">
+				<geometry>
+					<box>
+						<size>3 0.5 3</size>
+					</box>
+				</geometry>
+				<material>
+					<script>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+						<name>Gazebo/DarkGray</name>
+					</script>
+				</material>
+			</visual>
+			
+			<collision name="collision">
+				<geometry>
+					<box>
+						<size>3 0.5 3</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+		
+	</model>
+	
+</sdf>

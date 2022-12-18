@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Ground segmentation 
+    <node name="ground_segmentation" pkg="linefit_ground_segmentation_ros" type="ground_segmentation_node">
+        <rosparam command="load" file="$(find tsukuba2022)/params/segmentation_params.yaml"/>
+        <param name="input_topic"           value="/velodyne_points"/>
+        <param name="ground_output_topic"   value="/ground_cloud"/>
+        <param name="obstacle_output_topic" value="obstacle_cloud"/>
+    </node>-->
+
+    <!-- Convert 3d pointcloud to 2d laserscan -->
+    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+        <remap from="cloud_in" to="velodyne_points"/>
+        <!--<remap from="cloud_in" to="ground_segmentation/obstacle_cloud"/>-->
+        <remap from="scan"     to="velodyne_scan"/>
+        <rosparam command="load" file="$(find tsukuba2022)/params/pointcloud_to_laserscan_params.yaml"/>
+    </node>
+    
+    <!-- Merge hokuyo_scan & scan from velodyne pointcloud -->
+    <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" output="screen">
+      <param name="destination_frame" value="velodyne_link"/>
+      <param name="scan_destination_topic" value="/scan"/>
+      <param name="cloud_destination_topic" value="/merged_cloud"/>
+      <param name="laserscan_topics" value ="/velodyne_scan /hokuyo_scan" /> <!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
+      <param name="angle_min" value="-2.6178"/>
+      <param name="angle_max" value="2.6178"/>
+      <param name="angle_increment" value="0.008711645"/>
+      <param name="scan_time" value="0.0333333"/>
+      <param name="range_min" value="0.30"/>
+      <param name="range_max" value="100.0"/>
+    </node>
+</launch>

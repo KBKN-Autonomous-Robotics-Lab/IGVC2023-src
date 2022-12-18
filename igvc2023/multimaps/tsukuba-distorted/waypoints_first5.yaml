@@ -1,0 +1,14 @@
+waypoints_L_first5:
+- point: {x: 6.773622, y: 3.509047, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 16.949907, y: 3.772681, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 27.864368, y: 3.930862, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 38.831555, y: 3.825408, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 48.257282, y: 3.405931, z: 0, vel: 1, rad: 1, stop: false}
+
+
+waypoints_R_first5:
+- point: {x: 7.913908, y: 0.625135, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 17.873427, y: 1.284221, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 28.2563, y: 1.64634, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 38.1161, y: 1.91456, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 48.2937, y: 1.73542, z: 0, vel: 1, rad: 1, stop: false}

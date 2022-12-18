@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Arguments -->
+    <arg name="model"            default="$(find xacro)/xacro '$(find tsukuba2022)/urdf/orange2022.xacro'" />
+    <arg name="calibration"      default="$(find tsukuba2022)/params/VLP16db.yaml"/>
+    <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
+    <arg name="imu_dev"          default="/dev/sensors/imu"/>
+    
+    
+    
+    <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+    <param name="robot_description" command="$(arg model)"/>
+    
+    <!-- Convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+    
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="true"/>
+        <param name="rate"    value="50"/>
+    </node>
+    
+    
+    <!-- Node to setting up Arduino serial communication for IMU sensor -->
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node_IMU">
+        <param name="port" value="$(arg imu_dev)"/>
+        <param name="baud" value="115200"/>
+    </node>
+    
+    
+    <!-- Node for setting up 2D-LiDAR via USB connection -->
+    <node pkg="urg_node" type="urg_node" name="urg_node">
+        <param name="frame_id"                  value="/hokuyo_link"/>
+        <param name="serial_port"               value="$(arg scan_dev)"/>
+        <param name="angle_min"   type="double" value="-1.22"/>
+        <param name="angle_max"   type="double" value="1.22"/>
+        <remap from="/scan"       to="/hokuyo_scan"/>
+    </node>
+    
+    
+    <!-- Run velodyne_pointcloud/TransformNodelet in a nodelet manager for a VLP-16 -->
+    <!-- Start nodelet manager -->
+    <node pkg="nodelet" type="nodelet" name="velodyne_link_nodelet_manager" args="manager" output="screen"/>
+    
+    
+    <!-- Load driver nodelet into it -->
+    <node pkg="nodelet" type="nodelet" name="velodyne_link_nodelet_manager_driver" args="load velodyne_driver/DriverNodelet velodyne_link_nodelet_manager">
+        <param name="device_ip"              value=""/>
+        <param name="frame_id"               value="velodyne_link"/>
+        <param name="model"                  value="VLP16"/>
+        <param name="pcap"                   value=""/>
+        <param name="port"                   value="2368"/>
+        <param name="read_fast"              value="false"/>
+        <param name="read_once"              value="false"/>
+        <param name="repeat_delay"           value="0.0"/>
+        <param name="rpm"                    value="600.0"/>
+        <param name="gps_time"               value="false"/>
+        <param name="pcap_time"              value="false"/>
+        <param name="cut_angle"              value="-0.01"/>
+        <param name="timestamp_first_packet" value="false"/>
+    </node>
+    
+    
+    <!-- Start transform nodelet -->
+    <node pkg="nodelet" type="nodelet" name="velodyne_link_nodelet_manager_transform" args="load velodyne_pointcloud/TransformNodelet velodyne_link_nodelet_manager">
+        <param name="model"          value="VLP16"/>
+        <param name="calibration"    value="$(arg calibration)"/>
+        <param name="fixed_frame"    value=""/>
+        <param name="target_frame"   value=""/>
+        <param name="max_range"      value="130.0"/>
+        <param name="min_range"      value="0.4"/>
+        <param name="organize_cloud" value="false"/>
+    </node>
+    
+    
+    <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
+    <include file="$(find tsukuba2022)/launch/segmentation.launch"/>
+    
+    
+    <!-- Sensor fusion -->
+    <node name="combine_dr_measurements" pkg="robot_pose_ekf" type="robot_pose_ekf">
+        <remap from="odom"     to="/odom"/>
+        <remap from="imu_data" to="imu"/>
+        <param name="freq"                  value="30.0"/>
+        <param name="sensor_timeout"        value="1.0"/>
+        <param name="publish_tf"            value="true"/>
+        <param name="odom_used"             value="true"/>
+        <param name="imu_used"              value="true"/>
+        <param name="vo_used"               value="false"/>
+        <param name="output_frame"          value="odom"/>
+        <param name="base_footprint_frame"  value="base_footprint"/>
+    </node>
+    
+</launch>

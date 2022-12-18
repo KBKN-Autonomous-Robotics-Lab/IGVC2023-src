@@ -1,0 +1,19 @@
+base_global_planner: global_planner/GlobalPlanner
+
+GlobalPlanner:
+  allow_unknown: true
+  default_tolerance: 0.0
+  visualize_potential: false
+  use_dijkstra: true
+  use_quadratic: true
+  use_grid_path: false
+  old_navfn_behavior: false
+  lethal_cost: 190 #180 #175 #150 #253
+  neutral_cost: 123 #130 #150 #110 #66
+  cost_factor: 0.4 #0.55
+  publish_potential: false
+  orientation_mode: 0
+  orientation_window_size: 1
+  outline_map: true
+
+# base_global_planner: carrot_planner/CarrotPlanner

@@ -1,0 +1,7 @@
+image: ./mymap_tsukuba_1.pgm
+resolution: 0.100000
+origin: [-110.800000, -78.800000, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

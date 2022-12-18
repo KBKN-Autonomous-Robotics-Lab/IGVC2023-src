@@ -1,0 +1,33 @@
+waypoints:
+- point: {x: 4.8992, y: 0.0763934, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 11.025331, y: -0.023422, z: 0.0, vel: 1, rad: 1, stop: false}
+- point: {x: 18.50064, y: -0.394513, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 26.176818, y: -0.880348, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 34.8965, y: -2.35386, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 42.74376, y: -4.864187, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 50.530069, y: -5.066462, z: 0.0, vel: 1, rad: 1, stop: false}
+- point: {x: 53.505717, y: -1.933611, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 53.2674, y: 7.98859, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 53.0977, y: 20.0885, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 52.5512, y: 29.5179, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 52.298734, y: 41.727943, z: 0.0, vel: 1, rad: 1, stop: false}
+- point: {x: 52.033145, y: 52.371588, z: 0.0, vel: 1, rad: 1, stop: false}
+- point: {x: 50, y: 54.5, z: 0, vel: 1, rad: 1, stop: true, change_map: 1}
+- point: {x: 44.457458, y: 54.265651, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 38.331208, y: 54.17344, z: 0.0, vel: 1, rad: 1, stop: false}
+- point: {x: 30.568212, y: 54.0757, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 22.183928, y: 53.966732, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 14.496347, y: 53.725704, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: 6.34269, y: 53.623967, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: -0.732295, y: 53.479098, z: 0.0, vel: 1, rad: 1, stop: false}
+- point: {x: -3.648502, y: 50.77132, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: -3.260954, y: 43.319186, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: -2.632884, y: 33.104345, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: -2.248518, y: 23.345314, z: 0, vel: 1, rad: 1, stop: false}
+- point: {x: -2.22096, y: 11.492785, z: 0.0, vel: 1, rad: 1, stop: false}
+- point: {x: -2.253471, y: 0.890283, z: 0.0, vel: 1, rad: 1, stop: false}
+finish_pose:
+  header: {seq: 0, stamp: 1663209268.6905353, frame_id: map}
+  pose:
+    position: {x: 1.084303876129681, y: -1.5445686660287592, z: 0}
+    orientation: {x: 0.0, y: 0.0, z: 0.012634000199744012, w: 0.9999201878344856}

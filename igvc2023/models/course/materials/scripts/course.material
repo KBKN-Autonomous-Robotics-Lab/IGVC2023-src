@@ -1,0 +1,13 @@
+material course
+{
+	technique
+  {
+  	pass
+    {
+    	texture_unit
+      {
+      	texture igvc2022_course_image_1400x1200.png
+      }
+    }
+  }
+}
