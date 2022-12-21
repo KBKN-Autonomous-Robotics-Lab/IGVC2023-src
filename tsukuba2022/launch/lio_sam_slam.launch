@@ -11,7 +11,7 @@
   <arg name="savePCD" default="false"/>
   <arg name="savePCDDirectory" default="/Downloads/LOAM"/>
 
-  <rosparam command="load" file="$(find tsukuba2022)/config/nakaniwa_params.yaml"/>
+  <rosparam command="load" file="$(find tsukuba2022)/config/nakaniwa_sim_params.yaml"/>
   <param name="use_sim_time" value="$(arg use_sim_time)"/>
   <param name="lio_sam/pointCloudTopic" value="$(arg points_topic)"/>
   <param name="lio_sam/imuTopic" value="$(arg imu_topic)"/>

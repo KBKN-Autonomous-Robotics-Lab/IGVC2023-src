@@ -1,5 +1,4 @@
 lio_sam:
-
   # Topics [default]
   pointCloudTopic: "points_raw" # Point cloud data
   imuTopic: "imu_raw" # IMU data
@@ -8,7 +7,7 @@ lio_sam:
 
   # Frames [default]
   lidarFrame: "velodyne_link"
-  baselinkFrame: "base_footprint"
+  baselinkFrame: "base_link"
   odometryFrame: "odom"
   mapFrame: "map"
 
@@ -30,7 +29,7 @@ lio_sam:
   Horizon_SCAN: 1875 # lidar horizontal resolution (Velodyne:1800, Ouster:512,1024,2048, Livox Horizon: 4000)
   downsampleRate: 1 # default: 1. Downsample your data if too many points. i.e., 16 = 64 / 4, 16 = 16 / 1
   lidarMinRange: 0.9 # default: 1.0, minimum lidar range to be used
-  lidarMaxRange: 100.0 # default: 1000.0, maximum lidar range to be used
+  lidarMaxRange: 130.0 # default: 1000.0, maximum lidar range to be used
 
   # IMU Settings [default]
   imuAccNoise: 3.9939570888238808e-03
@@ -41,7 +40,7 @@ lio_sam:
   imuRPYWeight: 0.01
 
   # Extrinsics: T_lb (lidar -> imu) [modified]
-  extrinsicTrans: [-0.235, 0.0, -0.831]
+  extrinsicTrans: [0.081, 0.0, 0.223]
   extrinsicRot: [1, 0, 0,
                  0, 1, 0,
                  0, 0, 1]
@@ -56,13 +55,13 @@ lio_sam:
   surfFeatureMinValidNum: 100
 
   # voxel filter paprams [default]
-  odometrySurfLeafSize: 0.4 # default: 0.4 - outdoor, 0.2 - indoor
-  mappingCornerLeafSize: 0.2 # default: 0.2 - outdoor, 0.1 - indoor
-  mappingSurfLeafSize: 0.4 # default: 0.4 - outdoor, 0.2 - indoor
+  odometrySurfLeafSize: 0.2 # default: 0.4 - outdoor, 0.2 - indoor
+  mappingCornerLeafSize: 0.1 # default: 0.2 - outdoor, 0.1 - indoor
+  mappingSurfLeafSize: 0.2 # default: 0.4 - outdoor, 0.2 - indoor
 
   # robot motion constraint (in case you are using a 2D robot) [modified]
-  z_tollerance: 0 # meters
-  rotation_tollerance: 0 # radians
+  z_tollerance: 0.5 # meters
+  rotation_tollerance: 1 # radians
 
   # CPU Params [default]
   numberOfCores: 4 # number of cores for mapping optimization
@@ -101,12 +100,12 @@ navsat:
   broadcast_utm_transform_as_parent_frame: false
   publish_filtered_gps: false
 
-# EKF for Navsat [modified]
+# EKF for Navsat [default]
 ekf_gps:
   publish_tf: false
   map_frame: map
   odom_frame: odom
-  base_link_frame: base_footprint
+  base_link_frame: base_link
   world_frame: odom
 
   frequency: 50

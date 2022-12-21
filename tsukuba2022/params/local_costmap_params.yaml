@@ -18,8 +18,8 @@ local_costmap:
     observation_sources: scan
     scan:
       data_type: LaserScan
-      topic: /scan
-      sensor_frame: velodyne_link
+      topic: /hokuyo_scan
+      sensor_frame: hokuyo_link
       marking: true
       clearing: true
       inf_is_valid: true

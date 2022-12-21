@@ -39,7 +39,7 @@
           <bodyName>${name}_link</bodyName> <!-- bodyName always set base_link by URDF parser -->
           <frameName>${name}_link</frameName>
           <topicName>imu</topicName>
-          <updateRateHZ>10.0</updateRateHZ>
+          <updateRateHZ>100.0</updateRateHZ>
           <gaussianNoise>0.001</gaussianNoise>
           <xyzOffset>0 0 0</xyzOffset>
           <rpyOffset>0 0 0</rpyOffset>

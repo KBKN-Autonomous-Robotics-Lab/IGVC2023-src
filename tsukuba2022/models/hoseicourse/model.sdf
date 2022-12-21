@@ -12,18 +12,16 @@
           <iyz>0</iyz>
           <izz>40.1846</izz>
         </inertia>
-        <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>7.1833 6.83868 0.5 0 -0 0</pose>
+      <pose>7.1833 6.83868 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
       <enable_wind>0</enable_wind>
       <visual name='visual'>
-        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>5.99691 2.01004 1</size>
+            <size>5.99691 2.01004 3</size>
           </box>
         </geometry>
         <material>
@@ -46,10 +44,9 @@
       <collision name='collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>5.99691 2.01004 1</size>
+            <size>5.99691 2.01004 3</size>
           </box>
         </geometry>
         <surface>
@@ -112,7 +109,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>0.188308 6.83744 0.5 0 -0 0</pose>
+      <pose>0.188308 6.83744 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -121,7 +118,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>5.99691 2.01004 1</size>
+            <size>5.99691 2.01004 3</size>
           </box>
         </geometry>
         <material>
@@ -147,7 +144,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>5.99691 2.01004 1</size>
+            <size>5.99691 2.01004 3</size>
           </box>
         </geometry>
         <surface>
@@ -210,7 +207,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-5.80476 6.84678 0.5 0 -0 0</pose>
+      <pose>-5.80476 6.84678 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -219,7 +216,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.98724 2.01004 1</size>
+            <size>1.98724 2.01004 3</size>
           </box>
         </geometry>
         <material>
@@ -245,7 +242,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.98724 2.01004 1</size>
+            <size>1.98724 2.01004 3</size>
           </box>
         </geometry>
         <surface>
@@ -308,7 +305,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>8.18517 -0.162337 0.5 0 -0 0</pose>
+      <pose>8.18517 -0.162337 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -317,7 +314,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>3.98346 2.01004 1</size>
+            <size>3.98346 2.01004 3</size>
           </box>
         </geometry>
         <material>
@@ -343,7 +340,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>3.98346 2.01004 1</size>
+            <size>3.98346 2.01004 3</size>
           </box>
         </geometry>
         <surface>
@@ -406,7 +403,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-5.30731 -2.64384 0.5 0 -0 0</pose>
+      <pose>-5.30731 -2.64384 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -415,7 +412,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.9898 3.03101 1</size>
+            <size>2.9898 3.03101 3</size>
           </box>
         </geometry>
         <material>
@@ -441,7 +438,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.9898 3.03101 1</size>
+            <size>2.9898 3.03101 3</size>
           </box>
         </geometry>
         <surface>
@@ -504,7 +501,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-5.29666 0.826818 0.5 0 -0 0</pose>
+      <pose>-5.29666 0.826818 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -513,7 +510,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.99398 0.232517 1</size>
+            <size>2.99398 0.232517 3</size>
           </box>
         </geometry>
         <material>
@@ -539,7 +536,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.99398 0.232517 1</size>
+            <size>2.99398 0.232517 3</size>
           </box>
         </geometry>
         <surface>
@@ -602,7 +599,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>3.81811 -1.03684 0.5 0 -0 0</pose>
+      <pose>3.81811 -1.03684 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -611,7 +608,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>4.76615 0.232517 1</size>
+            <size>4.76615 0.232517 3</size>
           </box>
         </geometry>
         <material>
@@ -637,7 +634,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>4.76615 0.232517 1</size>
+            <size>4.76615 0.232517 3</size>
           </box>
         </geometry>
         <surface>
@@ -700,7 +697,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>4.67148 2.87704 0.5 0 -0 0</pose>
+      <pose>4.67148 2.87704 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -709,7 +706,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>11.008 0.087484 1</size>
+            <size>11.008 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -735,7 +732,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>11.008 0.087484 1</size>
+            <size>11.008 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -798,7 +795,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-1.79832 -6.1092 0.5 0 -0 0</pose>
+      <pose>-1.79832 -6.1092 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -807,7 +804,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>10.003 0.087484 1</size>
+            <size>10.003 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -833,7 +830,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>10.003 0.087484 1</size>
+            <size>10.003 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -896,7 +893,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>7.68827 -6.11267 0.5 0 -0 0</pose>
+      <pose>7.68827 -6.11267 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -905,7 +902,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>5.0278 0.087484 1</size>
+            <size>5.0278 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -931,7 +928,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>5.0278 0.087484 1</size>
+            <size>5.0278 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -994,7 +991,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-4.81822 2.87687 0.5 0 -0 0</pose>
+      <pose>-4.81822 2.87687 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1003,7 +1000,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>3.98917 0.087484 1</size>
+            <size>3.98917 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1029,7 +1026,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>3.98917 0.087484 1</size>
+            <size>3.98917 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1092,7 +1089,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-6.7515 -5.11034 0.5 0 0 -1.57059</pose>
+      <pose>-6.7515 -5.11034 1.5 0 0 -1.57059</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1101,7 +1098,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.91856 0.087484 1</size>
+            <size>1.91856 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1127,7 +1124,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.91856 0.087484 1</size>
+            <size>1.91856 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1190,7 +1187,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>3.24783 -2.11041 0.5 0 -0 0</pose>
+      <pose>3.24783 -2.11041 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1199,7 +1196,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.27943 0.087484 1</size>
+            <size>2.27943 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1225,7 +1222,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.27943 0.087484 1</size>
+            <size>2.27943 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1288,7 +1285,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-1.69806 -1.20496 0.5 0 -0 0</pose>
+      <pose>-1.69806 -1.20496 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1297,7 +1294,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.27943 0.087484 1</size>
+            <size>2.27943 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1323,7 +1320,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.27943 0.087484 1</size>
+            <size>2.27943 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1386,7 +1383,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-1.33218 -2.18828 0.5 0 -0 0</pose>
+      <pose>-1.33218 -2.18828 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1395,7 +1392,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.95324 0.087484 1</size>
+            <size>2.95324 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1421,7 +1418,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.95324 0.087484 1</size>
+            <size>2.95324 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1484,7 +1481,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-6.75403 4.38074 0.5 0 0 -1.57059</pose>
+      <pose>-6.75403 4.38074 1.5 0 0 -1.57059</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1493,7 +1490,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.91475 0.087484 1</size>
+            <size>2.91475 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1519,7 +1516,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.91475 0.087484 1</size>
+            <size>2.91475 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1582,7 +1579,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-3.85392 4.38882 0.5 0 0 -0.954791</pose>
+      <pose>-3.85392 4.38882 1.5 0 0 -0.954791</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1591,7 +1588,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>3.49253 0.087484 1</size>
+            <size>3.49253 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1617,7 +1614,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>3.49253 0.087484 1</size>
+            <size>3.49253 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1680,7 +1677,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-2.77675 -1.68969 0.5 0 0 -1.57059</pose>
+      <pose>-2.77675 -1.68969 1.5 0 0 -1.57059</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1689,7 +1686,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.888064 0.087484 1</size>
+            <size>0.888064 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1715,7 +1712,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.888064 0.087484 1</size>
+            <size>0.888064 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1778,7 +1775,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>4.33486 -1.60852 0.5 0 0 -1.57059</pose>
+      <pose>4.33486 -1.60852 1.5 0 0 -1.57059</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1787,7 +1784,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.909365 0.087484 1</size>
+            <size>0.909365 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1813,7 +1810,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.909365 0.087484 1</size>
+            <size>0.909365 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1876,7 +1873,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-1.85013 4.33135 0.5 0 0 -0.979786</pose>
+      <pose>-1.85013 4.33135 1.5 0 0 -0.979786</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1885,7 +1882,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>3.49253 0.087484 1</size>
+            <size>3.49253 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -1911,7 +1908,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>3.49253 0.087484 1</size>
+            <size>3.49253 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -1974,7 +1971,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>4.53184 -5.09431 0.5 0 0 -0.954791</pose>
+      <pose>4.53184 -5.09431 1.5 0 0 -0.954791</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1983,7 +1980,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.3271 0.087484 1</size>
+            <size>2.3271 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -2009,7 +2006,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.3271 0.087484 1</size>
+            <size>2.3271 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -2072,7 +2069,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>2.42071 -5.07999 0.5 0 0 -0.954791</pose>
+      <pose>2.42071 -5.07999 1.5 0 0 -0.954791</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2081,7 +2078,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.40429 0.087484 1</size>
+            <size>2.40429 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -2107,7 +2104,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>2.40429 0.087484 1</size>
+            <size>2.40429 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -2170,7 +2167,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>1.79775 -1.6274 0.5 0 0 -0.954791</pose>
+      <pose>1.79775 -1.6274 1.5 0 0 -0.954791</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2179,7 +2176,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.12858 0.087484 1</size>
+            <size>1.12858 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -2205,7 +2202,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.12858 0.087484 1</size>
+            <size>1.12858 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -2268,7 +2265,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-0.213803 -1.65841 0.5 0 0 -0.954791</pose>
+      <pose>-0.213803 -1.65841 1.5 0 0 -0.954791</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2277,7 +2274,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.12858 0.087484 1</size>
+            <size>1.12858 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -2303,7 +2300,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.12858 0.087484 1</size>
+            <size>1.12858 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -2366,7 +2363,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>7.04565 -4.10442 0.5 0 -0 0</pose>
+      <pose>7.04565 -4.10442 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2375,7 +2372,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>6.27478 0.087484 1</size>
+            <size>6.27478 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -2401,7 +2398,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>6.27478 0.087484 1</size>
+            <size>6.27478 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -2464,7 +2461,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-1.05427 -4.10983 0.5 0 -0 0</pose>
+      <pose>-1.05427 -4.10983 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2473,7 +2470,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>5.52227 0.087484 1</size>
+            <size>5.52227 0.087484 3</size>
           </box>
         </geometry>
         <material>
@@ -2499,7 +2496,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>5.52227 0.087484 1</size>
+            <size>5.52227 0.087484 3</size>
           </box>
         </geometry>
         <surface>
@@ -2562,7 +2559,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-9.79546 0.867636 0.5 0 -0 0</pose>
+      <pose>-9.79546 0.867636 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2571,7 +2568,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.043707 20.0311 1</size>
+            <size>0.043707 20.0311 3</size>
           </box>
         </geometry>
         <material>
@@ -2593,7 +2590,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.043707 20.0311 1</size>
+            <size>0.043707 20.0311 3</size>
           </box>
         </geometry>
         <surface>
@@ -2656,7 +2653,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>10.2262 0.871969 0.5 0 -0 0</pose>
+      <pose>10.2262 0.871969 1.5 0 -0 0</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2665,7 +2662,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.043707 20.0311 1</size>
+            <size>0.043707 20.0311 3</size>
           </box>
         </geometry>
         <material>
@@ -2687,7 +2684,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.043707 20.0311 1</size>
+            <size>0.043707 20.0311 3</size>
           </box>
         </geometry>
         <surface>
@@ -2750,7 +2747,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>0.222936 10.8607 0.5 0 0 -1.57002</pose>
+      <pose>0.222936 10.8607 1.5 0 0 -1.57002</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2759,7 +2756,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.043707 20.0311 1</size>
+            <size>0.043707 20.0311 3</size>
           </box>
         </geometry>
         <material>
@@ -2781,7 +2778,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.043707 20.0311 1</size>
+            <size>0.043707 20.0311 3</size>
           </box>
         </geometry>
         <surface>
@@ -2844,7 +2841,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>0.217485 -9.19083 0.5 0 0 -1.57002</pose>
+      <pose>0.217485 -9.19083 1.5 0 0 -1.57002</pose>
       <gravity>0</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -2853,7 +2850,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.043707 20.0311 1</size>
+            <size>0.043707 20.0311 3</size>
           </box>
         </geometry>
         <material>
@@ -2875,7 +2872,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>0.043707 20.0311 1</size>
+            <size>0.043707 20.0311 3</size>
           </box>
         </geometry>
         <surface>
