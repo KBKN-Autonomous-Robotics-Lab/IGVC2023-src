@@ -24,5 +24,17 @@
     	<pose>7.5 9.4 0 0 0 3.141592</pose>
     	<name>Course</name>
     </include>
+    
+    <include>
+    	<uri>model://ramp</uri>
+    	<pose>7.14 0 0 0 0 1.570796</pose>
+    	<name>Ramp1</name>
+    </include>
+    
+    <include>
+    	<uri>model://ramp</uri>
+    	<pose>16 9 0 0 0 0</pose>
+    	<name>Ramp2</name>
+    </include>
   </world>
 </sdf>

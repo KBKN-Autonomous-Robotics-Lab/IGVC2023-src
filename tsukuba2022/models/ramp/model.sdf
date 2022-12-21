@@ -8,7 +8,7 @@
 			<visual name="box1_vis">
 				<geometry>
 					<box>
-						<size>4 2 0.05</size>
+						<size>2 2 0.05</size>
 					</box>
 				</geometry>
 				<material>
@@ -22,7 +22,7 @@
 			<collision name="collision">
 				<geometry>
 					<box>
-						<size>4 2 0.05</size>
+						<size>2 2 0.05</size>
 					</box>
 				</geometry>
 				<surface>
@@ -41,7 +41,7 @@
 			<visual name="box2_vis">
 				<geometry>
 					<box>
-						<size>4 2 0.05</size>
+						<size>2 2 0.05</size>
 					</box>
 				</geometry>
 				<material>
@@ -55,7 +55,7 @@
 			<collision name="collision">
 				<geometry>
 					<box>
-						<size>4 2 0.05</size>
+						<size>2 2 0.05</size>
 					</box>
 				</geometry>
 				<surface>
