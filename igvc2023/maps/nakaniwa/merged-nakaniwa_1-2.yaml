@@ -1,4 +1,4 @@
-image: /home/ubuntu/catkin_ws/src/tsukuba2022/maps/nakaniwa/merged-nakaniwa_1-2.pgm
+image: /home/ubuntu/catkin_ws/src/igvc2023/maps/nakaniwa/merged-nakaniwa_1-2.pgm
 resolution: 0.05
 origin: [-50.0, -50.3947385034915, 0]
 negate: 0

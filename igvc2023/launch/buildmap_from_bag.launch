@@ -3,21 +3,21 @@
 <launch>
   <arg name="scan_topic"           default="scan"/>
   <arg name="save_joy_button"      default="0"/>
-  <arg name="waypoints_file"       default="$(find tsukuba2022)/config/waypoints/waypoints.yaml"/>
+  <arg name="waypoints_file"       default="$(find igvc2023)/config/waypoints/waypoints.yaml"/>
   <arg name="default_rad"          default="1.0"/>
   
   <param name="use_sim_time" value="true"/>
   
   
   <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
-    <include file="$(find tsukuba2022)/launch/segmentation.launch"/>
+    <include file="$(find igvc2023)/launch/segmentation.launch"/>
 
 
   <!-- The gmapping package provides laser-based SLAM (Simultaneous Localization and Mapping), 
        as a ROS node called slam_gmapping -->
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
     <remap from="scan" to="$(arg scan_topic)"/>
-    <rosparam file="$(find tsukuba2022)/params/gmapping_common_params.yaml" command="load"/>
+    <rosparam file="$(find igvc2023)/params/gmapping_common_params.yaml" command="load"/>
   </node>
   
   
