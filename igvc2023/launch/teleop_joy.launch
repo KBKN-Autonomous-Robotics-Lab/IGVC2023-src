@@ -16,7 +16,7 @@
 
   <!-- Node for joystick operation of a differential two-wheeled robot -->
   <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
-    <rosparam command="load" file="$(find tsukuba2022)/config/$(arg joy_config).yaml"/>
+    <rosparam command="load" file="$(find igvc2023)/config/$(arg joy_config).yaml"/>
     <remap from="cmd_vel"    to="$(arg cmd_vel)"/>
   </node>
   
