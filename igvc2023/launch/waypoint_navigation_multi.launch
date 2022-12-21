@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="maps_dir"       default="$(find tsukuba2022)/multimaps/tsukuba-distorted"/>
-  <arg name="waypoints_file" default="$(find tsukuba2022)/multimaps/tsukuba-distorted/waypoints_R.yaml"/>
-  <arg name="init_pos_file"  default="$(find tsukuba2022)/config/initial_pose.yaml"/>
+  <arg name="maps_dir"       default="$(find igvc2023)/multimaps/tsukuba-distorted"/>
+  <arg name="waypoints_file" default="$(find igvc2023)/multimaps/tsukuba-distorted/waypoints_R.yaml"/>
+  <arg name="init_pos_file"  default="$(find igvc2023)/config/initial_pose.yaml"/>
   <arg name="start_map_num"  default="0"/>
   <arg name="odom_topic"     default="combined_odom"/>
   <arg name="mb_cmd_vel"     default="/move_base/cmd_vel"/>
@@ -15,14 +15,14 @@
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <remap from="/odom"    to="$(arg odom_topic)"/>
     <remap from="/cmd_vel" to="$(arg mb_cmd_vel)"/>
-    <rosparam file="$(find tsukuba2022)/params/foot_print.yaml"                 command="load" ns="global_costmap"/>
-    <rosparam file="$(find tsukuba2022)/params/foot_print.yaml"                 command="load" ns="local_costmap"/>
-    <rosparam file="$(find tsukuba2022)/params/local_costmap_params.yaml"       command="load"/>
-    <rosparam file="$(find tsukuba2022)/params/global_costmap_params.yaml"      command="load"/>
-    <rosparam file="$(find tsukuba2022)/params/move_base_params.yaml"           command="load"/>
-    <rosparam file="$(find tsukuba2022)/params/base_global_planner_params.yaml" command="load"/>
-    <rosparam file="$(find tsukuba2022)/params/base_local_planner_params.yaml"  command="load"/>
-    <rosparam file="$(find tsukuba2022)/params/recovery_params.yaml"            command="load"/>
+    <rosparam file="$(find igvc2023)/params/foot_print.yaml"                 command="load" ns="global_costmap"/>
+    <rosparam file="$(find igvc2023)/params/foot_print.yaml"                 command="load" ns="local_costmap"/>
+    <rosparam file="$(find igvc2023)/params/local_costmap_params.yaml"       command="load"/>
+    <rosparam file="$(find igvc2023)/params/global_costmap_params.yaml"      command="load"/>
+    <rosparam file="$(find igvc2023)/params/move_base_params.yaml"           command="load"/>
+    <rosparam file="$(find igvc2023)/params/base_global_planner_params.yaml" command="load"/>
+    <rosparam file="$(find igvc2023)/params/base_local_planner_params.yaml"  command="load"/>
+    <rosparam file="$(find igvc2023)/params/recovery_params.yaml"            command="load"/>
   </node>
 
 
@@ -36,7 +36,7 @@
 
   <node pkg="amcl" type="amcl" name="amcl" output="screen">
     <!-- <remap from="scan" to="velodyne_scan"/> -->
-    <rosparam file="$(find tsukuba2022)/params/localization_params.yaml"            command="load"/>
+    <rosparam file="$(find igvc2023)/params/localization_params.yaml"            command="load"/>
     <rosparam file="$(arg init_pos_file)"                                           command="load"/>
   </node>
   <!-- ++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -55,6 +55,6 @@
   </include>
   
   
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find tsukuba2022)/rviz_cfg/nav.rviz"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find igvc2023)/rviz_cfg/nav.rviz"/>
   
 </launch>

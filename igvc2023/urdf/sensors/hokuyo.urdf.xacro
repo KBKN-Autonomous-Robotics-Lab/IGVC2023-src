@@ -23,7 +23,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://tsukuba2022/meshes/hokuyo.dae"/>
+          <mesh filename="package://igvc2023/meshes/hokuyo.dae"/>
         </geometry>
       </visual>
 

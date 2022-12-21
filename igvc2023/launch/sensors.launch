@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
     <!-- Arguments -->
-    <arg name="model"            default="$(find xacro)/xacro '$(find tsukuba2022)/urdf/orange2022.xacro'" />
-    <arg name="calibration"      default="$(find tsukuba2022)/params/VLP16db.yaml"/>
+    <arg name="model"            default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange2022.xacro'" />
+    <arg name="calibration"      default="$(find igvc2023)/params/VLP16db.yaml"/>
     <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
     <arg name="use_ekf"          default="true"/>
@@ -74,7 +74,7 @@
     
     
     <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
-    <include file="$(find tsukuba2022)/launch/segmentation.launch"/>
+    <include file="$(find igvc2023)/launch/segmentation.launch"/>
     
     
     <!-- Sensor fusion -->

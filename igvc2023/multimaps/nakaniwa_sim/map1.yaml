@@ -1,4 +1,4 @@
-image: /home/ubuntu/catkin_ws/src/tsukuba2022/multimaps/nakaniwa_sim/map1.pgm
+image: /home/ubuntu/catkin_ws/src/igvc2023/multimaps/nakaniwa_sim/map1.pgm
 resolution: 0.05
 origin: [-45.050354, -43.236632, 0.0]
 negate: 0
