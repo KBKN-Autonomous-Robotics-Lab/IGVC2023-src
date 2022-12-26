@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="use_ekf" default="true"/>
+    
+    <!-- The robot URDF model and world file -->
+    <arg name="model" default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange2022.xacro'" />
+    <arg name="world" default="$(find igvc2023)/world/course.world"/>
+
+    <!-- Initial pose of robot in the world--> 
+    <arg name="x"     default="5"/>
+    <arg name="y"     default="-16.4"/>
+    <arg name="z"     default="0.1"/>
+    <arg name="roll"  default="0"/>
+    <arg name="pitch" default="0"/>
+    <arg name="yaw"   default="185.4"/>
+
+
+    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name"   value="$(arg world)"/>
+        <arg name="paused"       value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui"          value="true"/>
+        <arg name="headless"     value="false"/>
+        <arg name="debug"        value="false"/>
+    </include>
+
+
+    <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+    <param name="robot_description" command="$(arg model)"/>
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" output="screen"
+     args="-urdf -model orange2022 -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+
+    <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
+    <include file="$(find igvc2023)/launch/segmentation.launch"/>
+
+
+
+    <!-- Sensor fusion -->
+    <node name="combine_dr_measurements" pkg="robot_pose_ekf" type="robot_pose_ekf" if="$(arg use_ekf)">
+        <remap from="imu_data" to="imu"/>
+        <param name="freq"                 value="30.0"/>
+        <param name="sensor_timeout"       value="1.0"/>
+        <param name="publish_tf"           value="true"/>
+        <param name="odom_used"            value="true"/>
+        <param name="imu_used"             value="true"/>
+        <param name="vo_used"              value="false"/>
+        <param name="output_frame"         value="odom"/>
+        <param name="base_footprint_frame" value="base_footprint"/>
+    </node>
+
+
+    <!-- Convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+    
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="true"/>
+        <param name="rate"    value="50"/>
+    </node>
+    
+</launch>
