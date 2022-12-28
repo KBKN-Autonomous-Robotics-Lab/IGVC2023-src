@@ -10,7 +10,7 @@ Pillow
 apt-get install --no-install-recommends -y \
 libpcap-dev \
 libsdl-image1.2-dev \
-libsdl-dev \
+libsdl1.2-dev \
 
 #Another dependency
 rosdep install --default-yes --from-paths . --ignore-src -r
