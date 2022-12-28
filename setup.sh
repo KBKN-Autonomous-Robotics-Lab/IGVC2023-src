@@ -17,4 +17,4 @@ rosdep install --default-yes --from-paths . --ignore-src -r
 
 #build
 apt-get update && apt-get upgrade -y
-catkin build
+catkin build -j2
