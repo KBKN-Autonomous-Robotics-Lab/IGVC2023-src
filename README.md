@@ -1,6 +1,7 @@
 # IGVC2023-src
 This package provides for the development of an orange robot to compete in igvc2023.
 ## Setup
+⚠️ The following command deletes everything in `src`
 ```
 cd ~/catkin_ws/src
 sudo rm -rf *
