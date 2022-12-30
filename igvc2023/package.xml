@@ -26,6 +26,7 @@
   <exec_depend>waypoint_nav</exec_depend>
   <exec_depend>multi_map_manager</exec_depend>
   <exec_depend>rviz</exec_depend>
+  <exec_depend>velodyne_gazebo_plugins</exec_depend>
   <export>
     <gazebo_ros gazebo_media_path="${prefix}/world"/>
     <gazebo_ros gazebo_model_path="${prefix}/models"/>
