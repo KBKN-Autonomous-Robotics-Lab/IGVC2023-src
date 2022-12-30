@@ -7,27 +7,16 @@ project(igvc2023)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED
-  roscpp
-  rospy
-  std_msgs
-  geometry_msgs
-  move_base_msgs
-  actionlib_msgs
-  sensor_msgs
-  tf2_sensor_msgs
-  move_base
-  actionlib
-  hardware_interface
-  controller_manager
-  message_filters
-  nodelet
-  std_srvs
-  tf
-  tf2
-  tf2_ros
-)
+find_package(catkin REQUIRED)
 
+## System dependencies are found with CMake's conventions
+# find_package(Boost REQUIRED COMPONENTS system)
+
+
+## Uncomment this if the package has a setup.py. This macro ensures
+## modules and global scripts declared therein get installed
+## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+# catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -110,9 +99,10 @@ find_package(catkin REQUIRED
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#   INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp std_msgs message_filters nodelet sensor_msgs tf2 tf2_ros tf2_sensor_msgs
-  LIBRARIES ${PROJECT_NAME}
+#  INCLUDE_DIRS include
+#  LIBRARIES orange_mapping
+#  CATKIN_DEPENDS other_catkin_pkg
+#  DEPENDS system_lib
 )
 
 ###########
