@@ -3,7 +3,7 @@
     <arg name="use_ekf" default="true"/>
     
     <!-- The robot URDF model and world file -->
-    <arg name="model" default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange2022.xacro'" />
+    <arg name="model" default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange.xacro'" />
     <arg name="world" default="$(find igvc2023)/world/course_v2.world"/>
 
     <!-- Initial pose of robot in the world--> 
