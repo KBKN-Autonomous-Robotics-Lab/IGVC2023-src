@@ -7,12 +7,12 @@
     <arg name="world" default="$(find igvc2023)/world/course_v2.world"/>
 
     <!-- Initial pose of robot in the world--> 
-    <arg name="x"     default="0"/>
-    <arg name="y"     default="0"/>
+    <arg name="x"     default="6"/>
+    <arg name="y"     default="-16"/>
     <arg name="z"     default="0.1"/>
     <arg name="roll"  default="0"/>
     <arg name="pitch" default="0"/>
-    <arg name="yaw"   default="0"/>
+    <arg name="yaw"   default="3.2"/>
 
 
     <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
