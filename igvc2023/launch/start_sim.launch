@@ -8,11 +8,11 @@
 
     <!-- Initial pose of robot in the world--> 
     <arg name="x"     default="0"/>
-    <arg name="y"     default="0"/>
+    <arg name="y"     default="-16.5"/>
     <arg name="z"     default="0.1"/>
     <arg name="roll"  default="0"/>
     <arg name="pitch" default="0"/>
-    <arg name="yaw"   default="0"/>
+    <arg name="yaw"   default="3.14"/>
 
 
     <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
@@ -37,18 +37,11 @@
 
 
     <!-- Sensor fusion -->
-    <node name="combine_dr_measurements" pkg="robot_pose_ekf" type="robot_pose_ekf" if="$(arg use_ekf)">
-        <remap from="imu_data" to="imu"/>
-        <param name="freq"                 value="30.0"/>
-        <param name="sensor_timeout"       value="1.0"/>
-        <param name="publish_tf"           value="true"/>
-        <param name="odom_used"            value="true"/>
-        <param name="imu_used"             value="true"/>
-        <param name="vo_used"              value="false"/>
-        <param name="output_frame"         value="odom"/>
-        <param name="base_footprint_frame" value="base_footprint"/>
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find igvc2023)/config/model1.yaml" />
+        <remap from="odom0" to="/odom" />
+        <remap from="imu1" to="imu" />
     </node>
-
 
     <!-- Convert joint states to TF transforms for rviz, etc -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
