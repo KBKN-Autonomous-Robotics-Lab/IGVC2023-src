@@ -4,7 +4,7 @@
   <arg name="map_file"       default="$(find igvc2023)/maps/nakaniwa/mymap_nakaniwa_sim"/>
   <arg name="waypoints_file" default="$(find igvc2023)/config/waypoints/nakaniwa/waypoints_nakaniwa_sim.yaml"/> 
   <arg name="init_pos_file"  default="$(find igvc2023)/config/initial_pose.yaml"/>
-  <arg name="odom_topic"     default="combined_odom"/>
+  <arg name="odom_topic"     default="/odometry/filtered"/>
   <arg name="mb_cmd_vel"     default="/move_base/cmd_vel"/>
   <arg name="wp_cmd_vel"     default="/cmd_vel"/>
 

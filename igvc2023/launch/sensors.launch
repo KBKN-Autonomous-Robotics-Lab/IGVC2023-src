@@ -78,17 +78,10 @@
     
     
     <!-- Sensor fusion -->
-    <node name="combine_dr_measurements" pkg="robot_pose_ekf" type="robot_pose_ekf" if="$(arg use_ekf)">
-        <remap from="odom"     to="/odom"/>
-        <remap from="imu_data" to="imu"/>
-        <param name="freq"                  value="30.0"/>
-        <param name="sensor_timeout"        value="1.0"/>
-        <param name="publish_tf"            value="true"/>
-        <param name="odom_used"             value="true"/>
-        <param name="imu_used"              value="true"/>
-        <param name="vo_used"               value="false"/>
-        <param name="output_frame"          value="odom"/>
-        <param name="base_footprint_frame"  value="base_footprint"/>
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find igvc2023)/config/ekf.yaml" />
+        <remap from="odom0" to="/odom" />
+        <remap from="imu0" to="/imu" />
     </node>
     
 </launch>
