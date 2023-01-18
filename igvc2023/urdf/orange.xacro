@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- Revolute-Revolute Manipulator -->
-<robot name="orange2022" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="orange" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!-- Constants for robot dimensions -->
   <xacro:property name="PI" value="3.1415926535897931"/>
@@ -18,7 +18,7 @@
   </xacro:macro>
 
   <!-- Import gazebo reference -->
-  <xacro:include filename="$(find igvc2023)/urdf/orange2022.gazebo"/>
+  <xacro:include filename="$(find igvc2023)/urdf/orange.gazebo"/>
   
   <!-- Import 2D LiDAR model -->
   <xacro:include filename="$(find igvc2023)/urdf/sensors/hokuyo.urdf.xacro"/>

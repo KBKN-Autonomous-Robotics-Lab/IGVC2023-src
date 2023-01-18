@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- Arguments -->
-    <arg name="model"            default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange2022.xacro'" />
+    <arg name="model"            default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange.xacro'" />
     <arg name="calibration"      default="$(find igvc2023)/params/VLP16db.yaml"/>
     <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
     <arg name="imu_dev"          default="/dev/sensors/imu"/>

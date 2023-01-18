@@ -3,7 +3,7 @@
     <arg name="use_ekf" default="true"/>
     
     <!-- The robot URDF model and world file -->
-    <arg name="model" default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange2022.xacro'" />
+    <arg name="model" default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange.xacro'" />
     <arg name="world" default="$(find igvc2023)/world/course_v2.world"/>
 
     <!-- Initial pose of robot in the world--> 
@@ -29,7 +29,7 @@
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
     <param name="robot_description" command="$(arg model)"/>
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" output="screen"
-     args="-urdf -model orange2022 -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+     args="-urdf -model orange -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
 
     <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
     <include file="$(find igvc2023)/launch/segmentation.launch"/>
