@@ -17,7 +17,6 @@
   <exec_depend>joint_state_publisher</exec_depend>
   <exec_depend>urg_node</exec_depend>
   <exec_depend>nodelet</exec_depend>
-  <exec_depend>robot_pose_ekf</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>teleop_twist_joy</exec_depend>
   <exec_depend>map_server</exec_depend>
@@ -27,6 +26,7 @@
   <exec_depend>multi_map_manager</exec_depend>
   <exec_depend>rviz</exec_depend>
   <exec_depend>velodyne_gazebo_plugins</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
   <export>
     <gazebo_ros gazebo_media_path="${prefix}/world"/>
     <gazebo_ros gazebo_model_path="${prefix}/models"/>
