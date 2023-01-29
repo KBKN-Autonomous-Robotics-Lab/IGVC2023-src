@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot name="sensor_gps" xmlns:xacro="http://ros.org/wiki/xacro"
+                         xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+                         xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
+
+  <xacro:macro name="sensor_gps" params="name parent *origin size">
+    <joint name="${name}_joint" type="fixed">
+        <xacro:insert_block name="origin"/>
+        <axis xyz="1 0 0"/>
+        <parent link="${parent}"/>
+        <child link="${name}_link"/>
+    </joint>
+
+    <link name="${name}_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://fourth_robot_description/meshes/DAE/sensors/gps/gps.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://fourth_robot_description/meshes/STL/sensors/gps/gps.stl"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <cylinder_inertial mass="0.25" radius="0.065" length="0.055"/>
+      </inertial>
+    </link>
+    <gazebo reference= "${name}_link">
+      <plugin name="gps" filename="libhector_gazebo_ros_gps.so">  
+          <updateRate>10.0</updateRate>  
+          <topicName>gps/fix</topicName>  
+          <gaussianNoise>0.0 0.0 0.0</gaussianNoise>  
+          <offset>0 0 0</offset>  
+          <velocityGaussianNoise>0 0 0</velocityGaussianNoise>  
+          <frameId>gps_link</frameId>  
+      </plugin>  
+     <material>Gazebo/White</material>
+    </gazebo> 
+  </xacro:macro>
+</robot>
