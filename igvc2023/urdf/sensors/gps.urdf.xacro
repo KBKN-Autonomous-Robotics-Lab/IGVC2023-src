@@ -30,7 +30,7 @@
     <gazebo>
       <plugin name="gps" filename="libhector_gazebo_ros_gps.so">  
           <updateRate>10.0</updateRate>  
-          <topicName>gps/fix</topicName>  
+          <topicName>/fix</topicName>  
           <gaussianNoise>0.0 0.0 0.0</gaussianNoise>  
           <offset>0 0 0</offset>  
           <velocityGaussianNoise>0 0 0</velocityGaussianNoise>  

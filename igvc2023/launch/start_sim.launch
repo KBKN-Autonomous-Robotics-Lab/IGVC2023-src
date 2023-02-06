@@ -40,8 +40,17 @@
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find igvc2023)/config/ekf.yaml" />
         <remap from="odom0" to="/odom" />
+        <remap from="odom1" to="/odometry/gps" />
         <remap from="imu0" to="/imu" />
     </node>
+    
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find igvc2023)/config/navsatekf.yaml" />
+        <remap from="/imu/data" to="/imu" />
+        <remap from="/gps/fix" to="/fix" />
+        <remap from="/odometry/filtered" to="/odometry/filtered"  />
+    </node>
+    
     <!-- Convert joint states to TF transforms for rviz, etc -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
     
