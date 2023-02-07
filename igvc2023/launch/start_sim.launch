@@ -35,7 +35,6 @@
     <include file="$(find igvc2023)/launch/segmentation.launch"/>
 
 
-
     <!-- Sensor fusion -->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find igvc2023)/config/ekf.yaml" />
