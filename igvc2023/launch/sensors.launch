@@ -5,6 +5,7 @@
     <arg name="calibration"      default="$(find igvc2023)/params/VLP16db.yaml"/>
     <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
+    <arg name="gps_dev"          default="/dev/ttyACM0"/>
     <arg name="use_ekf"          default="true"/>
     
     
@@ -93,7 +94,7 @@
     </node>
     
     <node pkg="nmea_navsat_driver" type="nmea_serial_driver" name="navsat" respawn="true">
-        <param name="port" value="/dev/ttyACM0"/>
+        <param name="port" value="$(arg gps_dev)"/>
         <param name="baud" value="19200"/>
     </node>
     
