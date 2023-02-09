@@ -5,6 +5,7 @@
     <arg name="calibration"      default="$(find igvc2023)/params/VLP16db.yaml"/>
     <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
+    <arg name="gps_dev"          default="/dev/ttyACM0"/>
     <arg name="cmd_vel"          default="/cmd_vel"/>
     <arg name="motor_driver_dev" default="/dev/ZLAC8015D"/>
     <arg name="estop_dev"        default="/dev/E-Stop"/>
@@ -17,6 +18,7 @@
         <arg name="calibration"      value="$(arg calibration)"/>
         <arg name="scan_dev"         value="$(arg scan_dev)"/>
         <arg name="imu_dev"          value="$(arg imu_dev)"/>
+        <arg name="gps_dev"          value="$(arg gps_dev)"/>
     </include>
     
     
