@@ -47,7 +47,6 @@
         <rosparam command="load" file="$(find igvc2023)/config/navsatekf.yaml" />
         <remap from="/imu/data" to="/imu" />
         <remap from="/gps/fix" to="/fix" />
-        <remap from="/odometry/filtered" to="/odometry/filtered"  />
     </node>
     
     <!-- Convert joint states to TF transforms for rviz, etc -->
