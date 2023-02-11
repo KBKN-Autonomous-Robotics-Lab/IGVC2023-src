@@ -47,7 +47,7 @@
   <!-- Import gps model -->
   <xacro:include filename="$(find igvc2023)/urdf/sensors/gps.urdf.xacro"/>
   <xacro:sensor_gps name="gps" parent="base_link">
-    <origin xyz="0 0.2 1" rpy="0 ${PI} 0"/>
+    <origin xyz="0 0 1" rpy="0 ${PI} 0"/>
   </xacro:sensor_gps>
   
   <!-- Base Footprint -->
