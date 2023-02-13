@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="is_sim" default="false"/>
+	<param name="sim" type="bool" value="$(arg is_sim)"/>
+	
+	<!--
+	<node pkg="cv_camera" type="cv_camera_node" name="cv_camera">
+		<param name="device_path" value="/dev/sensors/insta360_air"/>
+		<param name="image_width" value="3008"/>
+		<param name="image_height" value="1504"/>
+	</node>
+	-->
+	
+	<node pkg="line_detection" type="imInit_igvc2022.py" name="imInit_igvc2022" output="screen">
+	</node>
+	
+	<node pkg="line_detection" type="imRtheta_igvc2022" name="imRtheta_igvc2022" output="screen">
+	</node>
+	
+	<node pkg="line_detection" type="rtheta2scan_igvc2022" name="rtheta2scan_igvc2022" output="screen">
+	</node>
+	
+	<node pkg="rqt_gui" type="rqt_gui" name="reconfigure" args="-s reconfigure">
+	</node>
+</launch>
