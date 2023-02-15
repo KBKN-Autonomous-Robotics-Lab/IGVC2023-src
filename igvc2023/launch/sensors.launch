@@ -5,6 +5,7 @@
     <arg name="calibration"      default="$(find igvc2023)/params/VLP16db.yaml"/>
     <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
+    <arg name="gps_dev"          default="/dev/ttyACM0"/>
     <arg name="use_ekf"          default="true"/>
     
     
@@ -81,7 +82,19 @@
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find igvc2023)/config/ekf.yaml" />
         <remap from="odom0" to="/odom" />
+        <remap from="odom1" to="/odometry/gps" />
         <remap from="imu0" to="/imu" />
+    </node>
+    
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find igvc2023)/config/navsatekf.yaml" />
+        <remap from="/imu/data" to="/imu" />
+        <remap from="/gps/fix" to="/fix" />
+    </node>
+    
+    <node pkg="nmea_navsat_driver" type="nmea_serial_driver" name="navsat" respawn="true">
+        <param name="port" value="$(arg gps_dev)"/>
+        <param name="baud" value="19200"/>
     </node>
     
 </launch>
