@@ -13,7 +13,7 @@
 #include <tf/transform_listener.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <sensor_msgs/LaserScan.h>
-
+#include <std_msgs/Bool.h>
 #include <yaml-cpp/yaml.h>
 #include <waypoint_saver.h>  // include Waypoint class
 
@@ -101,6 +101,8 @@ public:
         max_vel_pub_ = nh.advertise<std_msgs::Float32>("max_vel", 5);
         wp_num_pub_ = nh.advertise<std_msgs::UInt16>("waypoint_num", 5);
         clear_costmaps_srv_ = nh.serviceClient<std_srvs::Empty>("/move_base/clear_costmaps");
+        navigation_start_pub = nh.advertise<std_msgs::Bool>("/navBool", 10); //Publisher for navBool
+        navigation_end_pub = nh.advertise<std_msgs::Bool>("/navBool", 10);
     }
 
 
@@ -580,10 +582,14 @@ public:
     void run()
     {
         ROS_INFO("Waiting for waypoint navigation to start.");
+        std_msgs::Bool navBool;
         int resend_goal;
         double start_nav_time, time;
         std_srvs::Empty empty;
         while(ros::ok()) {
+            navBool.data = true; //Publish "true" when navigation is started
+    	    navigation_start_pub.publish(navBool);
+            ROS_INFO("navBool:true published!");
             // has_activate_ is false, nothing to do
             if (!has_activate_) {
                 sleep();
@@ -604,6 +610,9 @@ public:
                     }
                     sleep();
                 }
+                navBool.data = false; //Publish "false" when navigation is ended
+    	        navigation_end_pub.publish(navBool);
+                ROS_INFO("navBool:false published!");
                 ROS_INFO("Final goal reached!!");
                 has_activate_ = false;
                 continue;
@@ -669,6 +678,9 @@ private:
     std::vector<geometry_msgs::Pose>::iterator init_waypoint_;
     std::vector<geometry_msgs::Pose>::iterator compare_waypoint_;
     //#############################################################
+    
+    ros::Publisher navigation_start_pub; //Publisher for navBool
+    ros::Publisher navigation_end_pub;
     
     std::vector<geometry_msgs::Pose>::iterator current_waypoint_;
     std::vector<geometry_msgs::Pose>::iterator finish_pose_;
