@@ -5,7 +5,11 @@
     <arg name="calibration"      default="$(find igvc2023)/params/VLP16db.yaml"/>
     <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
+    <arg name="camera_dev"       default="/dev/sensors/insta360_air"/>
+    <arg name="LED_dev"          default="/dev/sensors/LED"/>
     <arg name="gps_dev"          default="/dev/ttyACM0"/>
+    <arg name="gps1_dev"         default="/dev/ttyACM1"/>
+    <arg name="gps2_dev"         default="/dev/ttyACM2"/>
     <arg name="use_ekf"          default="true"/>
     
     
