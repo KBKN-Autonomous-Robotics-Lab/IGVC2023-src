@@ -587,11 +587,16 @@ public:
         double start_nav_time, time;
         std_srvs::Empty empty;
         while(ros::ok()) {
-            navBool.data = true; //Publish "true" when navigation is started
-    	    navigation_start_pub.publish(navBool);
-            ROS_INFO("navBool:true published!");
+            if(has_activate_ && ros::ok()){
+                navBool.data = true; //Publish "true" when navigation is started
+    	        navigation_start_pub.publish(navBool);
+                ROS_INFO("navBool:true published!");
+            }
             // has_activate_ is false, nothing to do
             if (!has_activate_) {
+                navBool.data = false; //Publish "false" when navigation is ended
+    	        navigation_end_pub.publish(navBool);
+                ROS_INFO("navBool:false published!");
                 sleep();
                 continue;
             }
@@ -610,9 +615,6 @@ public:
                     }
                     sleep();
                 }
-                navBool.data = false; //Publish "false" when navigation is ended
-    	        navigation_end_pub.publish(navBool);
-                ROS_INFO("navBool:false published!");
                 ROS_INFO("Final goal reached!!");
                 has_activate_ = false;
                 continue;
