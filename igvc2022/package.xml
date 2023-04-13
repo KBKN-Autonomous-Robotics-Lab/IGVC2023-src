@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>igvc2022</name>
+  <version>0.0.0</version>
+  <description>ROS package for quadruped robot PupBot Ver1</description>
+  <maintainer email="zip.lottestr@gmail.com">kbkn:Kimihiro Mori</maintainer>
+  <license>Apache 2.0</license>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>hardware_interface</build_depend>
+  <build_depend>controller_manager</build_depend>
+  <build_depend>controller_interface</build_depend>
+  <build_depend>diff_drive_controller</build_depend>
+  <build_depend>message_filters</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>tf2</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>tf2_sensor_msgs</build_depend>
+  <build_depend>move_base</build_depend>
+  <build_depend>move_base_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>actionlib_msgs</build_depend>
+  <build_depend>yaml-cpp</build_depend>
+  <build_depend>std_srvs</build_depend>
+  <build_depend>fulanghua_srvs</build_depend>
+  <build_depend>gazebo</build_depend>
+  
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>hardware_interface</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>controller_interface</exec_depend>
+  <exec_depend>diff_drive_controller</exec_depend>
+  <exec_depend>joint_state_controller</exec_depend>
+  <exec_depend>ypspur</exec_depend>
+  <exec_depend>urg_node</exec_depend>
+  <exec_depend>robot_pose_ekf</exec_depend>
+  <exec_depend>rosserial_python</exec_depend>
+  <exec_depend>message_filters</exec_depend>
+  <exec_depend>nodelet</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>tf2</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>tf2_sensor_msgs</exec_depend>
+  <exec_depend>move_base</exec_depend>
+  <exec_depend>move_base_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>actionlib</exec_depend>
+  <exec_depend>actionlib_msgs</exec_depend>
+  <exec_depend>yaml-cpp</exec_depend>
+  <exec_depend>ruamel.yaml</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>fulanghua_srvs</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  
+  <test_depend>roslint</test_depend>
+  
+  <export>
+    <nodelet plugin="${prefix}/nodelets.xml"/>
+    <gazebo_ros gazebo_media_path="${prefix}/world"/>
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+  </export>
+  
+</package>

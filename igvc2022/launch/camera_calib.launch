@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<launch>
+  <node pkg="cv_camera" type="cv_camera_node" name="cv_camera">
+    <param name="device_path" value="/dev/sensors/insta360_air"/>
+    <param name="image_width" value="1478"/>
+    <param name="image_height" value="736"/>
+  </node>
+  
+  <node pkg="igvc2022" type="camera_init.py" name="camera_init"/>
+  
+  <node pkg="camera_calibration" type="cameracalibrator.py" name="camera_calibrator" args="--size 8x6 --square 0.04">
+    <remap from="image" to="/ground_img"/>
+    <remap from="camera" to="/cv_camera"/>
+  </node>
+
+</launch>
+
+
+<!--
+
+>> roslaunch igvc2022 camera_calib.launch
+
+Calibrate your camera.
+Push "SAVE" button.
+Check the calibrated iamge.
+If if's ok, push "commit" button.
+
+>> cd ~/.ros/camera_info
+>> ls
+
+There is "camera.yaml" or any name else.
+Open the file with text editor.
+Use the parameters in the file to calibrate your camera.
+
+-->

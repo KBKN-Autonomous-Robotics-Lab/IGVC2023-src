@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<launch>
+	
+	<!-- The robot URDF model and world file -->
+	<arg name="model" default="$(find xacro)/xacro '$(find igvc2022)/urdf/igvc_robot.xacro'" />
+	<!--<arg name="world" default="$(find igvc2022)/world/course.world"/>-->
+	<arg name="world" default="$(find igvc2022)/world/course_v2.world"/>
+	
+	<!-- Initial pose of robot in the world--> 
+	<arg name="x" default="0"/>
+	<arg name="y" default="-16.5"/>
+	<arg name="z" default="0"/>
+	<arg name="roll" default="0"/>
+	<arg name="pitch" default="0"/>
+	<arg name="yaw" default="3.141592"/>
+	
+	<!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(arg world)"/>
+		<arg name="paused" value="false"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>
+		<arg name="debug" value="false"/>
+	</include>
+	
+	<!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+	<param name="robot_description" command="$(arg model)"/>
+	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+			args="-urdf -model igvc_robot -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+	
+	<node pkg="igvc2022" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+    <!--<remap from="cloud_in" to="velodyne_points"/>-->
+    <remap from="cloud_in" to="ground_segmentation/obstacle_cloud"/>
+    <rosparam>
+      target_frame: velodyne_link # Leave disabled to output scan in pointcloud frame
+      transform_tolerance: 0.01
+      min_height: -0.7 #-0.4
+      max_height: 1.5
+      angle_min: -2.3565
+      angle_max: 2.3565
+      angle_increment: 0.008711645
+      scan_time: 0.03333
+      range_min: 0.2
+      range_max: 100.0
+      use_inf: true
+
+      # Concurrency level, affects number of pointclouds queued for processing and number of threads used
+      # 0 : Detect number of cores
+      # 1 : Single threaded
+      # 2->inf : Parallelism level
+      concurrency_level: 1
+    </rosparam>
+  </node>
+  
+  
+	<node name="combine_dr_measurements" pkg="robot_pose_ekf" type="robot_pose_ekf">
+		<remap from="odom" to="igvc_robot/odom"/>
+		<remap from="imu_data" to="imu"/>
+		<param name="freq"						value="30.0"/>
+		<param name="sensor_timeout"			value="1.0"/>
+		<param name="publish_tf"				value="true"/>
+		<param name="odom_used"					value="true"/>
+		<param name="imu_used"					value="true"/>
+		<param name="vo_used"					value="false"/>
+		<param name="output_frame"				value="odom"/>
+		<param name="base_footprint_frame"	value="base_link"/>
+	</node>
+	
+	<!-- Load joint controller configurations from YAML file to parameter server -->
+	<rosparam file="$(find igvc2022)/config/igvc_robot_control_sim.yaml" command="load"/>
+
+	<!-- Node for loading the controllers -->
+	<!-- publish /igvc_robot_odom and /igvc_robot/cmd_vel -->
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="igvc_robot joint_state_controller"/>
+
+	<!-- Convert joint states to TF transforms for rviz, etc -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+	
+	<!-- Line detection node -->
+	<include file="$(find line_detection)/launch/igvc2022_line_detection.launch">
+		<arg name="is_sim" value="true"/>
+	</include>
+	
+	<!-- Ground segmentation -->
+  <node name="ground_segmentation" pkg="linefit_ground_segmentation_ros" type="ground_segmentation_node">
+    <rosparam command="load" file="$(find igvc2022)/params/segmentation_params.yaml"/>
+    <param name="input_topic" value="/velodyne_points" />
+    <param name="ground_output_topic" value="/ground_cloud" />
+    <param name="obstacle_output_topic" value="obstacle_cloud" />
+  </node>
+	
+</launch>
