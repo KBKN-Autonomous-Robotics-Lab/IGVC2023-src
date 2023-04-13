@@ -35,7 +35,7 @@
     <include file="$(find igvc2023)/launch/segmentation.launch"/>
 
   <include file="$(find line_detection)/launch/igvc2022_line_detection.launch">
-    <arg name="is_sim" value="false"/>
+    <arg name="is_sim" value="true"/>
   </include>
 
 
