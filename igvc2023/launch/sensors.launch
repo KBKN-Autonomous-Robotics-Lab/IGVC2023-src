@@ -81,6 +81,17 @@
     <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
     <include file="$(find igvc2023)/launch/segmentation.launch"/>
     
+    <!-- Start camera -->
+    <node pkg="cv_camera" type="cv_camera_node" name="cv_camera">
+       <param name="device_path" value="/dev/sensors/insta360_air"/>
+       <param name="image_width" value="1478"/>
+       <param name="image_height" value="736"/>
+    </node>
+
+    <!-- Line detection node -->
+    <include file="$(find line_detection)/launch/igvc2022_line_detection.launch">
+        <arg name="is_sim" value="false"/>
+    </include>
     
     <!-- Sensor fusion -->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">

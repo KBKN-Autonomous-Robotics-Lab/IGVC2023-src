@@ -7,7 +7,7 @@
         <param name="input_topic"           value="/velodyne_points"/>
         <param name="ground_output_topic"   value="/ground_cloud"/>
         <param name="obstacle_output_topic" value="obstacle_cloud"/>
-    </node>-->
+    </node> -->
 
     <!-- Convert 3d pointcloud to 2d laserscan -->
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
