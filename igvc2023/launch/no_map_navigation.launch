@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="scan_topic" default="/scan"/>
+  <arg name="odom_topic" default="/odometry/filtered"/>
+  <arg name="cmd_vel" default="/move_base/cmd_vel"/>
+  <arg name="waypoints_file" default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_north.yaml"/>
+  <!--<arg name="waypoints_file" default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_south.yaml"/>-->
+
+  <!-- Node for LED contoroll -->
+  <node pkg="igvc2023" type="LED_control.py" name="LED_controller" output="screen"/>
+
+  <!-- The gmapping package provides laser-based SLAM (Simultaneous Localization and Mapping), 
+       as a ROS node called slam_gmapping -->
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+    <remap from="scan" to="$(arg scan_topic)"/>
+    <rosparam file="$(find igvc2023)/params/gmapping_common_params.yaml" command="load"/>
+  </node>
+
+  <!-- This section depends on the navigation package -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <remap from="/odom"    to="$(arg odom_topic)"/>
+    <remap from="/cmd_vel" to="$(arg cmd_vel)"/>
+    <rosparam file="$(find igvc2023)/params/foot_print.yaml"                 command="load" ns="global_costmap"/>
+    <rosparam file="$(find igvc2023)/params/foot_print.yaml"                 command="load" ns="local_costmap"/>
+    <rosparam file="$(find igvc2023)/params/local_costmap_params.yaml"       command="load"/>
+    <rosparam file="$(find igvc2023)/params/global_costmap_params.yaml"      command="load"/>
+    <rosparam file="$(find igvc2023)/params/move_base_params.yaml"           command="load"/>
+    <rosparam file="$(find igvc2023)/params/base_global_planner_params.yaml" command="load"/>
+    <rosparam file="$(find igvc2023)/params/base_local_planner_params.yaml"  command="load"/>
+    <rosparam file="$(find igvc2023)/params/recovery_params.yaml"            command="load"/>
+  </node>
+
+  <!-- Node for rviz visualization -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find igvc2023)/rviz/y.rviz"/>
+
+  <!-- Node for reading waypoints from yaml file -->
+  <!-- <node name="waypoints_nav_igvc2023" pkg="igvc2023" type="waypoints_nav_igvc2023" output="screen">
+    <param name="filename" value="$(arg waypoints_file)"/>
+    <param name="dist_err" value="1.0"/>
+  </node> -->
+
+  <param name="waypoints_file" value="$(arg waypoints_file)"/>
+  <!--<param name="node_flag" value="1"/>-->
+
+  <!-- Select node -->
+  <param name="node_array" value="121215"/>
+  <param name="node_index" value="1"/>
+
+  <node pkg="igvc2023" type="local_goal_setter2.py" name="local_goal_setter" output="screen"/>
+  <node pkg="igvc2023" type="gps_goal_setter2.py" name="gps_goal_setter" output="screen"/>
+  <!--<node pkg="igvc2023" type="ramp_detect.py" name="ramp_detector" output="screen"/>-->
+
+  <node pkg="igvc2023" type="marker_setter.py" name="marker_setter"/>
+
+</launch>
