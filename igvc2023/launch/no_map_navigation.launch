@@ -33,7 +33,7 @@
   </node>
 
   <!-- Node for rviz visualization -->
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find igvc2023)/rviz/y.rviz"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find igvc2023)/rviz_cfg/y.rviz"/>
 
   <!-- Node for reading waypoints from yaml file -->
   <!-- <node name="waypoints_nav_igvc2023" pkg="igvc2023" type="waypoints_nav_igvc2023" output="screen">
