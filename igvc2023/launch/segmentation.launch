@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 
 <launch>
-    <!-- Ground segmentation 
+    <!-- Ground segmentation -->
     <node name="ground_segmentation" pkg="linefit_ground_segmentation_ros" type="ground_segmentation_node">
         <rosparam command="load" file="$(find igvc2023)/params/segmentation_params.yaml"/>
         <param name="input_topic"           value="/velodyne_points"/>
         <param name="ground_output_topic"   value="/ground_cloud"/>
         <param name="obstacle_output_topic" value="obstacle_cloud"/>
-    </node>-->
+    </node>
 
     <!-- Convert 3d pointcloud to 2d laserscan -->
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
-        <remap from="cloud_in" to="velodyne_points"/>
+        <remap from="cloud_in" to="obstacle_cloud"/>
         <!--<remap from="cloud_in" to="ground_segmentation/obstacle_cloud"/>-->
         <remap from="scan"     to="velodyne_scan"/>
         <rosparam command="load" file="$(find igvc2023)/params/pointcloud_to_laserscan_params.yaml"/>
