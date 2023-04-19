@@ -21,7 +21,7 @@ class GPSCurrentData:
     self.country_id = 0
     # south, west, north, east. Each (latitude, longitude)
     # file directory for reading parameters
-    self.param_file = "/home/ubuntu/catkin_ws/src/igvc2022/config/gps_parameters.yaml"
+    self.param_file = "/home/ubuntu/catkin_ws/src/igvc2023/config/gps_parameters.yaml"
 
   '''
   ++++++++++++++++++++++++++++++++++
