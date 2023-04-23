@@ -7,9 +7,9 @@
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
     <arg name="camera_dev"       default="/dev/sensors/insta360_air"/>
     <arg name="LED_dev"          default="/dev/sensors/LED"/>
-    <arg name="gps_dev"          default="/dev/ttyACM0"/>
-    <arg name="gps1_dev"         default="/dev/ttyACM1"/>
-    <arg name="gps2_dev"         default="/dev/ttyACM2"/>
+    <arg name="CLAS_dev"         default="/dev/sensors/CLAS"/>
+    <arg name="GNSSbase_dev"     default="/dev/sensors/GNSSbase"/>
+    <arg name="GNSSrover_dev"    default="/dev/sensors/GNSSrover"/>
     <arg name="cmd_vel"          default="/cmd_vel"/>
     <arg name="motor_driver_dev" default="/dev/ZLAC8015D"/>
     <arg name="estop_dev"        default="/dev/E-Stop"/>
@@ -24,9 +24,9 @@
         <arg name="imu_dev"          value="$(arg imu_dev)"/>
         <arg name="camera_dev"       value="$(arg camera_dev)"/>
         <arg name="LED_dev"          value="$(arg LED_dev)"/>
-        <arg name="gps_dev"          value="$(arg gps_dev)"/>
-        <arg name="gps1_dev"         value="$(arg gps1_dev)"/>
-        <arg name="gps2_dev"         value="$(arg gps2_dev)"/>
+        <arg name="CLAS_dev"         value="$(arg CLAS_dev)"/>
+        <arg name="GNSSbase_dev"     value="$(arg GNSSbase_dev)"/>
+        <arg name="GNSSrover_dev"    value="$(arg GNSSrover_dev)"/>
     </include>
     
     

@@ -7,9 +7,9 @@
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
     <arg name="camera_dev"       default="/dev/sensors/insta360_air"/>
     <arg name="LED_dev"          default="/dev/sensors/LED"/>
-    <arg name="gps_dev"          default="/dev/ttyACM0"/>
-    <arg name="gps1_dev"         default="/dev/ttyACM1"/>
-    <arg name="gps2_dev"         default="/dev/ttyACM2"/>
+    <arg name="CLAS_dev"         default="/dev/sensors/CLAS"/>
+    <arg name="GNSSbase_dev"     default="/dev/sensors/GNSSbase"/>
+    <arg name="GNSSrover_dev"    default="/dev/sensors/GNSSrover"/>
     <arg name="use_ekf"          default="true"/>
     
     
@@ -108,7 +108,7 @@
     </node>
     
     <node pkg="nmea_navsat_driver" type="nmea_serial_driver" name="navsat" respawn="true">
-        <param name="port" value="$(arg gps_dev)"/>
+        <param name="port" value="$(arg GNSSbase_dev)"/>
         <param name="baud" value="19200"/>
     </node>
     
