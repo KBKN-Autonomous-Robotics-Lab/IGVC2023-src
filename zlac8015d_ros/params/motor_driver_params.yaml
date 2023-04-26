@@ -12,7 +12,7 @@ cpr: 16385
 ###############################
 
 # Distance between Wheels
-wheels_base_width: 0.608 # meter 0.5668
+wheels_base_width: 0.58 # meter 0.5668
 # Motor automatically stops if no topics are received for a certain period of time
 callback_timeout: 1.0 # seconds
 
