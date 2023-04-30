@@ -28,8 +28,8 @@
 #ifndef PF_H
 #define PF_H
 
-#include "pf_vector.h"
 #include "pf_kdtree.h"
+#include "pf_vector.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,34 +42,30 @@ struct _pf_sample_set_t;
 
 // Function prototype for the initialization model; generates a sample pose from
 // an appropriate distribution.
-typedef pf_vector_t (*pf_init_model_fn_t) (void *init_data);
+typedef pf_vector_t (*pf_init_model_fn_t)(void *init_data);
 
 // Function prototype for the action model; generates a sample pose from
 // an appropriate distribution
-typedef void (*pf_action_model_fn_t) (void *action_data, 
-                                      struct _pf_sample_set_t* set);
+typedef void (*pf_action_model_fn_t)(void *action_data,
+                                     struct _pf_sample_set_t *set);
 
 // Function prototype for the sensor model; determines the probability
 // for the given set of sample poses.
-typedef double (*pf_sensor_model_fn_t) (void *sensor_data, 
-                                        struct _pf_sample_set_t* set);
-
+typedef double (*pf_sensor_model_fn_t)(void *sensor_data,
+                                       struct _pf_sample_set_t *set);
 
 // Information for a single sample
-typedef struct
-{
+typedef struct {
   // Pose represented by this sample
   pf_vector_t pose;
 
   // Weight for this pose
   double weight;
-  
+
 } pf_sample_t;
 
-
 // Information for a cluster of samples
-typedef struct
-{
+typedef struct {
   // Number of samples
   int count;
 
@@ -82,13 +78,11 @@ typedef struct
 
   // Workspace
   double m[4], c[2][2];
-  
+
 } pf_cluster_t;
 
-
 // Information for a set of samples
-typedef struct _pf_sample_set_t
-{
+typedef struct _pf_sample_set_t {
   // The samples
   int sample_count;
   pf_sample_t *samples;
@@ -103,14 +97,12 @@ typedef struct _pf_sample_set_t
   // Filter statistics
   pf_vector_t mean;
   pf_matrix_t cov;
-  int converged; 
+  int converged;
   double n_effective;
 } pf_sample_set_t;
 
-
 // Information for an entire filter
-typedef struct _pf_t
-{
+typedef struct _pf_t {
   // This min and max number of samples
   int min_samples, max_samples;
 
@@ -119,7 +111,7 @@ typedef struct _pf_t
 
   // Resample limit cache
   int *limit_cache;
-  
+
   // The sample sets.  We keep two sets and use [current_set]
   // to identify the active set.
   int current_set;
@@ -135,18 +127,18 @@ typedef struct _pf_t
   pf_init_model_fn_t random_pose_fn;
   void *random_pose_data;
 
-  double dist_threshold; //distance threshold in each axis over which the pf is considered to not be converged
-  int converged; 
+  double dist_threshold; // distance threshold in each axis over which the pf is
+                         // considered to not be converged
+  int converged;
 
   // boolean parameter to enamble/diable selective resampling
   int selective_resampling;
 } pf_t;
 
-
 // Create a new filter
-pf_t *pf_alloc(int min_samples, int max_samples,
-               double alpha_slow, double alpha_fast,
-               pf_init_model_fn_t random_pose_fn, void *random_pose_data);
+pf_t *pf_alloc(int min_samples, int max_samples, double alpha_slow,
+               double alpha_fast, pf_init_model_fn_t random_pose_fn,
+               void *random_pose_data);
 
 // Free an existing filter
 void pf_free(pf_t *pf);
@@ -158,10 +150,12 @@ void pf_init(pf_t *pf, pf_vector_t mean, pf_matrix_t cov);
 void pf_init_model(pf_t *pf, pf_init_model_fn_t init_fn, void *init_data);
 
 // Update the filter with some new action
-void pf_update_action(pf_t *pf, pf_action_model_fn_t action_fn, void *action_data);
+void pf_update_action(pf_t *pf, pf_action_model_fn_t action_fn,
+                      void *action_data);
 
 // Update the filter with some new sensor observation
-void pf_update_sensor(pf_t *pf, pf_sensor_model_fn_t sensor_fn, void *sensor_data);
+void pf_update_sensor(pf_t *pf, pf_sensor_model_fn_t sensor_fn,
+                      void *sensor_data);
 
 // Resample the distribution
 void pf_update_resample(pf_t *pf);
@@ -180,7 +174,6 @@ int pf_get_cluster_stats(pf_t *pf, int cluster, double *weight,
 // Re-compute the cluster statistics for a sample set
 void pf_cluster_stats(pf_t *pf, pf_sample_set_t *set);
 
-
 // Display the sample set
 void pf_draw_samples(pf_t *pf, struct _rtk_fig_t *fig, int max_samples);
 
@@ -193,18 +186,17 @@ void pf_draw_cep_stats(pf_t *pf, struct _rtk_fig_t *fig);
 // Draw the cluster statistics
 void pf_draw_cluster_stats(pf_t *pf, struct _rtk_fig_t *fig);
 
-//calculate if the particle filter has converged - 
-//and sets the converged flag in the current set and the pf 
+// calculate if the particle filter has converged -
+// and sets the converged flag in the current set and the pf
 int pf_update_converged(pf_t *pf);
 
-//sets the current set and pf converged values to zero
+// sets the current set and pf converged values to zero
 void pf_init_converged(pf_t *pf);
 
-void pf_copy_set(pf_sample_set_t* set_a, pf_sample_set_t* set_b);
+void pf_copy_set(pf_sample_set_t *set_a, pf_sample_set_t *set_b);
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif

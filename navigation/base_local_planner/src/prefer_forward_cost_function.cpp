@@ -11,7 +11,6 @@
 
 namespace base_local_planner {
 
-
 double PreferForwardCostFunction::scoreTrajectory(Trajectory &traj) {
   // backward motions bad on a robot without backward sensors
   if (traj.xv_ < 0.0) {

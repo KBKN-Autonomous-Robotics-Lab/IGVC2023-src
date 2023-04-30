@@ -49,15 +49,14 @@ namespace base_local_planner {
  * more than you'd like on its way to a goal. This class provides a way
  * to assign a penalty purely to rotational velocities.
  */
-class TwirlingCostFunction: public base_local_planner::TrajectoryCostFunction {
+class TwirlingCostFunction : public base_local_planner::TrajectoryCostFunction {
 public:
-
   TwirlingCostFunction() {}
   ~TwirlingCostFunction() {}
 
   double scoreTrajectory(Trajectory &traj);
 
-  bool prepare() {return true;};
+  bool prepare() { return true; };
 };
 
 } /* namespace base_local_planner */

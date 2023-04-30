@@ -15,12 +15,11 @@ namespace base_local_planner {
 
 class TrajectoryGeneratorTest : public testing::Test {
 public:
-	SimpleTrajectoryGenerator tg;
+  SimpleTrajectoryGenerator tg;
 
-  TrajectoryGeneratorTest() {
-  }
+  TrajectoryGeneratorTest() {}
 
-  virtual void TestBody(){}
+  virtual void TestBody() {}
 };
-  
-}
+
+} // namespace base_local_planner

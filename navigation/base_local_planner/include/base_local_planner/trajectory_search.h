@@ -44,7 +44,8 @@ namespace base_local_planner {
 
 /**
  * @class TrajectorySearch
- * @brief Interface for modules finding a trajectory to use for navigation commands next
+ * @brief Interface for modules finding a trajectory to use for navigation
+ * commands next
  */
 class TrajectorySearch {
 public:
@@ -54,18 +55,18 @@ public:
    * constraints of the particular search.
    *
    * @param traj The container to write the result to
-   * @param all_explored pass NULL or a container to collect all trajectories for debugging (has a penalty)
+   * @param all_explored pass NULL or a container to collect all trajectories
+   * for debugging (has a penalty)
    */
-  virtual bool findBestTrajectory(Trajectory& traj, std::vector<Trajectory>* all_explored) = 0;
+  virtual bool findBestTrajectory(Trajectory &traj,
+                                  std::vector<Trajectory> *all_explored) = 0;
 
   virtual ~TrajectorySearch() {}
 
 protected:
   TrajectorySearch() {}
-
 };
 
-
-}
+} // namespace base_local_planner
 
 #endif /* TRAJECTORY_SEARCH_H_ */

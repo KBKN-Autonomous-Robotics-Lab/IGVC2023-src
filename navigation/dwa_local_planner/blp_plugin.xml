@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <library path="lib/libdwa_local_planner">
   <class name="dwa_local_planner/DWAPlannerROS" type="dwa_local_planner::DWAPlannerROS" base_class_type="nav_core::BaseLocalPlanner">
     <description>

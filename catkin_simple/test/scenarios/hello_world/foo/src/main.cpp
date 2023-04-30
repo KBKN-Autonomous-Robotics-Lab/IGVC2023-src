@@ -2,8 +2,8 @@
 #include <baz/world.h>
 
 int main(void) {
-    hello();
-    world();
+  hello();
+  world();
 
-    return 0;
+  return 0;
 }

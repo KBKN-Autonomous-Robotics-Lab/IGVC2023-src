@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <library path="lib/libclear_costmap_recovery">
   <class name="clear_costmap_recovery/ClearCostmapRecovery" type="clear_costmap_recovery::ClearCostmapRecovery" base_class_type="nav_core::RecoveryBehavior">
     <description>

@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <library path="lib/librotate_recovery">
   <class name="rotate_recovery/RotateRecovery" type="rotate_recovery::RotateRecovery" base_class_type="nav_core::RecoveryBehavior">
     <description>

@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2013, Willow Garage, Inc.
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  *       notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above copyright
@@ -13,7 +13,7 @@
  *     * Neither the name of the Willow Garage, Inc. nor the names of its
  *       contributors may be used to endorse or promote products derived from
  *       this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -34,15 +34,14 @@
 
 #include <costmap_2d/costmap_2d.h>
 #include <costmap_2d/layered_costmap.h>
+#include <costmap_2d/observation_buffer.h>
 #include <costmap_2d/obstacle_layer.h>
 #include <costmap_2d/static_layer.h>
-#include <costmap_2d/observation_buffer.h>
 #include <costmap_2d/testing_helper.h>
-#include <set>
 #include <gtest/gtest.h>
+#include <set>
 
 using namespace costmap_2d;
-
 
 /**
  * Tests the reset method
@@ -57,10 +56,11 @@ TEST(costmap, testResetForStaticMap){
   }
 
   // Allocate the cost map, with a inflation to 3 cells all around
-  Costmap2D map(10, 10, RESOLUTION, 0.0, 0.0, 3, 3, 3, OBSTACLE_RANGE, MAX_Z, RAYTRACE_RANGE, 25, staticMap, THRESHOLD);
+  Costmap2D map(10, 10, RESOLUTION, 0.0, 0.0, 3, 3, 3, OBSTACLE_RANGE, MAX_Z,
+RAYTRACE_RANGE, 25, staticMap, THRESHOLD);
 
-  // Populate the cost map with a wall around the perimeter. Free space should clear out the room.
-  pcl::PointCloud<pcl::PointXYZ> cloud;
+  // Populate the cost map with a wall around the perimeter. Free space should
+clear out the room. pcl::PointCloud<pcl::PointXYZ> cloud;
   cloud.points.resize(40);
 
   // Left wall
@@ -103,7 +103,8 @@ TEST(costmap, testResetForStaticMap){
   // Update the cost map for this observation
   map.updateWorld(wx, wy, obsBuf, obsBuf);
 
-  // Verify that we now have only 36 cells with lethal cost, thus provong that we have correctly cleared
+  // Verify that we now have only 36 cells with lethal cost, thus provong that
+we have correctly cleared
   // free space
   int hitCount = 0;
   for(unsigned int i=0; i < 10; ++i){
@@ -125,8 +126,8 @@ TEST(costmap, testResetForStaticMap){
   }
   ASSERT_EQ(hitCount, 64);
 
-  // Now if we reset the cost map, we should have our map go back to being completely occupied
-  map.resetMapOutsideWindow(wx, wy, 0.0, 0.0);
+  // Now if we reset the cost map, we should have our map go back to being
+completely occupied map.resetMapOutsideWindow(wx, wy, 0.0, 0.0);
 
   //We should now go back to everything being occupied
   hitCount = 0;
@@ -142,8 +143,8 @@ TEST(costmap, testResetForStaticMap){
 
 /** Test for copying a window of a costmap *
 TEST(costmap, testWindowCopy){
-  Costmap2D map(GRID_WIDTH, GRID_HEIGHT, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS,
-      10.0, MAX_Z, 10.0, 25, MAP_10_BY_10, THRESHOLD);
+  Costmap2D map(GRID_WIDTH, GRID_HEIGHT, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS,
+ROBOT_RADIUS, ROBOT_RADIUS, 10.0, MAX_Z, 10.0, 25, MAP_10_BY_10, THRESHOLD);
 
   /*
   for(unsigned int i = 0; i < 10; ++i){
@@ -185,11 +186,12 @@ TEST(costmap, testWindowCopy){
 
 //test for updating costmaps with static data
 TEST(costmap, testFullyContainedStaticMapUpdate){
-  Costmap2D map(5, 5, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS,
-      10.0, MAX_Z, 10.0, 25, MAP_5_BY_5, THRESHOLD);
+  Costmap2D map(5, 5, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS,
+ROBOT_RADIUS, 10.0, MAX_Z, 10.0, 25, MAP_5_BY_5, THRESHOLD);
 
-  Costmap2D static_map(GRID_WIDTH, GRID_HEIGHT, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS,
-      10.0, MAX_Z, 10.0, 25, MAP_10_BY_10, THRESHOLD);
+  Costmap2D static_map(GRID_WIDTH, GRID_HEIGHT, RESOLUTION, 0.0, 0.0,
+ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS, 10.0, MAX_Z, 10.0, 25, MAP_10_BY_10,
+THRESHOLD);
 
   map.updateStaticMapWindow(0, 0, 10, 10, MAP_10_BY_10);
 
@@ -201,11 +203,12 @@ TEST(costmap, testFullyContainedStaticMapUpdate){
 }
 
 TEST(costmap, testOverlapStaticMapUpdate){
-  Costmap2D map(5, 5, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS,
-      10.0, MAX_Z, 10.0, 25, MAP_5_BY_5, THRESHOLD);
+  Costmap2D map(5, 5, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS,
+ROBOT_RADIUS, 10.0, MAX_Z, 10.0, 25, MAP_5_BY_5, THRESHOLD);
 
-  Costmap2D static_map(GRID_WIDTH, GRID_HEIGHT, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS,
-      10.0, MAX_Z, 10.0, 25, MAP_10_BY_10, THRESHOLD);
+  Costmap2D static_map(GRID_WIDTH, GRID_HEIGHT, RESOLUTION, 0.0, 0.0,
+ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS, 10.0, MAX_Z, 10.0, 25, MAP_10_BY_10,
+THRESHOLD);
 
   map.updateStaticMapWindow(-10, -10, 10, 10, MAP_10_BY_10);
 
@@ -236,8 +239,8 @@ TEST(costmap, testOverlapStaticMapUpdate){
   fully_contained[5] = 254;
   fully_contained[9] = 254;
 
-  Costmap2D small_static_map(5, 5, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS,
-      10.0, MAX_Z, 10.0, 25, fully_contained, THRESHOLD);
+  Costmap2D small_static_map(5, 5, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS,
+ROBOT_RADIUS, ROBOT_RADIUS, 10.0, MAX_Z, 10.0, 25, fully_contained, THRESHOLD);
 
   map.updateStaticMapWindow(0, 0, 5, 5, fully_contained);
 
@@ -255,8 +258,8 @@ TEST(costmap, testOverlapStaticMapUpdate){
 
 
 TEST(costmap, testStaticMap){
-  Costmap2D map(GRID_WIDTH, GRID_HEIGHT, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS, ROBOT_RADIUS, ROBOT_RADIUS, 
-      10.0, MAX_Z, 10.0, 25, MAP_10_BY_10, THRESHOLD);
+  Costmap2D map(GRID_WIDTH, GRID_HEIGHT, RESOLUTION, 0.0, 0.0, ROBOT_RADIUS,
+ROBOT_RADIUS, ROBOT_RADIUS, 10.0, MAX_Z, 10.0, 25, MAP_10_BY_10, THRESHOLD);
 
   ASSERT_EQ(map.getSizeInCellsX(), (unsigned int)10);
   ASSERT_EQ(map.getSizeInCellsY(), (unsigned int)10);
@@ -275,9 +278,8 @@ TEST(costmap, testStaticMap){
   ASSERT_EQ(occupiedCells.size(), (unsigned int)20);
 
   // Iterate over all id's and verify that they are present according to their
-  for(std::vector<unsigned int>::const_iterator it = occupiedCells.begin(); it != occupiedCells.end(); ++it){
-    unsigned int ind = *it;
-    unsigned int x, y;
+  for(std::vector<unsigned int>::const_iterator it = occupiedCells.begin(); it
+!= occupiedCells.end(); ++it){ unsigned int ind = *it; unsigned int x, y;
     map.indexToCells(ind, x, y);
     ASSERT_EQ(find(occupiedCells, map.getIndex(x, y)), true);
     ASSERT_EQ(MAP_10_BY_10[ind] >= 100, true);
@@ -322,8 +324,7 @@ TEST(costmap, testStaticMap){
 
 //*/
 
-
-int main(int argc, char** argv){
+int main(int argc, char **argv) {
   ros::init(argc, argv, "obstacle_tests");
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

@@ -19,19 +19,17 @@ namespace base_local_planner {
 
 class LatchedStopRotateController {
 public:
-  LatchedStopRotateController(const std::string& name = "");
+  LatchedStopRotateController(const std::string &name = "");
   virtual ~LatchedStopRotateController();
 
-  bool isPositionReached(LocalPlannerUtil* planner_util,
-                         const geometry_msgs::PoseStamped& global_pose);
+  bool isPositionReached(LocalPlannerUtil *planner_util,
+                         const geometry_msgs::PoseStamped &global_pose);
 
-  bool isGoalReached(LocalPlannerUtil* planner_util,
-      OdometryHelperRos& odom_helper,
-      const geometry_msgs::PoseStamped& global_pose);
+  bool isGoalReached(LocalPlannerUtil *planner_util,
+                     OdometryHelperRos &odom_helper,
+                     const geometry_msgs::PoseStamped &global_pose);
 
-  void resetLatching() {
-    xy_tolerance_latch_ = false;
-  }
+  void resetLatching() { xy_tolerance_latch_ = false; }
 
   /**
    * @brief Stop the robot taking into account acceleration limits
@@ -40,14 +38,13 @@ public:
    * @param  cmd_vel The velocity commands to be filled
    * @return  True if a valid trajectory was found, false otherwise
    */
-  bool stopWithAccLimits(const geometry_msgs::PoseStamped& global_pose,
-      const geometry_msgs::PoseStamped& robot_vel,
-      geometry_msgs::Twist& cmd_vel,
-      Eigen::Vector3f acc_lim,
-      double sim_period,
-      boost::function<bool (Eigen::Vector3f pos,
-                            Eigen::Vector3f vel,
-                            Eigen::Vector3f vel_samples)> obstacle_check);
+  bool stopWithAccLimits(
+      const geometry_msgs::PoseStamped &global_pose,
+      const geometry_msgs::PoseStamped &robot_vel,
+      geometry_msgs::Twist &cmd_vel, Eigen::Vector3f acc_lim, double sim_period,
+      boost::function<bool(Eigen::Vector3f pos, Eigen::Vector3f vel,
+                           Eigen::Vector3f vel_samples)>
+          obstacle_check);
 
   /**
    * @brief Once a goal position is reached... rotate to the goal orientation
@@ -57,34 +54,29 @@ public:
    * @param  cmd_vel The velocity commands to be filled
    * @return  True if a valid trajectory was found, false otherwise
    */
-  bool rotateToGoal(const geometry_msgs::PoseStamped& global_pose,
-      const geometry_msgs::PoseStamped& robot_vel,
-      double goal_th,
-      geometry_msgs::Twist& cmd_vel,
-      Eigen::Vector3f acc_lim,
-      double sim_period,
-      base_local_planner::LocalPlannerLimits& limits,
-      boost::function<bool (Eigen::Vector3f pos,
-                            Eigen::Vector3f vel,
-                            Eigen::Vector3f vel_samples)> obstacle_check);
+  bool
+  rotateToGoal(const geometry_msgs::PoseStamped &global_pose,
+               const geometry_msgs::PoseStamped &robot_vel, double goal_th,
+               geometry_msgs::Twist &cmd_vel, Eigen::Vector3f acc_lim,
+               double sim_period,
+               base_local_planner::LocalPlannerLimits &limits,
+               boost::function<bool(Eigen::Vector3f pos, Eigen::Vector3f vel,
+                                    Eigen::Vector3f vel_samples)>
+                   obstacle_check);
 
-  bool computeVelocityCommandsStopRotate(geometry_msgs::Twist& cmd_vel,
-      Eigen::Vector3f acc_lim,
-      double sim_period,
-      LocalPlannerUtil* planner_util,
-      OdometryHelperRos& odom_helper,
-      const geometry_msgs::PoseStamped& global_pose,
-      boost::function<bool (Eigen::Vector3f pos,
-                            Eigen::Vector3f vel,
-                            Eigen::Vector3f vel_samples)> obstacle_check);
+  bool computeVelocityCommandsStopRotate(
+      geometry_msgs::Twist &cmd_vel, Eigen::Vector3f acc_lim, double sim_period,
+      LocalPlannerUtil *planner_util, OdometryHelperRos &odom_helper,
+      const geometry_msgs::PoseStamped &global_pose,
+      boost::function<bool(Eigen::Vector3f pos, Eigen::Vector3f vel,
+                           Eigen::Vector3f vel_samples)>
+          obstacle_check);
 
 private:
-  inline double sign(double x){
-    return x < 0.0 ? -1.0 : 1.0;
-  }
+  inline double sign(double x) { return x < 0.0 ? -1.0 : 1.0; }
 
-
-  // whether to latch at all, and whether in this turn we have already been in goal area
+  // whether to latch at all, and whether in this turn we have already been in
+  // goal area
   bool latch_xy_goal_tolerance_, xy_tolerance_latch_;
   bool rotating_to_goal_;
 };
