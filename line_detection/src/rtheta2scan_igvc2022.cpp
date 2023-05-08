@@ -74,8 +74,8 @@ class RthetaToLaserScan
 		camera_scan.intensities = {};
 		
 		vector<float> ranges(num_readings, numeric_limits<float>::infinity());
-		//float r2d = 0.063;  // multiplication value for convert to reasl destance from pixel distance
-		float r2d = 0.09;
+		float r2d = 0.063;  // multiplication value for convert to reasl destance from pixel distance
+		// float r2d = 0.09;
 		unsigned char *ptr;
 		unsigned char pixval;
 		for(int i=0; i<max_distance; i++) {
