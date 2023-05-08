@@ -397,8 +397,8 @@ void GridSlamProcessor::setMotionModelParameters
 		     << "update ld=" << m_linearDistance << " ad=" << m_angularDistance << endl;
       
       
-      cerr << "Laser Pose= " << reading.getPose().x << " " << reading.getPose().y 
-	   << " " << reading.getPose().theta << endl;
+    //   cerr << "Laser Pose= " << reading.getPose().x << " " << reading.getPose().y 
+	  //  << " " << reading.getPose().theta << endl;
       
       
       //this is for converting the reading in a scan-matcher feedable form
