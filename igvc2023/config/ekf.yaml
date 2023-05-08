@@ -4,9 +4,9 @@ frequency: 30
 sensor_timeout: 0.1
 silent_tf_failure: false
 two_d_mode: true
-transform_time_offset: 0.5
+transform_time_offset: 0.0 #0.5
 transform_timeout: 0.0
-print_diagnostics: ture
+print_diagnostics: true
 debug: false
 publish_tf: true
 publish_acceleration: false

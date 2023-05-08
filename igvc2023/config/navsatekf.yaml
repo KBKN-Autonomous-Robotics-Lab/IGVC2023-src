@@ -1,10 +1,10 @@
 frequency: 30 # 30
 delay: 0
 magnetic_declination_radians: 0 # 0
-yaw_offset: 0.0
+yaw_offset: 1.5707963
 zero_altitude: false # false
-broadcast_utm_transform: ture # false
-publish_filtered_gps: ture
+broadcast_utm_transform: true # false
+publish_filtered_gps: true
 use_odometry_yaw: false #false
-wait_for_datum: ture #true
+wait_for_datum: true
 datum: [0, 0, 0.0] #[55.944904, -3.186693, 0.0]
