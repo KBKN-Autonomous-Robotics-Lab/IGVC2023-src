@@ -5,7 +5,7 @@
     <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <commandTopic>cmd_vel</commandTopic>
       <odometryTopic>odom</odometryTopic>
-      <robotBaseFrame>base_link</robotBaseFrame>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
       <odometryFrame>odom</odometryFrame>
       <odometrySource>world</odometrySource>
 

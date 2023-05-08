@@ -42,7 +42,7 @@
     </include>
     <include>
     	<uri>model://barricade</uri>
-    	<pose>9.57 28.8819 0 0 0 0.30353</pose>
+    	<pose>9.42 29.0819 0 0 0 -0.30353</pose>
     	<name>Barricade 3</name>
     </include>
     <include>

@@ -33,7 +33,7 @@
       <sensor type="wideanglecamera" name="cv_camera">
         <update_rate>10.0</update_rate>
         <camera>
-          <pose>0 0 0 0 0 0</pose>
+          <pose>0 0 0 0 ${PI/2} 0</pose>
           <horizontal_fov>3.1415</horizontal_fov>
           <image>
             <format>R8G8B8</format>
