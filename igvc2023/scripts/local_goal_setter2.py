@@ -126,7 +126,7 @@ class LocalGoalSetter:
 		#-----Listen tf map->base_link-----
 		try:
 			stamp = msg.header.stamp
-			tf = self.tfBuffer.lookup_transform("map", "base_link", stamp, rospy.Duration(1.0))
+			tf = self.tfBuffer.lookup_transform("map", "base_footprint", stamp, rospy.Duration(1.0))
 		except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
 			print(e)
 			return

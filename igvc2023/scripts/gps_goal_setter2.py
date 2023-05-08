@@ -49,7 +49,7 @@ class GPSGoalSetter:
     # if failed, retry up to 3 times
     for i in range(3):
       try:
-        tf = self.tfBuffer.lookup_transform("map", "base_link", stamp, rospy.Duration(1.0))
+        tf = self.tfBuffer.lookup_transform("map", "base_footprint", stamp, rospy.Duration(1.0))
       except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as err:
         if not i == 2:
           rospy.logwarn(err)
