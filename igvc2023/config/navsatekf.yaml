@@ -3,7 +3,7 @@ delay: 0
 magnetic_declination_radians: 0 # 0
 yaw_offset: 1.5707963
 zero_altitude: false # false
-broadcast_utm_transform: true # false
+broadcast_cartesian_transform: true # false
 publish_filtered_gps: true
 use_odometry_yaw: false #false
 wait_for_datum: true
