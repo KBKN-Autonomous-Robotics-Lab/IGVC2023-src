@@ -62,9 +62,9 @@
   <!-- Base Link -->
   <link name="base_link">
     <collision>
-      <origin xyz="-0.6 0.0 0.5" rpy="0.0 0.0 0.0"/>
+      <origin xyz="-0.55 0.0 0.5" rpy="0.0 0.0 0.0"/>
       <geometry>
-        <box size="1.06 0.625 0.83"/>
+        <box size="1.6 0.85 1"/>
       </geometry>
     </collision>
 
@@ -97,7 +97,7 @@
   
   <link name="left_caster_link">
     <collision>
-      <origin xyz="-1.28015 0.15 -0.039" rpy="0.0 ${PI/2} ${PI/2}"/>
+      <origin xyz="-1.2015 0.15 -0.039" rpy="0.0 ${PI/2} ${PI/2}"/>
       <geometry>
         <sphere radius="0.0625"/>
       </geometry>
