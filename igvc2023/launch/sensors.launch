@@ -7,9 +7,9 @@
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
     <arg name="camera_dev"       default="/dev/sensors/insta360_air"/>
     <arg name="LED_dev"          default="/dev/sensors/LED"/>
-    <arg name="gps_dev"          default="/dev/ttyACM0"/>
-    <arg name="gps1_dev"         default="/dev/ttyACM1"/>
-    <arg name="gps2_dev"         default="/dev/ttyACM2"/>
+    <arg name="gps_dev"          default="/dev/sensors/CLAS"/>
+    <arg name="gps1_dev"         default="/dev/sensors/GNSSbase"/>
+    <arg name="gps2_dev"         default="/dev/sensors/GNSSrover"/>
     <arg name="use_ekf"          default="true"/>
     <arg name="urg_ip"           default="192.168.3.11"/>
     
