@@ -32,6 +32,11 @@
         <param name="baud" value="115200"/>
     </node>
     
+    <!-- Node to setting up Arduino serial communication for LEDs -->
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node_LED">
+        <param name="port" value="$(arg LED_dev)"/>
+        <param name="baud" value="115200"/>
+    </node>
     
     <!-- Node for setting up 2D-LiDAR via Ethernet connection -->
     <node pkg="urg_node" type="urg_node" name="urg_node">
