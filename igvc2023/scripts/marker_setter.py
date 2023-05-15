@@ -7,7 +7,7 @@ from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 
 topic = "visualization_marker_array"
-publisher = rospy.Publisher(topic, MarkerArray)
+publisher = rospy.Publisher(topic, MarkerArray, queue_size=1)
 
 rospy.init_node("marker_setter")
 markerArray = MarkerArray()

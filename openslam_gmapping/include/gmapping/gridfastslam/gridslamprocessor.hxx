@@ -148,7 +148,7 @@ inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSiz
     hasResampled = true;
   } else {
     int index=0;
-    std::cerr << "Registering Scans:";
+    // std::cerr << "Registering Scans:";
     TNodeVector::iterator node_it=oldGeneration.begin();
     for (ParticleVector::iterator it=m_particles.begin(); it!=m_particles.end(); it++){
       //create a new node in the particle tree and add it to the old tree
@@ -168,7 +168,7 @@ inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSiz
       node_it++;
       
     }
-    std::cerr  << "Done" <<std::endl;
+    // std::cerr  << "Done" <<std::endl;
     
   }
   //END: BUILDING TREE
