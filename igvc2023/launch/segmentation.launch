@@ -6,7 +6,7 @@
         <rosparam command="load" file="$(find igvc2023)/params/segmentation_params.yaml"/>
         <param name="input_topic"           value="/velodyne_points"/>
         <param name="ground_output_topic"   value="/ground_cloud"/>
-        <param name="obstacle_output_topic" value="obstacle_cloud"/>
+        <param name="obstacle_output_topic" value="/obstacle_cloud"/>
     </node>
 
     <!-- Convert 3d pointcloud to 2d laserscan -->
