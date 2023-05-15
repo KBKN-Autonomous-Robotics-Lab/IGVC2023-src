@@ -36,7 +36,7 @@
     <!-- Node for setting up 2D-LiDAR via Ethernet connection -->
     <node pkg="urg_node" type="urg_node" name="urg_node">
         <param name="frame_id"                  value="/hokuyo_link"/>
-        <param name="ip_adress"                 value="$(arg urg_ip)"/>
+        <param name="ip_address"                 value="$(arg urg_ip)"/>
         <param name="angle_min"   type="double" value="-1.22"/>
         <param name="angle_max"   type="double" value="1.22"/>
         <remap from="/scan"       to="/hokuyo_scan"/>
