@@ -4,14 +4,15 @@ from __future__ import print_function
 
 import sys
 import time
-import unittest
 from math import fmod, pi
 
-import PyKDL
+import unittest
 import rospy
 import rostest
+
 import tf2_py as tf2
 import tf2_ros
+import PyKDL
 from std_srvs.srv import Empty
 
 
@@ -26,28 +27,14 @@ class TestBasicLocalization(unittest.TestCase):
     def print_pose_diff(self):
         a_curr = self.compute_angle()
         a_diff = self.wrap_angle(a_curr - self.target_a)
-        print(
-            "Curr:\t %16.6f %16.6f %16.6f"
-            % (self.tf.translation.x, self.tf.translation.y, a_curr)
-        )
-        print(
-            "Target:\t %16.6f %16.6f %16.6f"
-            % (self.target_x, self.target_y, self.target_a)
-        )
-        print(
-            "Diff:\t %16.6f %16.6f %16.6f"
-            % (
-                abs(self.tf.translation.x - self.target_x),
-                abs(self.tf.translation.y - self.target_y),
-                a_diff,
-            )
-        )
+        print('Curr:\t %16.6f %16.6f %16.6f' % (self.tf.translation.x, self.tf.translation.y, a_curr))
+        print('Target:\t %16.6f %16.6f %16.6f' % (self.target_x, self.target_y, self.target_a))
+        print('Diff:\t %16.6f %16.6f %16.6f' % (
+            abs(self.tf.translation.x - self.target_x), abs(self.tf.translation.y - self.target_y), a_diff))
 
     def get_pose(self):
         try:
-            tf_stamped = self.tfBuffer.lookup_transform(
-                "map", "base_link", rospy.Time()
-            )
+            tf_stamped = self.tfBuffer.lookup_transform("map", "base_link", rospy.Time())
             self.tf = tf_stamped.transform
             self.print_pose_diff()
         except (tf2.LookupException, tf2.ExtrapolationException):
@@ -62,8 +49,8 @@ class TestBasicLocalization(unittest.TestCase):
         """
         angle += pi
         while angle < 0:
-            angle += 2 * pi
-        return fmod(angle, 2 * pi) - pi
+            angle += 2*pi
+        return fmod(angle, 2*pi) - pi
 
     def compute_angle(self):
         rot = self.tf.rotation
@@ -80,15 +67,15 @@ class TestBasicLocalization(unittest.TestCase):
         tolerance_a = float(sys.argv[6])
         target_time = float(sys.argv[7])
 
-        rospy.init_node("test", anonymous=True)
+        rospy.init_node('test', anonymous=True)
         while rospy.rostime.get_time() == 0.0:
-            print("Waiting for initial time publication")
+            print('Waiting for initial time publication')
             time.sleep(0.1)
 
         if global_localization == 1:
-            print("Waiting for service global_localization")
-            rospy.wait_for_service("global_localization")
-            global_localization = rospy.ServiceProxy("global_localization", Empty)
+            print('Waiting for service global_localization')
+            rospy.wait_for_service('global_localization')
+            global_localization = rospy.ServiceProxy('global_localization', Empty)
             global_localization()
 
         start_time = rospy.rostime.get_time()
@@ -96,10 +83,7 @@ class TestBasicLocalization(unittest.TestCase):
         listener = tf2_ros.TransformListener(self.tfBuffer)
 
         while (rospy.rostime.get_time() - start_time) < target_time:
-            print(
-                "Waiting for end time %.6f (current: %.6f)"
-                % (target_time, (rospy.rostime.get_time() - start_time))
-            )
+            print('Waiting for end time %.6f (current: %.6f)' % (target_time, (rospy.rostime.get_time() - start_time)))
             self.get_pose()
             time.sleep(0.1)
 
@@ -113,5 +97,5 @@ class TestBasicLocalization(unittest.TestCase):
         self.assertAlmostEqual(a_curr, self.target_a, delta=tolerance_a)
 
 
-if __name__ == "__main__":
-    rostest.run("amcl", "amcl_localization", TestBasicLocalization, sys.argv)
+if __name__ == '__main__':
+    rostest.run('amcl', 'amcl_localization', TestBasicLocalization, sys.argv)

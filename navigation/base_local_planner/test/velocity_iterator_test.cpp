@@ -32,17 +32,20 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
+
+
+
 #include <gtest/gtest.h>
 
 #include <base_local_planner/velocity_iterator.h>
+
 
 namespace base_local_planner {
 
 TEST(VelocityIteratorTest, testsingle) {
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(0.0, 0.0, 1);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(0.0, 0.0, 1); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
@@ -53,8 +56,7 @@ TEST(VelocityIteratorTest, testsingle) {
 TEST(VelocityIteratorTest, testsingle_pos) {
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(2.2, 2.2, 1);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(2.2, 2.2, 1); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
@@ -65,8 +67,7 @@ TEST(VelocityIteratorTest, testsingle_pos) {
 TEST(VelocityIteratorTest, testsingle_neg) {
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(-3.3, -3.3, 1);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(-3.3, -3.3, 1); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
@@ -77,13 +78,12 @@ TEST(VelocityIteratorTest, testsingle_neg) {
 TEST(VelocityIteratorTest, test1) {
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(-30, 30, 1);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(-30, 30, 1); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
   EXPECT_EQ(3, i);
-  double expected[3] = {-30.0, 0.0, 30.0};
+  double expected [3]= {-30.0, 0.0, 30.0};
   for (int j = 0; j < 3; ++j) {
     EXPECT_EQ(expected[j], result[j]);
   }
@@ -92,13 +92,12 @@ TEST(VelocityIteratorTest, test1) {
 TEST(VelocityIteratorTest, test1_pos) {
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(10, 30, 1); !x_it.isFinished();
-       x_it++) {
+  for(base_local_planner::VelocityIterator x_it(10, 30, 1); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
   EXPECT_EQ(2, i);
-  double expected[2] = {10.0, 30.0};
+  double expected [2]= {10.0, 30.0};
   for (int j = 0; j < 2; ++j) {
     EXPECT_EQ(expected[j], result[j]);
   }
@@ -107,13 +106,12 @@ TEST(VelocityIteratorTest, test1_pos) {
 TEST(VelocityIteratorTest, test1_neg) {
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(-30, -10, 1);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(-30, -10, 1); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
   EXPECT_EQ(2, i);
-  double expected[2] = {-30.0, -10.0};
+  double expected [2]= {-30.0, -10.0};
   for (int j = 0; j < 2; ++j) {
     EXPECT_EQ(expected[j], result[j]);
   }
@@ -122,13 +120,12 @@ TEST(VelocityIteratorTest, test1_neg) {
 TEST(VelocityIteratorTest, test3) {
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(-30, 30, 3);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(-30, 30, 3); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
   EXPECT_EQ(3, i);
-  double expected[3] = {-30.0, 0.0, 30};
+  double expected [3]= {-30.0, 0.0, 30};
   for (int j = 0; j < 3; ++j) {
     EXPECT_EQ(expected[j], result[j]);
   }
@@ -137,13 +134,12 @@ TEST(VelocityIteratorTest, test3) {
 TEST(VelocityIteratorTest, test4) {
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(-30, 30, 4);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(-30, 30, 4); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
   EXPECT_EQ(5, i);
-  double expected[5] = {-30.0, -10.0, 0.0, 10.0, 30};
+  double expected [5]= {-30.0, -10.0, 0.0, 10.0, 30};
   for (int j = 0; j < 5; ++j) {
     EXPECT_EQ(expected[j], result[j]);
   }
@@ -153,13 +149,12 @@ TEST(VelocityIteratorTest, test_shifted) {
   // test where zero is not in the middle
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(-10, 50, 4);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(-10, 50, 4); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
   EXPECT_EQ(5, i);
-  double expected[5] = {-10.0, 0.0, 10.0, 30, 50};
+  double expected [5]= {-10.0, 0.0, 10.0, 30, 50};
   for (int j = 0; j < 5; ++j) {
     EXPECT_EQ(expected[j], result[j]);
   }
@@ -169,16 +164,15 @@ TEST(VelocityIteratorTest, test_cranky) {
   // test where one value is almost zero (nothing to do about that)
   double result[5];
   int i = 0;
-  for (base_local_planner::VelocityIterator x_it(-10.00001, 10, 3);
-       !x_it.isFinished(); x_it++) {
+  for(base_local_planner::VelocityIterator x_it(-10.00001, 10, 3); !x_it.isFinished(); x_it++) {
     result[i] = x_it.getVelocity();
     i++;
   }
   EXPECT_EQ(4, i);
   for (int j = 0; j < 5; ++j) {
-    double expected[5] = {-10.00001, -0.000005, 0.0, 10.0};
+	double expected [5]= {-10.00001, -0.000005, 0.0, 10.0};
     EXPECT_FLOAT_EQ(expected[j], result[j]);
   }
 }
 
-} // namespace base_local_planner
+} // namespace

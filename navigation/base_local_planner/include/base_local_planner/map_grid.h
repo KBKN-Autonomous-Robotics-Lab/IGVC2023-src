@@ -34,172 +34,167 @@
 #ifndef TRAJECTORY_ROLLOUT_MAP_GRID_H_
 #define TRAJECTORY_ROLLOUT_MAP_GRID_H_
 
-#include <base_local_planner/trajectory_inc.h>
+#include <vector>
 #include <iostream>
+#include <base_local_planner/trajectory_inc.h>
 #include <ros/console.h>
 #include <ros/ros.h>
-#include <vector>
 
 #include <base_local_planner/map_cell.h>
 #include <costmap_2d/costmap_2d.h>
 #include <geometry_msgs/PoseStamped.h>
 
-namespace base_local_planner {
-/**
- * @class MapGrid
- * @brief A grid of MapCell cells that is used to propagate path and goal
- * distances for the trajectory controller.
- */
-class MapGrid {
-public:
+namespace base_local_planner{
   /**
-   * @brief  Creates a 0x0 map by default
+   * @class MapGrid
+   * @brief A grid of MapCell cells that is used to propagate path and goal distances for the trajectory controller.
    */
-  MapGrid();
+  class MapGrid{
+    public:
+      /**
+       * @brief  Creates a 0x0 map by default
+       */
+      MapGrid();
 
-  /**
-   * @brief  Creates a map of size_x by size_y
-   * @param size_x The width of the map
-   * @param size_y The height of the map
-   */
-  MapGrid(unsigned int size_x, unsigned int size_y);
+      /**
+       * @brief  Creates a map of size_x by size_y
+       * @param size_x The width of the map 
+       * @param size_y The height of the map 
+       */
+      MapGrid(unsigned int size_x, unsigned int size_y);
 
-  /**
-   * @brief  Returns a map cell accessed by (col, row)
-   * @param x The x coordinate of the cell
-   * @param y The y coordinate of the cell
-   * @return A reference to the desired cell
-   */
-  inline MapCell &operator()(unsigned int x, unsigned int y) {
-    return map_[size_x_ * y + x];
-  }
 
-  /**
-   * @brief  Returns a map cell accessed by (col, row)
-   * @param x The x coordinate of the cell
-   * @param y The y coordinate of the cell
-   * @return A copy of the desired cell
-   */
-  inline MapCell operator()(unsigned int x, unsigned int y) const {
-    return map_[size_x_ * y + x];
-  }
+      /**
+       * @brief  Returns a map cell accessed by (col, row)
+       * @param x The x coordinate of the cell 
+       * @param y The y coordinate of the cell 
+       * @return A reference to the desired cell
+       */
+      inline MapCell& operator() (unsigned int x, unsigned int y){
+        return map_[size_x_ * y + x];
+      }
 
-  inline MapCell &getCell(unsigned int x, unsigned int y) {
-    return map_[size_x_ * y + x];
-  }
+      /**
+       * @brief  Returns a map cell accessed by (col, row)
+       * @param x The x coordinate of the cell 
+       * @param y The y coordinate of the cell 
+       * @return A copy of the desired cell
+       */
+      inline MapCell operator() (unsigned int x, unsigned int y) const {
+        return map_[size_x_ * y + x];
+      }
 
-  /**
-   * @brief  Destructor for a MapGrid
-   */
-  ~MapGrid() {}
+      inline MapCell& getCell(unsigned int x, unsigned int y){
+        return map_[size_x_ * y + x];
+      }
 
-  /**
-   * @brief  Copy constructor for a MapGrid
-   * @param mg The MapGrid to copy
-   */
-  MapGrid(const MapGrid &mg);
+      /**
+       * @brief  Destructor for a MapGrid
+       */
+      ~MapGrid(){}
 
-  /**
-   * @brief  Assignment operator for a MapGrid
-   * @param mg The MapGrid to assign from
-   */
-  MapGrid &operator=(const MapGrid &mg);
+      /**
+       * @brief  Copy constructor for a MapGrid
+       * @param mg The MapGrid to copy 
+       */
+      MapGrid(const MapGrid& mg);
 
-  /**
-   * @brief reset path distance fields for all cells
-   */
-  void resetPathDist();
+      /**
+       * @brief  Assignment operator for a MapGrid
+       * @param mg The MapGrid to assign from 
+       */
+      MapGrid& operator= (const MapGrid& mg);
 
-  /**
-   * @brief  check if we need to resize
-   * @param size_x The desired width
-   * @param size_y The desired height
-   */
-  void sizeCheck(unsigned int size_x, unsigned int size_y);
+      /**
+       * @brief reset path distance fields for all cells
+       */
+      void resetPathDist();
 
-  /**
-   * @brief Utility to share initialization code across constructors
-   */
-  void commonInit();
+      /**
+       * @brief  check if we need to resize
+       * @param size_x The desired width
+       * @param size_y The desired height
+       */
+      void sizeCheck(unsigned int size_x, unsigned int size_y);
 
-  /**
-   * @brief  Returns a 1D index into the MapCell array for a 2D index
-   * @param x The desired x coordinate
-   * @param y The desired y coordinate
-   * @return The associated 1D index
-   */
-  size_t getIndex(int x, int y);
+      /**
+       * @brief Utility to share initialization code across constructors
+       */
+      void commonInit();
 
-  /**
-   * return a value that indicates cell is in obstacle
-   */
-  inline double obstacleCosts() { return map_.size(); }
+      /**
+       * @brief  Returns a 1D index into the MapCell array for a 2D index
+       * @param x The desired x coordinate
+       * @param y The desired y coordinate
+       * @return The associated 1D index 
+       */
+      size_t getIndex(int x, int y);
 
-  /**
-   * returns a value indicating cell was not reached by wavefront
-   * propagation of set cells. (is behind walls, regarding the region covered by
-   * grid)
-   */
-  inline double unreachableCellCosts() { return map_.size() + 1; }
+      /**
+       * return a value that indicates cell is in obstacle
+       */
+      inline double obstacleCosts() {
+        return map_.size();
+      }
 
-  /**
-   * @brief  Used to update the distance of a cell in path distance computation
-   * @param  current_cell The cell we're currently in
-   * @param  check_cell The cell to be updated
-   */
-  inline bool updatePathCell(MapCell *current_cell, MapCell *check_cell,
-                             const costmap_2d::Costmap2D &costmap);
+      /**
+       * returns a value indicating cell was not reached by wavefront
+       * propagation of set cells. (is behind walls, regarding the region covered by grid)
+       */
+      inline double unreachableCellCosts() {
+        return map_.size() + 1;
+      }
 
-  /**
-   * increase global plan resolution to match that of the costmap by adding
-   * points linearly between global plan points This is necessary where global
-   * planners produce plans with few points.
-   * @param global_plan_in input
-   * @param global_plan_output output
-   * @param resolution desired distance between waypoints
-   */
-  static void adjustPlanResolution(
-      const std::vector<geometry_msgs::PoseStamped> &global_plan_in,
-      std::vector<geometry_msgs::PoseStamped> &global_plan_out,
-      double resolution);
+      /**
+       * @brief  Used to update the distance of a cell in path distance computation
+       * @param  current_cell The cell we're currently in 
+       * @param  check_cell The cell to be updated
+       */
+      inline bool updatePathCell(MapCell* current_cell, MapCell* check_cell,
+          const costmap_2d::Costmap2D& costmap);
 
-  /**
-   * @brief  Compute the distance from each cell in the local map grid to the
-   * planned path
-   * @param dist_queue A queue of the initial cells on the path
-   */
-  void computeTargetDistance(std::queue<MapCell *> &dist_queue,
-                             const costmap_2d::Costmap2D &costmap);
+      /**
+       * increase global plan resolution to match that of the costmap by adding points linearly between global plan points
+       * This is necessary where global planners produce plans with few points.
+       * @param global_plan_in input
+       * @param global_plan_output output
+       * @param resolution desired distance between waypoints
+       */
+      static void adjustPlanResolution(const std::vector<geometry_msgs::PoseStamped>& global_plan_in,
+            std::vector<geometry_msgs::PoseStamped>& global_plan_out, double resolution);
 
-  /**
-   * @brief  Compute the distance from each cell in the local map grid to the
-   * local goal point
-   * @param goal_queue A queue containing the local goal cell
-   */
-  void computeGoalDistance(std::queue<MapCell *> &dist_queue,
-                           const costmap_2d::Costmap2D &costmap);
+      /**
+       * @brief  Compute the distance from each cell in the local map grid to the planned path
+       * @param dist_queue A queue of the initial cells on the path 
+       */
+      void computeTargetDistance(std::queue<MapCell*>& dist_queue, const costmap_2d::Costmap2D& costmap);
 
-  /**
-   * @brief Update what cells are considered path based on the global plan
-   */
-  void
-  setTargetCells(const costmap_2d::Costmap2D &costmap,
-                 const std::vector<geometry_msgs::PoseStamped> &global_plan);
+      /**
+       * @brief  Compute the distance from each cell in the local map grid to the local goal point
+       * @param goal_queue A queue containing the local goal cell 
+       */
+      void computeGoalDistance(std::queue<MapCell*>& dist_queue, const costmap_2d::Costmap2D& costmap);
 
-  /**
-   * @brief Update what cell is considered the next local goal
-   */
-  void setLocalGoal(const costmap_2d::Costmap2D &costmap,
-                    const std::vector<geometry_msgs::PoseStamped> &global_plan);
+      /**
+       * @brief Update what cells are considered path based on the global plan 
+       */
+      void setTargetCells(const costmap_2d::Costmap2D& costmap, const std::vector<geometry_msgs::PoseStamped>& global_plan);
 
-  double goal_x_,
-      goal_y_; /**< @brief The goal distance was last computed from */
+      /**
+       * @brief Update what cell is considered the next local goal
+       */
+      void setLocalGoal(const costmap_2d::Costmap2D& costmap,
+            const std::vector<geometry_msgs::PoseStamped>& global_plan);
 
-  unsigned int size_x_, size_y_; ///< @brief The dimensions of the grid
+      double goal_x_, goal_y_; /**< @brief The goal distance was last computed from */
 
-private:
-  std::vector<MapCell> map_; ///< @brief Storage for the MapCells
+      unsigned int size_x_, size_y_; ///< @brief The dimensions of the grid
+
+    private:
+
+      std::vector<MapCell> map_; ///< @brief Storage for the MapCells
+
+  };
 };
-}; // namespace base_local_planner
 
 #endif

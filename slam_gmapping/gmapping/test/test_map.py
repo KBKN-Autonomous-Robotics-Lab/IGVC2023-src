@@ -33,17 +33,15 @@
 #
 
 
-import os
+import PIL.Image
+import unittest
 import subprocess
 import sys
-import unittest
 
-import PIL.Image
 import roslib
-
+import os
 roslib.load_manifest('gmapping')
 import rostest
-
 
 class TestGmapping(unittest.TestCase):
 
@@ -83,7 +81,6 @@ class TestGmapping(unittest.TestCase):
       target_time = float(sys.argv[1])
 
       import time
-
       import rospy
       rospy.init_node('test', anonymous=True)
       while(rospy.rostime.get_time() == 0.0):

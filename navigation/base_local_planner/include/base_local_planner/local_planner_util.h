@@ -47,12 +47,12 @@
 
 #include <base_local_planner/local_planner_limits.h>
 
+
 namespace base_local_planner {
 
 /**
  * @class LocalPlannerUtil
- * @brief Helper class implementing infrastructure code many local planner
- * implementations may need.
+ * @brief Helper class implementing infrastructure code many local planner implementations may need.
  */
 class LocalPlannerUtil {
 
@@ -61,10 +61,12 @@ private:
   std::string name_;
   std::string global_frame_;
 
-  costmap_2d::Costmap2D *costmap_;
-  tf2_ros::Buffer *tf_;
+  costmap_2d::Costmap2D* costmap_;
+  tf2_ros::Buffer* tf_;
+
 
   std::vector<geometry_msgs::PoseStamped> global_plan_;
+
 
   boost::mutex limits_configuration_mutex_;
   bool setup_;
@@ -73,6 +75,7 @@ private:
   bool initialized_;
 
 public:
+
   /**
    * @brief  Callback to update the local planner's parameters
    */
@@ -80,25 +83,29 @@ public:
 
   LocalPlannerUtil() : initialized_(false) {}
 
-  ~LocalPlannerUtil() {}
+  ~LocalPlannerUtil() {
+  }
 
-  void initialize(tf2_ros::Buffer *tf, costmap_2d::Costmap2D *costmap,
-                  std::string global_frame);
+  void initialize(tf2_ros::Buffer* tf,
+      costmap_2d::Costmap2D* costmap,
+      std::string global_frame);
 
-  bool getGoal(geometry_msgs::PoseStamped &goal_pose);
+  bool getGoal(geometry_msgs::PoseStamped& goal_pose);
 
-  bool setPlan(const std::vector<geometry_msgs::PoseStamped> &orig_global_plan);
+  bool setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan);
 
-  bool getLocalPlan(const geometry_msgs::PoseStamped &global_pose,
-                    std::vector<geometry_msgs::PoseStamped> &transformed_plan);
+  bool getLocalPlan(const geometry_msgs::PoseStamped& global_pose, std::vector<geometry_msgs::PoseStamped>& transformed_plan);
 
-  costmap_2d::Costmap2D *getCostmap();
+  costmap_2d::Costmap2D* getCostmap();
 
   LocalPlannerLimits getCurrentLimits();
 
-  std::string getGlobalFrame() { return global_frame_; }
+  std::string getGlobalFrame(){ return global_frame_; }
 };
 
-}; // namespace base_local_planner
+
+
+
+};
 
 #endif /* ABSTRACT_LOCAL_PLANNER_ODOM_H_ */

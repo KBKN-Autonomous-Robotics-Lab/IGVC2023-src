@@ -31,49 +31,51 @@
 
 #include "base_local_planner/line_iterator.h"
 
-TEST(LineIterator, south) {
-  base_local_planner::LineIterator line(1, 2, 1, 4);
-  EXPECT_TRUE(line.isValid());
-  EXPECT_EQ(1, line.getX());
-  EXPECT_EQ(2, line.getY());
+TEST( LineIterator, south )
+{
+  base_local_planner::LineIterator line( 1, 2, 1, 4 );
+  EXPECT_TRUE( line.isValid() );
+  EXPECT_EQ( 1, line.getX() );
+  EXPECT_EQ( 2, line.getY() );
   line.advance();
-  EXPECT_TRUE(line.isValid());
-  EXPECT_EQ(1, line.getX());
-  EXPECT_EQ(3, line.getY());
+  EXPECT_TRUE( line.isValid() );
+  EXPECT_EQ( 1, line.getX() );
+  EXPECT_EQ( 3, line.getY() );
   line.advance();
-  EXPECT_TRUE(line.isValid());
-  EXPECT_EQ(1, line.getX());
-  EXPECT_EQ(4, line.getY());
+  EXPECT_TRUE( line.isValid() );
+  EXPECT_EQ( 1, line.getX() );
+  EXPECT_EQ( 4, line.getY() );
   line.advance();
-  EXPECT_FALSE(line.isValid());
+  EXPECT_FALSE( line.isValid() );
 }
 
-TEST(LineIterator, north_north_west) {
-  base_local_planner::LineIterator line(0, 0, -2, -4);
-  EXPECT_TRUE(line.isValid());
-  EXPECT_EQ(0, line.getX());
-  EXPECT_EQ(0, line.getY());
+TEST( LineIterator, north_north_west )
+{
+  base_local_planner::LineIterator line( 0, 0, -2, -4 );
+  EXPECT_TRUE( line.isValid() );
+  EXPECT_EQ( 0, line.getX() );
+  EXPECT_EQ( 0, line.getY() );
   line.advance();
-  EXPECT_TRUE(line.isValid());
-  EXPECT_EQ(-1, line.getX());
-  EXPECT_EQ(-1, line.getY());
+  EXPECT_TRUE( line.isValid() );
+  EXPECT_EQ( -1, line.getX() );
+  EXPECT_EQ( -1, line.getY() );
   line.advance();
-  EXPECT_TRUE(line.isValid());
-  EXPECT_EQ(-1, line.getX());
-  EXPECT_EQ(-2, line.getY());
+  EXPECT_TRUE( line.isValid() );
+  EXPECT_EQ( -1, line.getX() );
+  EXPECT_EQ( -2, line.getY() );
   line.advance();
-  EXPECT_TRUE(line.isValid());
-  EXPECT_EQ(-2, line.getX());
-  EXPECT_EQ(-3, line.getY());
+  EXPECT_TRUE( line.isValid() );
+  EXPECT_EQ( -2, line.getX() );
+  EXPECT_EQ( -3, line.getY() );
   line.advance();
-  EXPECT_TRUE(line.isValid());
-  EXPECT_EQ(-2, line.getX());
-  EXPECT_EQ(-4, line.getY());
+  EXPECT_TRUE( line.isValid() );
+  EXPECT_EQ( -2, line.getX() );
+  EXPECT_EQ( -4, line.getY() );
   line.advance();
-  EXPECT_FALSE(line.isValid());
+  EXPECT_FALSE( line.isValid() );
 }
 
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
+int main( int argc, char **argv ) {
+  testing::InitGoogleTest( &argc, argv );
   return RUN_ALL_TESTS();
 }

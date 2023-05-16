@@ -42,11 +42,12 @@ extern "C" {
  *************************************************************************/
 
 // Gaussian PDF info
-typedef struct {
+typedef struct
+{
   // Mean, covariance and inverse covariance
   pf_vector_t x;
   pf_matrix_t cx;
-  // pf_matrix_t cxi;
+  //pf_matrix_t cxi;
   double cxdet;
 
   // Decomposed covariance matrix (rotation * diagonal)
@@ -54,9 +55,10 @@ typedef struct {
   pf_vector_t cd;
 
   // A random number generator
-  // gsl_rng *rng;
+  //gsl_rng *rng;
 
 } pf_pdf_gaussian_t;
+
 
 // Create a gaussian pdf
 pf_pdf_gaussian_t *pf_pdf_gaussian_alloc(pf_vector_t x, pf_matrix_t cx);
@@ -65,7 +67,7 @@ pf_pdf_gaussian_t *pf_pdf_gaussian_alloc(pf_vector_t x, pf_matrix_t cx);
 void pf_pdf_gaussian_free(pf_pdf_gaussian_t *pdf);
 
 // Compute the value of the pdf at some point [z].
-// double pf_pdf_gaussian_value(pf_pdf_gaussian_t *pdf, pf_vector_t z);
+//double pf_pdf_gaussian_value(pf_pdf_gaussian_t *pdf, pf_vector_t z);
 
 // Draw randomly from a zero-mean Gaussian distribution, with standard
 // deviation sigma.

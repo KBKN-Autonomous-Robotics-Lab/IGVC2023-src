@@ -2,15 +2,15 @@
 #define PRINTMEMUSAGE_H
 #include <sys/types.h>
 #ifndef _WIN32
-#include <unistd.h>
+  #include <unistd.h>
 #endif
-#include <fstream>
-#include <gmapping/utils/utils_export.h>
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <gmapping/utils/utils_export.h>
 
-namespace GMapping {
-void UTILS_EXPORT printmemusage();
+namespace GMapping{
+	void UTILS_EXPORT printmemusage();
 };
 
 #endif

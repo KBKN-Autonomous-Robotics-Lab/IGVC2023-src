@@ -42,15 +42,16 @@
 #include <string>
 #include <tf2_ros/buffer.h>
 
-namespace costmap_2d {
+namespace costmap_2d
+{
 class LayeredCostmap;
 
-class Layer {
+class Layer
+{
 public:
   Layer();
 
-  void initialize(LayeredCostmap *parent, std::string name,
-                  tf2_ros::Buffer *tf);
+  void initialize(LayeredCostmap* parent, std::string name, tf2_ros::Buffer *tf);
 
   /**
    * @brief This is called by the LayeredCostmap to poll this plugin as to how
@@ -60,16 +61,14 @@ public:
    * For more details, see "Layered Costmaps for Context-Sensitive Navigation",
    * by Lu et. Al, IROS 2014.
    */
-  virtual void updateBounds(double robot_x, double robot_y, double robot_yaw,
-                            double *min_x, double *min_y, double *max_x,
-                            double *max_y) {}
+  virtual void updateBounds(double robot_x, double robot_y, double robot_yaw, double* min_x, double* min_y,
+                            double* max_x, double* max_y) {}
 
   /**
    * @brief Actually update the underlying costmap, only within the bounds
    *        calculated during UpdateBounds().
    */
-  virtual void updateCosts(Costmap2D &master_grid, int min_i, int min_j,
-                           int max_i, int max_j) {}
+  virtual void updateCosts(Costmap2D& master_grid, int min_i, int min_j, int max_i, int max_j) {}
 
   /** @brief Stop publishers. */
   virtual void deactivate() {}
@@ -91,7 +90,10 @@ public:
    *        variable current_.
    * @return Whether the data in the layer is up to date.
    */
-  bool isCurrent() const { return current_; }
+  bool isCurrent() const
+  {
+    return current_;
+  }
 
   /**
    * @brief getter if the current layer is enabled.
@@ -106,16 +108,21 @@ public:
    * Calls to Layer::activate, Layer::deactivate and Layer::reset won't be
    * blocked.
    */
-  inline bool isEnabled() const noexcept { return enabled_; }
+  inline bool isEnabled() const noexcept
+  {
+    return enabled_;
+  }
 
-  /** @brief Implement this to make this layer match the size of the parent
-   * costmap. */
+  /** @brief Implement this to make this layer match the size of the parent costmap. */
   virtual void matchSize() {}
 
-  inline const std::string &getName() const noexcept { return name_; }
+  inline const std::string& getName() const noexcept
+  {
+    return name_;
+  }
 
   /** @brief Convenience function for layered_costmap_->getFootprint(). */
-  const std::vector<geometry_msgs::Point> &getFootprint() const;
+  const std::vector<geometry_msgs::Point>& getFootprint() const;
 
   /** @brief LayeredCostmap calls this whenever the footprint there
    * changes (via LayeredCostmap::setFootprint()).  Override to be
@@ -126,11 +133,10 @@ protected:
   /** @brief This is called at the end of initialize().  Override to
    * implement subclass-specific initialization.
    *
-   * tf_, name_, and layered_costmap_ will all be set already when this is
-   * called. */
+   * tf_, name_, and layered_costmap_ will all be set already when this is called. */
   virtual void onInitialize() {}
 
-  LayeredCostmap *layered_costmap_;
+  LayeredCostmap* layered_costmap_;
   bool current_;
   bool enabled_;
   std::string name_;
@@ -140,6 +146,6 @@ private:
   std::vector<geometry_msgs::Point> footprint_spec_;
 };
 
-} // namespace costmap_2d
+}  // namespace costmap_2d
 
-#endif // COSTMAP_2D_LAYER_H_
+#endif  // COSTMAP_2D_LAYER_H_

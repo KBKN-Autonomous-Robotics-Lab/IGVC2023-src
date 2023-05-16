@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
-  <name>dwa_local_planner</name>
-  <version>1.17.2</version>
-  <description>
+    <name>dwa_local_planner</name>
+    <version>1.17.2</version>
+    <description>
 
         This package provides an implementation of the Dynamic Window Approach to
         local robot navigation on a plane. Given a global plan to follow and a
@@ -15,29 +15,36 @@
         BaseLocalPlanner interface specified in the <a href="http://wiki.ros.org/nav_core">nav_core</a> package.
 
     </description>
-  <author>Eitan Marder-Eppstein</author>
-  <author>contradict@gmail.com</author>
-  <maintainer email="davidvlu@gmail.com">David V. Lu!!</maintainer>
-  <maintainer email="mfergs7@gmail.com">Michael Ferguson</maintainer>
-  <maintainer email="ahoy@fetchrobotics.com">Aaron Hoy</maintainer>
-  <license>BSD</license>
-  <url>http://wiki.ros.org/dwa_local_planner</url>
-  <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>angles</build_depend>
-  <build_depend>cmake_modules</build_depend>
-  <depend>base_local_planner</depend>
-  <depend>costmap_2d</depend>
-  <depend>dynamic_reconfigure</depend>
-  <depend>eigen</depend>
-  <depend>nav_core</depend>
-  <depend>nav_msgs</depend>
-  <depend>pluginlib</depend>
-  <depend>sensor_msgs</depend>
-  <depend>roscpp</depend>
-  <depend>tf2</depend>
-  <depend>tf2_geometry_msgs</depend>
-  <depend>tf2_ros</depend>
-  <export>
-    <nav_core plugin="${prefix}/blp_plugin.xml"/>
-  </export>
+    <author>Eitan Marder-Eppstein</author>
+    <author>contradict@gmail.com</author>
+    <maintainer email="davidvlu@gmail.com">David V. Lu!!</maintainer>
+    <maintainer email="mfergs7@gmail.com">Michael Ferguson</maintainer>
+    <maintainer email="ahoy@fetchrobotics.com">Aaron Hoy</maintainer>
+    <license>BSD</license>
+    <url>http://wiki.ros.org/dwa_local_planner</url>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <build_depend>angles</build_depend>
+    <build_depend>cmake_modules</build_depend>
+
+    <depend>base_local_planner</depend>
+    <depend>costmap_2d</depend>
+    <depend>dynamic_reconfigure</depend>
+    <depend>eigen</depend>
+    <depend>nav_core</depend>
+    <depend>nav_msgs</depend>
+    <depend>pluginlib</depend>
+    <depend>sensor_msgs</depend>
+    <depend>roscpp</depend>
+    <depend>tf2</depend>
+    <depend>tf2_geometry_msgs</depend>
+    <depend>tf2_ros</depend>
+
+    <export>
+        <nav_core plugin="${prefix}/blp_plugin.xml" />
+    </export>
+
 </package>
+
+

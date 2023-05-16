@@ -10,11 +10,15 @@
   <maintainer email="mfergs7@gmail.com">Michael Ferguson</maintainer>
   <maintainer email="ahoy@fetchrobotics.com">Aaron Hoy</maintainer>
   <license>BSD</license>
+
   <author>David Lu!!</author>
   <url>http://wiki.ros.org/global_planner</url>
+
   <buildtool_depend>catkin</buildtool_depend>
+
   <build_depend>angles</build_depend>
   <build_depend>tf2_geometry_msgs</build_depend>
+
   <depend>costmap_2d</depend>
   <depend>dynamic_reconfigure</depend>
   <depend>geometry_msgs</depend>
@@ -24,7 +28,9 @@
   <depend>pluginlib</depend>
   <depend>roscpp</depend>
   <depend>tf2_ros</depend>
+
   <export>
-    <nav_core plugin="${prefix}/bgp_plugin.xml"/>
+      <nav_core plugin="${prefix}/bgp_plugin.xml" />
   </export>
+
 </package>

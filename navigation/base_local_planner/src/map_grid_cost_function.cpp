@@ -39,17 +39,20 @@
 
 namespace base_local_planner {
 
-MapGridCostFunction::MapGridCostFunction(costmap_2d::Costmap2D *costmap,
-                                         double xshift, double yshift,
-                                         bool is_local_goal_function,
-                                         CostAggregationType aggregationType)
-    : costmap_(costmap),
-      map_(costmap->getSizeInCellsX(), costmap->getSizeInCellsY()),
-      aggregationType_(aggregationType), xshift_(xshift), yshift_(yshift),
-      is_local_goal_function_(is_local_goal_function), stop_on_failure_(true) {}
+MapGridCostFunction::MapGridCostFunction(costmap_2d::Costmap2D* costmap,
+    double xshift,
+    double yshift,
+    bool is_local_goal_function,
+    CostAggregationType aggregationType) :
+    costmap_(costmap),
+    map_(costmap->getSizeInCellsX(), costmap->getSizeInCellsY()),
+    aggregationType_(aggregationType),
+    xshift_(xshift),
+    yshift_(yshift),
+    is_local_goal_function_(is_local_goal_function),
+    stop_on_failure_(true) {}
 
-void MapGridCostFunction::setTargetPoses(
-    std::vector<geometry_msgs::PoseStamped> target_poses) {
+void MapGridCostFunction::setTargetPoses(std::vector<geometry_msgs::PoseStamped> target_poses) {
   target_poses_ = target_poses;
 }
 
@@ -92,16 +95,14 @@ double MapGridCostFunction::scoreTrajectory(Trajectory &traj) {
       py = py + yshift_ * sin(pth + M_PI_2);
     }
 
-    // we won't allow trajectories that go off the map... shouldn't happen that
-    // often anyways
-    if (!costmap_->worldToMap(px, py, cell_x, cell_y)) {
-      // we're off the map
+    //we won't allow trajectories that go off the map... shouldn't happen that often anyways
+    if ( ! costmap_->worldToMap(px, py, cell_x, cell_y)) {
+      //we're off the map
       ROS_WARN("Off Map %f, %f", px, py);
       return -4.0;
     }
     grid_dist = getCellCosts(cell_x, cell_y);
-    // if a point on this trajectory has no clear path to the goal... it may be
-    // invalid
+    //if a point on this trajectory has no clear path to the goal... it may be invalid
     if (stop_on_failure_) {
       if (grid_dist == map_.obstacleCosts()) {
         return -3.0;
@@ -110,7 +111,7 @@ double MapGridCostFunction::scoreTrajectory(Trajectory &traj) {
       }
     }
 
-    switch (aggregationType_) {
+    switch( aggregationType_ ) {
     case Last:
       cost = grid_dist;
       break;

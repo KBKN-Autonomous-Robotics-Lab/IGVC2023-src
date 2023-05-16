@@ -30,10 +30,11 @@
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#include "velodyne_laserscan/velodyne_laserscan.h"
 #include <ros/ros.h>
+#include "velodyne_laserscan/velodyne_laserscan.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
   ros::init(argc, argv, "velodyne_laserscan_node");
   ros::NodeHandle nh;
   ros::NodeHandle nh_priv("~");

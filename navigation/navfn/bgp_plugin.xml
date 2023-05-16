@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <library path="lib/libnavfn">
   <class name="navfn/NavfnROS" type="navfn::NavfnROS" base_class_type="nav_core::BaseGlobalPlanner">
     <description>

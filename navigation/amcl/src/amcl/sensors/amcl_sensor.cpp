@@ -27,46 +27,68 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
+
 #include "amcl/sensors/amcl_sensor.h"
 
 using namespace amcl;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Default constructor
-AMCLSensor::AMCLSensor() { return; }
+AMCLSensor::AMCLSensor()
+{
+  return;
+}
 
-AMCLSensor::~AMCLSensor() {}
+AMCLSensor::~AMCLSensor()
+{
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Apply the action model
-bool AMCLSensor::UpdateAction(pf_t *pf, AMCLSensorData *data) { return false; }
+bool AMCLSensor::UpdateAction(pf_t *pf, AMCLSensorData *data)
+{
+  return false;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Initialize the filter
-bool AMCLSensor::InitSensor(pf_t *pf, AMCLSensorData *data) { return false; }
+bool AMCLSensor::InitSensor(pf_t *pf, AMCLSensorData *data)
+{
+  return false;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Apply the sensor model
-bool AMCLSensor::UpdateSensor(pf_t *pf, AMCLSensorData *data) { return false; }
+bool AMCLSensor::UpdateSensor(pf_t *pf, AMCLSensorData *data)
+{
+  return false;
+}
+
 
 #ifdef INCLUDE_RTKGUI
 
 ////////////////////////////////////////////////////////////////////////////////
 // Setup the GUI
-void AMCLSensor::SetupGUI(rtk_canvas_t *canvas, rtk_fig_t *robot_fig) {
+void AMCLSensor::SetupGUI(rtk_canvas_t *canvas, rtk_fig_t *robot_fig)
+{
   return;
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shutdown the GUI
-void AMCLSensor::ShutdownGUI(rtk_canvas_t *canvas, rtk_fig_t *robot_fig) {
+void AMCLSensor::ShutdownGUI(rtk_canvas_t *canvas, rtk_fig_t *robot_fig)
+{
   return;
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 // Draw sensor data
-void AMCLSensor::UpdateGUI(rtk_canvas_t *canvas, rtk_fig_t *robot_fig,
-                           AMCLSensorData *data) {
+void AMCLSensor::UpdateGUI(rtk_canvas_t *canvas, rtk_fig_t *robot_fig, AMCLSensorData *data)
+{
   return;
 }
 

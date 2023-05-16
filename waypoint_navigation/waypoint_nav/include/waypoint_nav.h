@@ -2,6 +2,7 @@
 // #include <waypoint_saver.h> // include Waypoint class
 // #include <vector>
 
+
 // class WaypointArray : public geometry_msgs::PoseArray {
 //     /*
 //     std_msgs/Header header
@@ -9,6 +10,7 @@
 //     */
 // public:
 //     std::vector<Waypoint> waypoint_list;
+
 
 //     void add_waypoint(double x, double y, double z, float vel, float rad)
 //     {
@@ -20,6 +22,7 @@
 //         point.set_rad(rad);
 //         waypoint_list.push_back(point);
 //     }
+
 
 //     geometry_msgs::PoseArray get_posearray_msg()
 //     {

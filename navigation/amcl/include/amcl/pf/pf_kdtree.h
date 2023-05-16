@@ -32,8 +32,10 @@
 #include "rtk.h"
 #endif
 
+
 // Info for a node in the tree
-typedef struct pf_kdtree_node {
+typedef struct pf_kdtree_node
+{
   // Depth in the tree
   int leaf, depth;
 
@@ -55,8 +57,10 @@ typedef struct pf_kdtree_node {
 
 } pf_kdtree_node_t;
 
+
 // A kd tree
-typedef struct {
+typedef struct
+{
   // Cell size
   double size[3];
 
@@ -71,6 +75,7 @@ typedef struct {
   int leaf_count;
 
 } pf_kdtree_t;
+
 
 // Create a tree
 extern pf_kdtree_t *pf_kdtree_alloc(int max_size);
@@ -92,6 +97,7 @@ extern double pf_kdtree_get_prob(pf_kdtree_t *self, pf_vector_t pose);
 
 // Determine the cluster label for the given pose
 extern int pf_kdtree_get_cluster(pf_kdtree_t *self, pf_vector_t pose);
+
 
 #ifdef INCLUDE_RTKGUI
 

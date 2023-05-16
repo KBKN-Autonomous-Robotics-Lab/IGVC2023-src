@@ -38,35 +38,33 @@
 #ifndef OSCILLATION_COST_FUNCTION_H_
 #define OSCILLATION_COST_FUNCTION_H_
 
-#include <Eigen/Core>
 #include <base_local_planner/trajectory_cost_function.h>
+#include <Eigen/Core>
 
 namespace base_local_planner {
 
-class OscillationCostFunction
-    : public base_local_planner::TrajectoryCostFunction {
+class OscillationCostFunction: public base_local_planner::TrajectoryCostFunction {
 public:
   OscillationCostFunction();
   virtual ~OscillationCostFunction();
 
   double scoreTrajectory(Trajectory &traj);
 
-  bool prepare() { return true; };
+  bool prepare() {return true;};
 
   /**
    * @brief  Reset the oscillation flags for the local planner
    */
   void resetOscillationFlags();
 
-  void updateOscillationFlags(Eigen::Vector3f pos,
-                              base_local_planner::Trajectory *traj,
-                              double min_vel_trans);
+
+  void updateOscillationFlags(Eigen::Vector3f pos, base_local_planner::Trajectory* traj, double min_vel_trans);
 
   void setOscillationResetDist(double dist, double angle);
 
 private:
-  void resetOscillationFlagsIfPossible(const Eigen::Vector3f &pos,
-                                       const Eigen::Vector3f &prev);
+
+  void resetOscillationFlagsIfPossible(const Eigen::Vector3f& pos, const Eigen::Vector3f& prev);
 
   /**
    * @brief  Given a trajectory that's selected, set flags if needed to
@@ -74,8 +72,7 @@ private:
    * @param  t The selected trajectory
    * @return True if a flag was set, false otherwise
    */
-  bool setOscillationFlags(base_local_planner::Trajectory *t,
-                           double min_vel_trans);
+  bool setOscillationFlags(base_local_planner::Trajectory* t, double min_vel_trans);
 
   // flags
   bool strafe_pos_only_, strafe_neg_only_, strafing_pos_, strafing_neg_;

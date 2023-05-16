@@ -33,16 +33,20 @@ extern "C" {
 #endif
 
 #include <stdio.h>
-
+  
 // The basic vector
-typedef struct {
+typedef struct
+{
   double v[3];
 } pf_vector_t;
 
+
 // The basic matrix
-typedef struct {
+typedef struct
+{
   double m[3][3];
 } pf_matrix_t;
+
 
 // Return a zero vector
 pf_vector_t pf_vector_zero();
@@ -65,6 +69,7 @@ pf_vector_t pf_vector_coord_add(pf_vector_t a, pf_vector_t b);
 // Transform from global to local coords (a - b)
 pf_vector_t pf_vector_coord_sub(pf_vector_t a, pf_vector_t b);
 
+
 // Return a zero matrix
 pf_matrix_t pf_matrix_zero();
 
@@ -76,7 +81,7 @@ void pf_matrix_fprintf(pf_matrix_t s, FILE *file, const char *fmt);
 
 // Compute the matrix inverse.  Will also return the determinant,
 // which should be checked for underflow (indicated singular matrix).
-// pf_matrix_t pf_matrix_inverse(pf_matrix_t a, double *det);
+//pf_matrix_t pf_matrix_inverse(pf_matrix_t a, double *det);
 
 // Decompose a covariance matrix [a] into a rotation matrix [r] and a
 // diagonal matrix [d] such that a = r * d * r^T.
