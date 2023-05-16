@@ -23,25 +23,25 @@
   <!-- Import 2D LiDAR model -->
   <xacro:include filename="$(find igvc2023)/urdf/sensors/hokuyo.urdf.xacro"/>
   <xacro:sensor_hokuyo name="hokuyo" parent="base_link" min_angle="-1.22" max_angle="1.22" samples="720">
-    <origin xyz="0.1075 0.0 0.1085" rpy="0.0 0.0 0.0"/>
+    <origin xyz="0.2875 0.0 0.1085" rpy="0.0 0.0 0.0"/>
   </xacro:sensor_hokuyo>
   
   <!-- Import 3D LiDAR model -->
   <xacro:include filename="$(find igvc2023)/urdf/sensors/velodyne.urdf.xacro"/>
   <xacro:sensor_velodyne name="velodyne" parent="base_link" min_angle="-2.35619" max_angle="2.35619" samples="720">
-    <origin xyz="-0.0185 0.0 0.8985" rpy="0.0 0.0 0.0"/>
+    <origin xyz="-0.25 0.0 1.25" rpy="0.0 0.0 0.0"/>
   </xacro:sensor_velodyne>
   
   <!-- Import imu model -->
   <xacro:include filename="$(find igvc2023)/urdf/sensors/imu.urdf.xacro"/>
   <xacro:sensor_imu name="imu" parent="base_link" size="0.05 0.05 0.05">
-    <origin xyz="-0.253 0.0 0.068" rpy="0.0 0.0 0.0"/>
+    <origin xyz="0 0.0 0.068" rpy="0.0 0.0 0.0"/>
   </xacro:sensor_imu>
   
   <!-- Import fisheye camera model -->
   <xacro:include filename="$(find igvc2023)/urdf/sensors/camera.urdf.xacro"/>
   <xacro:sensor_camera name="camera" parent="base_link">
-    <origin xyz="0 0 1.3" rpy="0 ${PI/2} 0"/>
+    <origin xyz="-0.25 0 1.6" rpy="0 0 0"/>
   </xacro:sensor_camera>
   
   <!-- Import gps model -->
@@ -62,23 +62,23 @@
   <!-- Base Link -->
   <link name="base_link">
     <collision>
-      <origin xyz="-0.1995 0.0 0.341" rpy="0.0 0.0 0.0"/>
+      <origin xyz="-0.55 0.0 0.5" rpy="0.0 0.0 0.0"/>
       <geometry>
-        <box size="0.549 0.5055 0.603"/>
+        <box size="1.6 0.85 1"/>
       </geometry>
     </collision>
 
     <visual>
-      <origin xyz="0.0775 0.25275 0.6425" rpy="0.0 0.0 0.0"/>
+      <origin xyz="-0.6 0.0 0.5" rpy="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="package://igvc2023/meshes/chassis.dae"/>
+        <mesh filename="package://igvc2023/meshes/IGVCchassis.dae"/>
       </geometry>
     </visual>
 
     <inertial>
-       <mass value="27.1" />
-       <origin xyz="-0.1995 0.0 0.19" rpy="0.0 0.0 0.0"/>
-       <xacro:box_inertia m="27.1" x="0.549" y="0.5055" z="0.3"/>
+       <mass value="40" />
+       <origin xyz="-0.6 0.0 0.3" rpy="0.0 0.0 0.0"/>
+       <xacro:box_inertia m="40" x="1.06" y="0.625" z="0.43"/>
     </inertial>
   </link>
   
@@ -97,14 +97,14 @@
   
   <link name="left_caster_link">
     <collision>
-      <origin xyz="-0.4815 0.145 -0.039" rpy="0.0 ${PI/2} ${PI/2}"/>
+      <origin xyz="-1.2015 0.15 -0.039" rpy="0.0 ${PI/2} ${PI/2}"/>
       <geometry>
         <sphere radius="0.0625"/>
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.4815 0.145 -0.039" rpy="0.0 0.0 0.0"/>
+      <origin xyz="-1.2015 0.15 -0.039" rpy="0.0 0.0 0.0"/>
       <geometry>
         <mesh filename="package://igvc2023/meshes/left_back_wheel.dae"/>
       </geometry>
@@ -113,14 +113,14 @@
   
   <link name="right_caster_link">
     <collision>
-      <origin xyz="-0.4815 -0.145 -0.039" rpy="0.0 ${PI/2} ${PI/2}"/>
+      <origin xyz="-1.2015 -0.15 -0.039" rpy="0.0 ${PI/2} ${PI/2}"/>
       <geometry>
         <sphere radius="0.0625"/>
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.4815 -0.145 -0.039" rpy="0.0 0.0 0.0"/>
+      <origin xyz="-1.2015 -0.15 -0.039" rpy="0.0 0.0 0.0"/>
       <geometry>
         <mesh filename="package://igvc2023/meshes/right_back_wheel.dae"/>
         <sphere radius="0.0625"/>
@@ -130,7 +130,7 @@
   
   <!-- Front wheels -->
   <joint type="revolute" name="left_wheel_hinge">
-    <origin xyz="0.0 0.2834 0.0" rpy="0.0 0.0 0.0"/>
+    <origin xyz="0.0 0.465 0.0" rpy="0.0 0.0 0.0"/>
     <child link="left_wheel">left_wheel</child>
     <parent link="base_link">base_link</parent>
     <axis xyz="0 1 0"/>
@@ -138,7 +138,7 @@
   </joint>
   
   <joint type="revolute" name="right_wheel_hinge">
-    <origin xyz="0.0 -0.2834 0.0" rpy="0.0 0.0 0.0"/>
+    <origin xyz="0.0 -0.465 0.0" rpy="0.0 0.0 0.0"/>
     <child link="right_wheel">right_wheel</child>
     <parent link="base_link">base_link</parent>
     <axis xyz="0 1 0"/>

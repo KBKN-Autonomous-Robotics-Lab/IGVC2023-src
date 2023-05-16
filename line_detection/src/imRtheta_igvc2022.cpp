@@ -97,9 +97,9 @@ class ImageConverter
 		}
 		*/
 		
-		cv::resize(rtheta_img, rtheta_img, cv::Size(), 2, 2);
-		cv::imshow("r-theta image", rtheta_img*255);
-		cv::waitKey(1);
+		// cv::resize(rtheta_img, rtheta_img, cv::Size(), 2, 2);
+		// cv::imshow("r-theta image", rtheta_img*255);
+		// cv::waitKey(1);
 	}
 
 	

@@ -11,8 +11,8 @@
 
     <!-- Convert 3d pointcloud to 2d laserscan -->
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
-        <remap from="cloud_in" to="obstacle_cloud"/>
-        <!--<remap from="cloud_in" to="ground_segmentation/obstacle_cloud"/>-->
+        <remap from="cloud_in" to="ground_segmentation/obstacle_cloud"/>
+        <!-- <remap from="cloud_in" to="velodyne_points"/> -->
         <remap from="scan"     to="velodyne_scan"/>
         <rosparam command="load" file="$(find igvc2023)/params/pointcloud_to_laserscan_params.yaml"/>
     </node>

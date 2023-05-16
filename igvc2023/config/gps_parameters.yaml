@@ -1,7 +1,7 @@
 # maintainer:kbkn/mori
 #
 # name of the port that connects to gps device
-dev_name: /dev/ttyACM0
+dev_name: /dev/sensors/GNSSbase
 # directory of the file where waypoints will be saved
 output_file: /home/ubuntu/catkin_ws/src/igvc2023/config/gps_waypoints/gps_waypoints.yaml
 #output_file: /home/ubuntu/catkin_ws/src/igvc2023/config/gps_waypoints/qualification_waypoints.yaml
