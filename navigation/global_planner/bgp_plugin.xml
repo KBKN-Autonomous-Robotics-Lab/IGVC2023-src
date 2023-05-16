@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <library path="lib/libglobal_planner">
   <class name="global_planner/GlobalPlanner" type="global_planner::GlobalPlanner" base_class_type="nav_core::BaseGlobalPlanner">
     <description>

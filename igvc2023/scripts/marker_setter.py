@@ -3,8 +3,7 @@
 
 import rospy
 import ruamel.yaml
-from visualization_msgs.msg import Marker
-from visualization_msgs.msg import MarkerArray
+from visualization_msgs.msg import Marker, MarkerArray
 
 topic = "visualization_marker_array"
 publisher = rospy.Publisher(topic, MarkerArray, queue_size=1)
@@ -38,7 +37,7 @@ while not rospy.is_shutdown():
     marker.pose.position.y = waypoints["waypoints"][num]["point"]["y"]
     marker.pose.position.z = 0.0
 
-    if(count > MARKERS_MAX):
+    if count > MARKERS_MAX:
         markerArray.markers.pop(0)
 
     markerArray.markers.append(marker)

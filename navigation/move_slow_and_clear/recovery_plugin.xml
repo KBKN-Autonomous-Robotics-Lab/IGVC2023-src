@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <library path="lib/libmove_slow_and_clear">
   <class name="move_slow_and_clear/MoveSlowAndClear" type="move_slow_and_clear::MoveSlowAndClear" base_class_type="nav_core::RecoveryBehavior">
     <description>

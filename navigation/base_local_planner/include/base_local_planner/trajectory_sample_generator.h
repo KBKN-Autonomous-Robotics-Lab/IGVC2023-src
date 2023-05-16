@@ -48,7 +48,6 @@ namespace base_local_planner {
  */
 class TrajectorySampleGenerator {
 public:
-
   /**
    * Whether this generator can create more trajectories
    */
@@ -66,9 +65,8 @@ public:
 
 protected:
   TrajectorySampleGenerator() {}
-
 };
 
-} // end namespace
+} // namespace base_local_planner
 
 #endif /* TRAJECTORY_SAMPLE_GENERATOR_H_ */

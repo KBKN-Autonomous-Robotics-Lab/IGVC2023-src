@@ -36,36 +36,37 @@
  *********************************************************************/
 #include <base_local_planner/odometry_helper_ros.h>
 #include <tf2/LinearMath/Quaternion.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2/convert.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 namespace base_local_planner {
 
 OdometryHelperRos::OdometryHelperRos(std::string odom_topic) {
-  setOdomTopic( odom_topic );
+  setOdomTopic(odom_topic);
 }
 
-void OdometryHelperRos::odomCallback(const nav_msgs::Odometry::ConstPtr& msg) {
-    ROS_INFO_ONCE("odom received!");
+void OdometryHelperRos::odomCallback(const nav_msgs::Odometry::ConstPtr &msg) {
+  ROS_INFO_ONCE("odom received!");
 
-  //we assume that the odometry is published in the frame of the base
+  // we assume that the odometry is published in the frame of the base
   boost::mutex::scoped_lock lock(odom_mutex_);
   base_odom_.twist.twist.linear.x = msg->twist.twist.linear.x;
   base_odom_.twist.twist.linear.y = msg->twist.twist.linear.y;
   base_odom_.twist.twist.angular.z = msg->twist.twist.angular.z;
   base_odom_.child_frame_id = msg->child_frame_id;
-//  ROS_DEBUG_NAMED("dwa_local_planner", "In the odometry callback with velocity values: (%.2f, %.2f, %.2f)",
-//      base_odom_.twist.twist.linear.x, base_odom_.twist.twist.linear.y, base_odom_.twist.twist.angular.z);
+  //  ROS_DEBUG_NAMED("dwa_local_planner", "In the odometry callback with
+  //  velocity values: (%.2f, %.2f, %.2f)",
+  //      base_odom_.twist.twist.linear.x, base_odom_.twist.twist.linear.y,
+  //      base_odom_.twist.twist.angular.z);
 }
 
-//copy over the odometry information
-void OdometryHelperRos::getOdom(nav_msgs::Odometry& base_odom) {
+// copy over the odometry information
+void OdometryHelperRos::getOdom(nav_msgs::Odometry &base_odom) {
   boost::mutex::scoped_lock lock(odom_mutex_);
   base_odom = base_odom_;
 }
 
-
-void OdometryHelperRos::getRobotVel(geometry_msgs::PoseStamped& robot_vel) {
+void OdometryHelperRos::getRobotVel(geometry_msgs::PoseStamped &robot_vel) {
   // Set current velocities from odometry
   geometry_msgs::Twist global_vel;
   {
@@ -85,19 +86,16 @@ void OdometryHelperRos::getRobotVel(geometry_msgs::PoseStamped& robot_vel) {
   robot_vel.header.stamp = ros::Time();
 }
 
-void OdometryHelperRos::setOdomTopic(std::string odom_topic)
-{
-  if( odom_topic != odom_topic_ )
-  {
+void OdometryHelperRos::setOdomTopic(std::string odom_topic) {
+  if (odom_topic != odom_topic_) {
     odom_topic_ = odom_topic;
 
-    if( odom_topic_ != "" )
-    {
+    if (odom_topic_ != "") {
       ros::NodeHandle gn;
-      odom_sub_ = gn.subscribe<nav_msgs::Odometry>( odom_topic_, 1, boost::bind( &OdometryHelperRos::odomCallback, this, _1 ));
-    }
-    else
-    {
+      odom_sub_ = gn.subscribe<nav_msgs::Odometry>(
+          odom_topic_, 1,
+          boost::bind(&OdometryHelperRos::odomCallback, this, _1));
+    } else {
       odom_sub_.shutdown();
     }
   }

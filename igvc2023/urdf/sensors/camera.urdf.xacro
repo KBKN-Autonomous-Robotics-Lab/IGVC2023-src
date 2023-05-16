@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
-<robot name="sensor_camera" xmlns:xacro="http://ros.org/wiki/xacro"
-                            xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-                            xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
- 
-  <xacro:property name="camera" value="0.1"/> 
- 
+<robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" name="sensor_camera">
+  <xacro:property name="camera" value="0.1"/>
   <xacro:macro name="sensor_camera" params="name parent *origin">
     <joint name="${name}_joint" type="fixed">
       <xacro:insert_block name="origin"/>
@@ -12,7 +8,6 @@
       <parent link="${parent}"/>
       <child link="${name}_link"/>
     </joint>
-    
     <link name="${name}_link">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -20,7 +15,6 @@
           <sphere radius="0.015"/>
         </geometry>
       </visual>
- 
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
@@ -28,7 +22,6 @@
         </geometry>
       </collision>
     </link>
-   
     <gazebo reference="${name}_link">
       <sensor type="wideanglecamera" name="cv_camera">
         <update_rate>10.0</update_rate>
@@ -51,7 +44,6 @@
             <env_texture_size>512</env_texture_size>
           </lens>
         </camera>
-        
         <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
           <alwaysOn>true</alwaysOn>
           <updateRate>0.0</updateRate>
@@ -69,7 +61,5 @@
       </sensor>
       <material>Gazebo/White</material>
     </gazebo>
-
   </xacro:macro>
-
- </robot>
+</robot>

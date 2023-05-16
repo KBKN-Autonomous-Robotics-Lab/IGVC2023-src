@@ -52,23 +52,23 @@
 #include <tf2_ros/message_filter.h>
 #include <tf2_ros/transform_listener.h>
 
-namespace pointcloud_to_laserscan
-{
+namespace pointcloud_to_laserscan {
 typedef tf2_ros::MessageFilter<sensor_msgs::LaserScan> MessageFilter;
 
-//! \brief The PointCloudToLaserScanNodelet class to process incoming laserscans into pointclouds.
+//! \brief The PointCloudToLaserScanNodelet class to process incoming laserscans
+//! into pointclouds.
 //!
-class LaserScanToPointCloudNodelet : public nodelet::Nodelet
-{
+class LaserScanToPointCloudNodelet : public nodelet::Nodelet {
 public:
   LaserScanToPointCloudNodelet();
 
 private:
   virtual void onInit();
 
-  void scanCallback(const sensor_msgs::LaserScanConstPtr& scan_msg);
-  void failureCallback(const sensor_msgs::LaserScanConstPtr& scan_msg,
-                       tf2_ros::filter_failure_reasons::FilterFailureReason reason);
+  void scanCallback(const sensor_msgs::LaserScanConstPtr &scan_msg);
+  void
+  failureCallback(const sensor_msgs::LaserScanConstPtr &scan_msg,
+                  tf2_ros::filter_failure_reasons::FilterFailureReason reason);
 
   void connectCb();
   void disconnectCb();
@@ -91,6 +91,6 @@ private:
   double transform_tolerance_;
 };
 
-}  // namespace pointcloud_to_laserscan
+} // namespace pointcloud_to_laserscan
 
-#endif  // POINTCLOUD_TO_LASERSCAN_LASERSCAN_TO_POINTCLOUD_NODELET_H
+#endif // POINTCLOUD_TO_LASERSCAN_LASERSCAN_TO_POINTCLOUD_NODELET_H

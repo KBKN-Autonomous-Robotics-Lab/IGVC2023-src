@@ -49,10 +49,9 @@
  *  RAW -
  *      value = value
  */
-enum MapMode {TRINARY, SCALE, RAW};
+enum MapMode { TRINARY, SCALE, RAW };
 
-namespace map_server
-{
+namespace map_server {
 
 /** Read the image from file and fill out the resp object, for later
  * use when our services are requested.
@@ -68,10 +67,9 @@ namespace map_server
  * @param mode Map mode
  * @throws std::runtime_error If the image file can't be loaded
  * */
-void loadMapFromFile(nav_msgs::GetMap::Response* resp,
-                     const char* fname, double res, bool negate,
-                     double occ_th, double free_th, double* origin,
-                     MapMode mode=TRINARY);
-}
+void loadMapFromFile(nav_msgs::GetMap::Response *resp, const char *fname,
+                     double res, bool negate, double occ_th, double free_th,
+                     double *origin, MapMode mode = TRINARY);
+} // namespace map_server
 
 #endif

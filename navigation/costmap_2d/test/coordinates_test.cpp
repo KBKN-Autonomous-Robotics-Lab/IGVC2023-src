@@ -32,15 +32,15 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Tests ripped from https://github.com/locusrobotics/robot_navigation/blob/master/nav_grid/test/utest.cpp
+// Tests ripped from
+// https://github.com/locusrobotics/robot_navigation/blob/master/nav_grid/test/utest.cpp
 
-#include <gtest/gtest.h>
 #include <costmap_2d/costmap_2d.h>
+#include <gtest/gtest.h>
 
 using namespace costmap_2d;
 
-TEST(CostmapCoordinates, easy_coordinates_test)
-{
+TEST(CostmapCoordinates, easy_coordinates_test) {
   Costmap2D costmap(2, 3, 1.0, 0, 0);
 
   double wx, wy;
@@ -92,8 +92,7 @@ TEST(CostmapCoordinates, easy_coordinates_test)
   EXPECT_EQ(mx, 1);
 }
 
-TEST(CostmapCoordinates, hard_coordinates_test)
-{
+TEST(CostmapCoordinates, hard_coordinates_test) {
   Costmap2D costmap(2, 3, 0.1, -0.2, 0.2);
 
   double wx, wy;
@@ -124,9 +123,7 @@ TEST(CostmapCoordinates, hard_coordinates_test)
   EXPECT_EQ(my, 2);
 }
 
-int main(int argc, char** argv)
-{
-  testing::InitGoogleTest( &argc, argv );
+int main(int argc, char **argv) {
+  testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-

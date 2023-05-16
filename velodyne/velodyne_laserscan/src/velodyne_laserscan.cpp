@@ -33,70 +33,61 @@
 #include "velodyne_laserscan/velodyne_laserscan.h"
 #include <sensor_msgs/point_cloud2_iterator.h>
 
-namespace velodyne_laserscan
-{
+namespace velodyne_laserscan {
 
-VelodyneLaserScan::VelodyneLaserScan(ros::NodeHandle &nh, ros::NodeHandle &nh_priv) :
-    nh_(nh), srv_(nh_priv), ring_count_(0)
-{
-  ros::SubscriberStatusCallback connect_cb = boost::bind(&VelodyneLaserScan::connectCb, this);
-  pub_ = nh.advertise<sensor_msgs::LaserScan>("scan", 10, connect_cb, connect_cb);
+VelodyneLaserScan::VelodyneLaserScan(ros::NodeHandle &nh,
+                                     ros::NodeHandle &nh_priv)
+    : nh_(nh), srv_(nh_priv), ring_count_(0) {
+  ros::SubscriberStatusCallback connect_cb =
+      boost::bind(&VelodyneLaserScan::connectCb, this);
+  pub_ =
+      nh.advertise<sensor_msgs::LaserScan>("scan", 10, connect_cb, connect_cb);
 
   srv_.setCallback(boost::bind(&VelodyneLaserScan::reconfig, this, _1, _2));
 }
 
-void VelodyneLaserScan::connectCb()
-{
+void VelodyneLaserScan::connectCb() {
   boost::lock_guard<boost::mutex> lock(connect_mutex_);
-  if (!pub_.getNumSubscribers())
-  {
+  if (!pub_.getNumSubscribers()) {
     sub_.shutdown();
-  }
-  else if (!sub_)
-  {
-    sub_ = nh_.subscribe("velodyne_points", 10, &VelodyneLaserScan::recvCallback, this);
+  } else if (!sub_) {
+    sub_ = nh_.subscribe("velodyne_points", 10,
+                         &VelodyneLaserScan::recvCallback, this);
   }
 }
 
-void VelodyneLaserScan::recvCallback(const sensor_msgs::PointCloud2ConstPtr& msg)
-{
+void VelodyneLaserScan::recvCallback(
+    const sensor_msgs::PointCloud2ConstPtr &msg) {
   // Latch ring count
-  if (!ring_count_)
-  {
+  if (!ring_count_) {
     // Check for PointCloud2 field 'ring'
     bool found = false;
-    for (size_t i = 0; i < msg->fields.size(); i++)
-    {
-      if (msg->fields[i].datatype == sensor_msgs::PointField::UINT16)
-      {
-        if (msg->fields[i].name == "ring")
-        {
+    for (size_t i = 0; i < msg->fields.size(); i++) {
+      if (msg->fields[i].datatype == sensor_msgs::PointField::UINT16) {
+        if (msg->fields[i].name == "ring") {
           found = true;
           break;
         }
       }
     }
-    if (!found)
-    {
-      ROS_ERROR("VelodyneLaserScan: Field 'ring' of type 'UINT16' not present in PointCloud2");
+    if (!found) {
+      ROS_ERROR("VelodyneLaserScan: Field 'ring' of type 'UINT16' not present "
+                "in PointCloud2");
       return;
     }
-    for (sensor_msgs::PointCloud2ConstIterator<uint16_t> it(*msg, "ring"); it != it.end(); ++it)
-    {
+    for (sensor_msgs::PointCloud2ConstIterator<uint16_t> it(*msg, "ring");
+         it != it.end(); ++it) {
       const uint16_t ring = *it;
 
-      if (ring + 1 > ring_count_)
-      {
+      if (ring + 1 > ring_count_) {
         ring_count_ = ring + 1;
       }
     }
-    if (ring_count_)
-    {
+    if (ring_count_) {
       ROS_INFO("VelodyneLaserScan: Latched ring count of %u", ring_count_);
-    }
-    else
-    {
-      ROS_ERROR("VelodyneLaserScan: Field 'ring' of type 'UINT16' not present in PointCloud2");
+    } else {
+      ROS_ERROR("VelodyneLaserScan: Field 'ring' of type 'UINT16' not present "
+                "in PointCloud2");
       return;
     }
   }
@@ -104,24 +95,16 @@ void VelodyneLaserScan::recvCallback(const sensor_msgs::PointCloud2ConstPtr& msg
   // Select ring to use
   uint16_t ring;
 
-  if ((cfg_.ring < 0) || (cfg_.ring >= ring_count_))
-  {
+  if ((cfg_.ring < 0) || (cfg_.ring >= ring_count_)) {
     // Default to ring closest to being level for each known sensor
-    if (ring_count_ > 32)
-    {
-      ring = 57;  // HDL-64E
+    if (ring_count_ > 32) {
+      ring = 57; // HDL-64E
+    } else if (ring_count_ > 16) {
+      ring = 23; // HDL-32E
+    } else {
+      ring = 8; // VLP-16
     }
-    else if (ring_count_ > 16)
-    {
-      ring = 23;  // HDL-32E
-    }
-    else
-    {
-      ring = 8;  // VLP-16
-    }
-  }
-  else
-  {
+  } else {
     ring = cfg_.ring;
   }
 
@@ -134,39 +117,26 @@ void VelodyneLaserScan::recvCallback(const sensor_msgs::PointCloud2ConstPtr& msg
   int offset_i = -1;
   int offset_r = -1;
 
-  for (size_t i = 0; i < msg->fields.size(); i++)
-  {
-    if (msg->fields[i].datatype == sensor_msgs::PointField::FLOAT32)
-    {
-      if (msg->fields[i].name == "x")
-      {
+  for (size_t i = 0; i < msg->fields.size(); i++) {
+    if (msg->fields[i].datatype == sensor_msgs::PointField::FLOAT32) {
+      if (msg->fields[i].name == "x") {
         offset_x = msg->fields[i].offset;
-      }
-      else if (msg->fields[i].name == "y")
-      {
+      } else if (msg->fields[i].name == "y") {
         offset_y = msg->fields[i].offset;
-      }
-      else if (msg->fields[i].name == "z")
-      {
+      } else if (msg->fields[i].name == "z") {
         offset_z = msg->fields[i].offset;
-      }
-      else if (msg->fields[i].name == "intensity")
-      {
+      } else if (msg->fields[i].name == "intensity") {
         offset_i = msg->fields[i].offset;
       }
-    }
-    else if (msg->fields[i].datatype == sensor_msgs::PointField::UINT16)
-    {
-      if (msg->fields[i].name == "ring")
-      {
+    } else if (msg->fields[i].datatype == sensor_msgs::PointField::UINT16) {
+      if (msg->fields[i].name == "ring") {
         offset_r = msg->fields[i].offset;
       }
     }
   }
 
   // Construct LaserScan message
-  if ((offset_x >= 0) && (offset_y >= 0) && (offset_r >= 0))
-  {
+  if ((offset_x >= 0) && (offset_y >= 0) && (offset_r >= 0)) {
     const float RESOLUTION = std::abs(cfg_.resolution);
     const size_t SIZE = 2.0 * M_PI / RESOLUTION;
     sensor_msgs::LaserScanPtr scan(new sensor_msgs::LaserScan());
@@ -179,84 +149,72 @@ void VelodyneLaserScan::recvCallback(const sensor_msgs::PointCloud2ConstPtr& msg
     scan->time_increment = 0.0;
     scan->ranges.resize(SIZE, INFINITY);
 
-    if ((offset_x == 0) &&
-        (offset_y == 4) &&
-        (offset_i % 4 == 0) &&
-        (offset_r % 4 == 0))
-    {
+    if ((offset_x == 0) && (offset_y == 4) && (offset_i % 4 == 0) &&
+        (offset_r % 4 == 0)) {
       scan->intensities.resize(SIZE);
 
       const size_t X = 0;
       const size_t Y = 1;
       const size_t I = offset_i / 4;
       const size_t R = offset_r / 4;
-      for (sensor_msgs::PointCloud2ConstIterator<float> it(*msg, "x"); it != it.end(); ++it)
-      {
-        const uint16_t r = *((const uint16_t*)(&it[R]));  // ring
+      for (sensor_msgs::PointCloud2ConstIterator<float> it(*msg, "x");
+           it != it.end(); ++it) {
+        const uint16_t r = *((const uint16_t *)(&it[R])); // ring
 
-        if (r == ring)
-        {
-          const float x = it[X];  // x
-          const float y = it[Y];  // y
-          const float i = it[I];  // intensity
-          const int bin = (atan2f(y, x) + static_cast<float>(M_PI)) / RESOLUTION;
+        if (r == ring) {
+          const float x = it[X]; // x
+          const float y = it[Y]; // y
+          const float i = it[I]; // intensity
+          const int bin =
+              (atan2f(y, x) + static_cast<float>(M_PI)) / RESOLUTION;
 
-          if ((bin >= 0) && (bin < static_cast<int>(SIZE)))
-          {
+          if ((bin >= 0) && (bin < static_cast<int>(SIZE))) {
             scan->ranges[bin] = sqrtf(x * x + y * y);
             scan->intensities[bin] = i;
           }
         }
       }
-    }
-    else
-    {
-      ROS_WARN_ONCE("VelodyneLaserScan: PointCloud2 fields in unexpected order. Using slower generic method.");
+    } else {
+      ROS_WARN_ONCE("VelodyneLaserScan: PointCloud2 fields in unexpected "
+                    "order. Using slower generic method.");
 
-      if (offset_i >= 0)
-      {
+      if (offset_i >= 0) {
         scan->intensities.resize(SIZE);
         sensor_msgs::PointCloud2ConstIterator<uint16_t> iter_r(*msg, "ring");
         sensor_msgs::PointCloud2ConstIterator<float> iter_x(*msg, "x");
         sensor_msgs::PointCloud2ConstIterator<float> iter_y(*msg, "y");
         sensor_msgs::PointCloud2ConstIterator<float> iter_i(*msg, "intensity");
-        for ( ; iter_r != iter_r.end(); ++iter_x, ++iter_y, ++iter_r, ++iter_i)
-        {
-          const uint16_t r = *iter_r;  // ring
+        for (; iter_r != iter_r.end(); ++iter_x, ++iter_y, ++iter_r, ++iter_i) {
+          const uint16_t r = *iter_r; // ring
 
-          if (r == ring)
-          {
-            const float x = *iter_x;  // x
-            const float y = *iter_y;  // y
-            const float i = *iter_i;  // intensity
-            const int bin = (atan2f(y, x) + static_cast<float>(M_PI)) / RESOLUTION;
+          if (r == ring) {
+            const float x = *iter_x; // x
+            const float y = *iter_y; // y
+            const float i = *iter_i; // intensity
+            const int bin =
+                (atan2f(y, x) + static_cast<float>(M_PI)) / RESOLUTION;
 
-            if ((bin >= 0) && (bin < static_cast<int>(SIZE)))
-            {
+            if ((bin >= 0) && (bin < static_cast<int>(SIZE))) {
               scan->ranges[bin] = sqrtf(x * x + y * y);
               scan->intensities[bin] = i;
             }
           }
         }
-      }
-      else
-      {
+      } else {
         sensor_msgs::PointCloud2ConstIterator<uint16_t> iter_r(*msg, "ring");
         sensor_msgs::PointCloud2ConstIterator<float> iter_x(*msg, "x");
         sensor_msgs::PointCloud2ConstIterator<float> iter_y(*msg, "y");
 
-        for (; iter_r != iter_r.end(); ++iter_x, ++iter_y, ++iter_r)
-        {
-          const uint16_t r = *iter_r;  // ring
+        for (; iter_r != iter_r.end(); ++iter_x, ++iter_y, ++iter_r) {
+          const uint16_t r = *iter_r; // ring
 
-          if (r == ring)
-          {
-            const float x = *iter_x;  // x
-            const float y = *iter_y;  // y
-            const int bin = (atan2f(y, x) + static_cast<float>(M_PI)) / RESOLUTION;
+          if (r == ring) {
+            const float x = *iter_x; // x
+            const float y = *iter_y; // y
+            const int bin =
+                (atan2f(y, x) + static_cast<float>(M_PI)) / RESOLUTION;
 
-            if ((bin >= 0) && (bin < static_cast<int>(SIZE)))
-            {
+            if ((bin >= 0) && (bin < static_cast<int>(SIZE))) {
               scan->ranges[bin] = sqrtf(x * x + y * y);
             }
           }
@@ -265,16 +223,15 @@ void VelodyneLaserScan::recvCallback(const sensor_msgs::PointCloud2ConstPtr& msg
     }
 
     pub_.publish(scan);
-  }
-  else
-  {
-    ROS_ERROR("VelodyneLaserScan: PointCloud2 missing one or more required fields! (x,y,ring)");
+  } else {
+    ROS_ERROR("VelodyneLaserScan: PointCloud2 missing one or more required "
+              "fields! (x,y,ring)");
   }
 }
 
-void VelodyneLaserScan::reconfig(VelodyneLaserScanConfig& config, uint32_t level)
-{
+void VelodyneLaserScan::reconfig(VelodyneLaserScanConfig &config,
+                                 uint32_t level) {
   cfg_ = config;
 }
 
-}  // namespace velodyne_laserscan
+} // namespace velodyne_laserscan

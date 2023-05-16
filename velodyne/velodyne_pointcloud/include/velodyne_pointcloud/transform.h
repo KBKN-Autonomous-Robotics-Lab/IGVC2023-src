@@ -1,5 +1,5 @@
-// Copyright (C) 2009, 2010, 2011, 2012, 2019 Austin Robot Technology, Jack O'Quin, Jesse Vera, Joshua Whitley,
-// Sebastian Pütz All rights reserved.
+// Copyright (C) 2009, 2010, 2011, 2012, 2019 Austin Robot Technology, Jack
+// O'Quin, Jesse Vera, Joshua Whitley, Sebastian Pütz All rights reserved.
 //
 // Software License Agreement (BSD License 2.0)
 //
@@ -40,57 +40,52 @@
 #ifndef VELODYNE_POINTCLOUD_TRANSFORM_H
 #define VELODYNE_POINTCLOUD_TRANSFORM_H
 
-#include <string>
-#include <ros/ros.h>
-#include "tf/message_filter.h"
 #include "message_filters/subscriber.h"
+#include "tf/message_filter.h"
 #include <diagnostic_updater/diagnostic_updater.h>
 #include <diagnostic_updater/publisher.h>
+#include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <string>
 
-#include <velodyne_pointcloud/rawdata.h>
 #include <velodyne_pointcloud/pointcloudXYZIRT.h>
+#include <velodyne_pointcloud/rawdata.h>
 
 #include <dynamic_reconfigure/server.h>
 #include <velodyne_pointcloud/TransformNodeConfig.h>
 
-namespace velodyne_pointcloud
-{
+namespace velodyne_pointcloud {
 using TransformNodeCfg = velodyne_pointcloud::TransformNodeConfig;
 
-class Transform
-{
+class Transform {
 public:
-  Transform(
-      ros::NodeHandle node,
-      ros::NodeHandle private_nh,
-      std::string const & node_name = ros::this_node::getName());
-  ~Transform()
-  {
-  }
+  Transform(ros::NodeHandle node, ros::NodeHandle private_nh,
+            std::string const &node_name = ros::this_node::getName());
+  ~Transform() {}
 
 private:
-  void processScan(const velodyne_msgs::VelodyneScan::ConstPtr& scanMsg);
+  void processScan(const velodyne_msgs::VelodyneScan::ConstPtr &scanMsg);
 
   // Pointer to dynamic reconfigure service srv_
-  boost::shared_ptr<dynamic_reconfigure::Server<velodyne_pointcloud::TransformNodeConfig>> srv_;
-  void reconfigure_callback(velodyne_pointcloud::TransformNodeConfig& config, uint32_t level);
+  boost::shared_ptr<
+      dynamic_reconfigure::Server<velodyne_pointcloud::TransformNodeConfig>>
+      srv_;
+  void reconfigure_callback(velodyne_pointcloud::TransformNodeConfig &config,
+                            uint32_t level);
 
   boost::shared_ptr<velodyne_rawdata::RawData> data_;
   ros::Subscriber velodyne_scan_;
   ros::Publisher output_;
 
   /// configuration parameters
-  typedef struct
-  {
-    std::string target_frame;  ///< target frame
-    std::string fixed_frame;   ///< fixed frame
-    bool organize_cloud;       ///< enable/disable organized cloud structure
-    double max_range;          ///< maximum range to publish
-    double min_range;          ///< minimum range to publish
-    uint16_t num_lasers;       ///< number of lasers
-  }
-  Config;
+  typedef struct {
+    std::string target_frame; ///< target frame
+    std::string fixed_frame;  ///< fixed frame
+    bool organize_cloud;      ///< enable/disable organized cloud structure
+    double max_range;         ///< maximum range to publish
+    double min_range;         ///< minimum range to publish
+    uint16_t num_lasers;      ///< number of lasers
+  } Config;
   Config config_;
 
   bool first_rcfg_call;
@@ -104,6 +99,6 @@ private:
   boost::shared_ptr<diagnostic_updater::TopicDiagnostic> diag_topic_;
   boost::mutex reconfigure_mtx_;
 };
-}  // namespace velodyne_pointcloud
+} // namespace velodyne_pointcloud
 
-#endif  // VELODYNE_POINTCLOUD_TRANSFORM_H
+#endif // VELODYNE_POINTCLOUD_TRANSFORM_H

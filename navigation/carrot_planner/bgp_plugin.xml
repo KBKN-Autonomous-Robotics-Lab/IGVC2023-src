@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <library path="lib/libcarrot_planner">
   <class name="carrot_planner/CarrotPlanner" type="carrot_planner::CarrotPlanner" base_class_type="nav_core::BaseGlobalPlanner">
     <description>

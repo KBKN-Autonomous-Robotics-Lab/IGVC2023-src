@@ -38,48 +38,43 @@
 #ifndef COSTMAP_2D_COSTMAP_2D_ROS_H_
 #define COSTMAP_2D_COSTMAP_2D_ROS_H_
 
-#include <costmap_2d/layered_costmap.h>
-#include <costmap_2d/layer.h>
-#include <costmap_2d/costmap_2d_publisher.h>
 #include <costmap_2d/Costmap2DConfig.h>
+#include <costmap_2d/costmap_2d_publisher.h>
 #include <costmap_2d/footprint.h>
+#include <costmap_2d/layer.h>
+#include <costmap_2d/layered_costmap.h>
+#include <dynamic_reconfigure/server.h>
 #include <geometry_msgs/Polygon.h>
 #include <geometry_msgs/PolygonStamped.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <dynamic_reconfigure/server.h>
 #include <pluginlib/class_loader.hpp>
 #include <tf2/LinearMath/Transform.h>
 
-class SuperValue : public XmlRpc::XmlRpcValue
-{
+class SuperValue : public XmlRpc::XmlRpcValue {
 public:
-  void setStruct(XmlRpc::XmlRpcValue::ValueStruct* a)
-  {
+  void setStruct(XmlRpc::XmlRpcValue::ValueStruct *a) {
     _type = TypeStruct;
     _value.asStruct = new XmlRpc::XmlRpcValue::ValueStruct(*a);
   }
-  void setArray(XmlRpc::XmlRpcValue::ValueArray* a)
-  {
+  void setArray(XmlRpc::XmlRpcValue::ValueArray *a) {
     _type = TypeArray;
     _value.asArray = new std::vector<XmlRpc::XmlRpcValue>(*a);
   }
 };
 
-namespace costmap_2d
-{
+namespace costmap_2d {
 
 /** @brief A ROS wrapper for a 2D Costmap. Handles subscribing to
  * topics that provide observations about obstacles in either the form
  * of PointCloud or LaserScan messages. */
-class Costmap2DROS
-{
+class Costmap2DROS {
 public:
   /**
    * @brief  Constructor for the wrapper
    * @param name The name for this costmap
    * @param tf A reference to a TransformListener
    */
-  Costmap2DROS(const std::string &name, tf2_ros::Buffer& tf);
+  Costmap2DROS(const std::string &name, tf2_ros::Buffer &tf);
   ~Costmap2DROS();
 
   /**
@@ -95,7 +90,8 @@ public:
   void stop();
 
   /**
-   * @brief  Stops the costmap from updating, but sensor data still comes in over the wire
+   * @brief  Stops the costmap from updating, but sensor data still comes in
+   * over the wire
    */
   void pause();
 
@@ -112,71 +108,54 @@ public:
   void resetLayers();
 
   /** @brief Same as getLayeredCostmap()->isCurrent(). */
-  bool isCurrent() const
-    {
-      return layered_costmap_->isCurrent();
-    }
+  bool isCurrent() const { return layered_costmap_->isCurrent(); }
 
   /**
    * @brief Is the costmap stopped
    */
-  bool isStopped() const
-    {
-      return stopped_;
-    }
+  bool isStopped() const { return stopped_; }
 
   /**
    * @brief Get the pose of the robot in the global frame of the costmap
-   * @param global_pose Will be set to the pose of the robot in the global frame of the costmap
+   * @param global_pose Will be set to the pose of the robot in the global frame
+   * of the costmap
    * @return True if the pose was set successfully, false otherwise
    */
-  bool getRobotPose(geometry_msgs::PoseStamped& global_pose) const;
+  bool getRobotPose(geometry_msgs::PoseStamped &global_pose) const;
 
   /** @brief Returns costmap name */
-  inline const std::string& getName() const noexcept
-    {
-      return name_;
-    }
+  inline const std::string &getName() const noexcept { return name_; }
 
-  /** @brief Returns the delay in transform (tf) data that is tolerable in seconds */
-  double getTransformTolerance() const
-    {
-      return transform_tolerance_;
-    }
+  /** @brief Returns the delay in transform (tf) data that is tolerable in
+   * seconds */
+  double getTransformTolerance() const { return transform_tolerance_; }
 
-  /** @brief Return a pointer to the "master" costmap which receives updates from all the layers.
+  /** @brief Return a pointer to the "master" costmap which receives updates
+   * from all the layers.
    *
    * Same as calling getLayeredCostmap()->getCostmap(). */
-  Costmap2D* getCostmap() const
-    {
-      return layered_costmap_->getCostmap();
-    }
+  Costmap2D *getCostmap() const { return layered_costmap_->getCostmap(); }
 
   /**
    * @brief  Returns the global frame of the costmap
    * @return The global frame of the costmap
    */
-  inline const std::string& getGlobalFrameID() const noexcept
-    {
-      return global_frame_;
-    }
+  inline const std::string &getGlobalFrameID() const noexcept {
+    return global_frame_;
+  }
 
   /**
    * @brief  Returns the local frame of the costmap
    * @return The local frame of the costmap
    */
-  inline const std::string& getBaseFrameID() const noexcept
-    {
-      return robot_base_frame_;
-    }
-  LayeredCostmap* getLayeredCostmap() const
-    {
-      return layered_costmap_;
-    }
+  inline const std::string &getBaseFrameID() const noexcept {
+    return robot_base_frame_;
+  }
+  LayeredCostmap *getLayeredCostmap() const { return layered_costmap_; }
 
-  /** @brief Returns the current padded footprint as a geometry_msgs::Polygon. */
-  geometry_msgs::Polygon getRobotFootprintPolygon() const
-  {
+  /** @brief Returns the current padded footprint as a geometry_msgs::Polygon.
+   */
+  geometry_msgs::Polygon getRobotFootprintPolygon() const {
     return costmap_2d::toPolygon(padded_footprint_);
   }
 
@@ -188,28 +167,32 @@ public:
    * The footprint initially comes from the rosparam "footprint" but
    * can be overwritten by dynamic reconfigure or by messages received
    * on the "footprint" topic. */
-  inline const std::vector<geometry_msgs::Point>& getRobotFootprint() const noexcept
-  {
+  inline const std::vector<geometry_msgs::Point> &
+  getRobotFootprint() const noexcept {
     return padded_footprint_;
   }
 
-  /** @brief Return the current unpadded footprint of the robot as a vector of points.
+  /** @brief Return the current unpadded footprint of the robot as a vector of
+   * points.
    *
    * This is the raw version of the footprint without padding.
    *
    * The footprint initially comes from the rosparam "footprint" but
    * can be overwritten by dynamic reconfigure or by messages received
    * on the "footprint" topic. */
-  inline const std::vector<geometry_msgs::Point>& getUnpaddedRobotFootprint() const noexcept
-  {
+  inline const std::vector<geometry_msgs::Point> &
+  getUnpaddedRobotFootprint() const noexcept {
     return unpadded_footprint_;
   }
 
   /**
-   * @brief  Build the oriented footprint of the robot at the robot's current pose
-   * @param  oriented_footprint Will be filled with the points in the oriented footprint of the robot
+   * @brief  Build the oriented footprint of the robot at the robot's current
+   * pose
+   * @param  oriented_footprint Will be filled with the points in the oriented
+   * footprint of the robot
    */
-  void getOrientedFootprint(std::vector<geometry_msgs::Point>& oriented_footprint) const;
+  void getOrientedFootprint(
+      std::vector<geometry_msgs::Point> &oriented_footprint) const;
 
   /** @brief Set the footprint of the robot to be the given set of
    * points, padded by footprint_padding.
@@ -221,7 +204,8 @@ public:
    * layered_costmap_->setFootprint().  Also saves the unpadded
    * footprint, which is available from
    * getUnpaddedRobotFootprint(). */
-  void setUnpaddedRobotFootprint(const std::vector<geometry_msgs::Point>& points);
+  void
+  setUnpaddedRobotFootprint(const std::vector<geometry_msgs::Point> &points);
 
   /** @brief Set the footprint of the robot to be the given polygon,
    * padded by footprint_padding.
@@ -233,15 +217,16 @@ public:
    * layered_costmap_->setFootprint().  Also saves the unpadded
    * footprint, which is available from
    * getUnpaddedRobotFootprint(). */
-  void setUnpaddedRobotFootprintPolygon(const geometry_msgs::Polygon& footprint);
+  void
+  setUnpaddedRobotFootprintPolygon(const geometry_msgs::Polygon &footprint);
 
 protected:
-  LayeredCostmap* layered_costmap_;
+  LayeredCostmap *layered_costmap_;
   std::string name_;
-  tf2_ros::Buffer& tf_;  ///< @brief Used for transforming point clouds
-  std::string global_frame_;  ///< @brief The global frame for the costmap
-  std::string robot_base_frame_;  ///< @brief The frame_id of the robot base
-  double transform_tolerance_;  ///< timeout before transform errors
+  tf2_ros::Buffer &tf_;          ///< @brief Used for transforming point clouds
+  std::string global_frame_;     ///< @brief The global frame for the costmap
+  std::string robot_base_frame_; ///< @brief The frame_id of the robot base
+  double transform_tolerance_;   ///< timeout before transform errors
 
 private:
   /** @brief Set the footprint from the new_config object.
@@ -251,20 +236,22 @@ private:
   void readFootprintFromConfig(const costmap_2d::Costmap2DConfig &new_config,
                                const costmap_2d::Costmap2DConfig &old_config);
 
-  void loadOldParameters(ros::NodeHandle& nh);
-  void warnForOldParameters(ros::NodeHandle& nh);
-  void checkOldParam(ros::NodeHandle& nh, const std::string &param_name);
-  void copyParentParameters(const std::string& plugin_name, const std::string& plugin_type, ros::NodeHandle& nh);
+  void loadOldParameters(ros::NodeHandle &nh);
+  void warnForOldParameters(ros::NodeHandle &nh);
+  void checkOldParam(ros::NodeHandle &nh, const std::string &param_name);
+  void copyParentParameters(const std::string &plugin_name,
+                            const std::string &plugin_type,
+                            ros::NodeHandle &nh);
   void reconfigureCB(costmap_2d::Costmap2DConfig &config, uint32_t level);
   void movementCB(const ros::TimerEvent &event);
   void mapUpdateLoop(double frequency);
   bool map_update_thread_shutdown_;
   bool stop_updates_, initialized_, stopped_;
-  boost::thread* map_update_thread_;  ///< @brief A thread for updating the map
+  boost::thread *map_update_thread_; ///< @brief A thread for updating the map
   ros::Time last_publish_;
   ros::Duration publish_cycle;
   pluginlib::ClassLoader<Layer> plugin_loader_;
-  Costmap2DPublisher* publisher_;
+  Costmap2DPublisher *publisher_;
   dynamic_reconfigure::Server<costmap_2d::Costmap2DConfig> *dsrv_;
 
   boost::recursive_mutex configuration_mutex_;
@@ -277,6 +264,6 @@ private:
   costmap_2d::Costmap2DConfig old_config_;
 };
 // class Costmap2DROS
-}  // namespace costmap_2d
+} // namespace costmap_2d
 
-#endif  // COSTMAP_2D_COSTMAP_2D_ROS_H
+#endif // COSTMAP_2D_COSTMAP_2D_ROS_H
