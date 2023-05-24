@@ -2,17 +2,17 @@
 # Default: 8 inches wheel
 ###############################
 # Wheel radius
-left_wheel_radius: 0.0974 # meter 0.1015
-right_wheel_radius: 0.0974 # meter 0.1015
+left_wheel_radius: 0.098 # meter 0.1015
+right_wheel_radius: 0.098 # meter 0.1015
 # For odometry computation
-computation_left_wheel_radius: 0.09806 # meter 0.1015
-computation_right_wheel_radius: 0.09794 # meter 0.1015
+computation_left_wheel_radius: 0.0973 # meter 0.1015
+computation_right_wheel_radius: 0.0975 # meter 0.1015
 # Encoder CPR(counts per revolution)
 cpr: 16385
 ###############################
 
 # Distance between Wheels
-wheels_base_width: 0.58 # meter 0.5668
+wheels_base_width: 0.575 # meter 0.5668
 # Motor automatically stops if no topics are received for a certain period of time
 callback_timeout: 1.0 # seconds
 

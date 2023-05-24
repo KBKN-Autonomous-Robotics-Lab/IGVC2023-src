@@ -20,7 +20,7 @@ class ImageConverter:
 		self.bridge = CvBridge()
 		self.map1,self.map2 = cv2.fisheye.initUndistortRectifyMap(K,D,R,P,S,cv2.CV_16SC2)
 		self.sim = simulation
-		self.mask_img = cv2.imread("/home/ubuntu/catkin_ws/src/line_detection/src/mask_robot_image2.png",cv2.IMREAD_GRAYSCALE)
+		self.mask_img = cv2.imread("/home/ubuntu/catkin_ws/src/line_detection/src/mask_robot_image3.png",cv2.IMREAD_GRAYSCALE)
 		self.img_size = S
 		self.template = np.zeros((9,3), np.uint8); self.template[3:6] = 255
 		self.thresh_val1 = 160
