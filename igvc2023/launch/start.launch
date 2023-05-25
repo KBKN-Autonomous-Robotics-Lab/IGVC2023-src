@@ -14,6 +14,7 @@
     <arg name="motor_driver_dev" default="/dev/ZLAC8015D"/>
     <arg name="estop_dev"        default="/dev/E-Stop"/>
     <arg name="debug"            default="false"/>
+    <arg name="use_vlp16"        default="false"/> <!-- Line detection method -->
     
     
     <!-- Start sensors (hokuyo, velodyne, imu, camera, LED, gps) -->
@@ -27,6 +28,7 @@
         <arg name="gps_dev"          value="$(arg gps_dev)"/>
         <arg name="gps1_dev"         value="$(arg gps1_dev)"/>
         <arg name="gps2_dev"         value="$(arg gps2_dev)"/>
+        <arg name="use_vlp16"        value="$(arg use_vlp16)"/>
     </include>
     
     

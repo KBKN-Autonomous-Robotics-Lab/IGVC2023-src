@@ -12,6 +12,7 @@
     <arg name="gps2_dev"         default="/dev/sensors/GNSSrover"/>
     <arg name="use_ekf"          default="true"/>
     <arg name="urg_ip"           default="192.168.3.11"/>
+    <arg name="use_vlp16"        default="false"/> <!-- Line detection method -->
     
     
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
@@ -86,18 +87,33 @@
     <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
     <include file="$(find igvc2023)/launch/segmentation.launch"/>
     
-    <!-- Start camera -->
-    <node pkg="cv_camera" type="cv_camera_node" name="cv_camera">
-       <param name="device_path" value="/dev/sensors/insta360_air"/>
-       <param name="image_width" value="1478"/>
-       <param name="image_height" value="736"/>
-    </node>
-
     <!-- Line detection node -->
-    <include file="$(find line_detection)/launch/igvc2022_line_detection.launch">
-        <arg name="is_sim" value="false"/>
-    </include>
-    
+    <group unless="$(arg use_vlp16)">
+        <!-- Start camera -->
+        <node pkg="cv_camera" type="cv_camera_node" name="cv_camera">
+        <param name="device_path" value="/dev/sensors/insta360_air"/>
+        <param name="image_width" value="1478"/>
+        <param name="image_height" value="736"/>
+        </node>
+
+        <!-- Line detection with omni-camera -->
+        <include file="$(find line_detection)/launch/igvc2022_line_detection.launch">
+            <arg name="is_sim" value="false"/>
+        </include>
+    </group>
+
+    <group if="$(arg use_vlp16)">
+        <!-- Publish detected line as pointcloud -->
+        <node pkg="line_detection_vlp16" type="line_detection.py" name="line_detection" output="screen">
+            <remap from="/points_in"    to="/velodyne_points"/>
+            <rosparam command="load" file="$(find line_detection_vlp16)/param/line_detection_params.yaml" />
+        </node>
+
+        <!-- Dynamic reconfigure -->
+        <node pkg="rqt_gui" type="rqt_gui" name="reconfigure" args="-s reconfigure"/>
+    </group>
+
+
     <!-- Sensor fusion 
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find igvc2023)/config/ekf.yaml" />

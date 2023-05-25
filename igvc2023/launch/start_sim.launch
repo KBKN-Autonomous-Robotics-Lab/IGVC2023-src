@@ -14,6 +14,7 @@
     <arg name="pitch" default="0"/>
     <arg name="yaw"   default="0"/>
 
+    <arg name="use_vlp16"        default="false"/> <!-- Line detection method -->
 
     <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -34,9 +35,35 @@
     <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
     <include file="$(find igvc2023)/launch/segmentation.launch"/>
 
-  <include file="$(find line_detection)/launch/igvc2022_line_detection.launch">
-    <arg name="is_sim" value="true"/>
-  </include>
+    <!-- Line detection node -->
+    <group unless="$(arg use_vlp16)">
+        <include file="$(find line_detection)/launch/igvc2022_line_detection.launch">
+            <arg name="is_sim" value="true"/>
+        </include>
+    </group>
+
+    <group if="$(arg use_vlp16)">
+        <!-- Add intensity to pointcloud based on image within simulation -->
+        <node pkg="line_detection_vlp16" type="fake_intensity_pcd.py" name="fake_intensity_pcd" output="screen">
+            <remap from="/points_in"    to="/velodyne_points"/>
+            <remap from="/points_out"   to="/velodyne_points_sim"/>
+
+            <param name="map_image_path"    value="$(find igvc2023)/models/course_v2/materials/textures/igvc2022_course_image_v2_1400x1200.png"/>
+            <param name="map_size"          value="43 37"/>
+            <param name="origin"            value="0 16.5"/>
+            <param name="urdf_model_name"   value="orange"/>
+            <param name="sensor_height"     value="0.8015"/>
+        </node>
+
+        <!-- Publish detected line as pointcloud -->
+        <node pkg="line_detection_vlp16" type="line_detection.py" name="line_detection" output="screen">
+            <remap from="/points_in"    to="/velodyne_points_sim"/>
+            <rosparam command="load" file="$(find line_detection_vlp16)/param/line_detection_params.yaml" />
+        </node>
+
+        <!-- Dynamic reconfigure -->
+        <node pkg="rqt_gui" type="rqt_gui" name="reconfigure" args="-s reconfigure"/>
+    </group>
 
     <!-- Sensor fusion 
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
