@@ -6,7 +6,8 @@ import tf2_ros
 import actionlib
 import math
 import cv2
-from nav_msgs.msg import OccupancyGrid, MapMetaData, Path
+import ruamel.yaml
+from nav_msgs.msg import OccupancyGrid, MapMetaData
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import PoseStamped
 from std_msgs.msg import Float32
@@ -32,8 +33,8 @@ class LaneFollower:
         self.max_angle = rospy.get_param(NODE_NAME+"/max_angle", math.pi/2)
         self.angle_num = rospy.get_param(NODE_NAME+"/search_angle_num", 9)
         self.window = rospy.get_param(NODE_NAME+"/search_window", 3)
-        self.max_range = rospy.get_param(NODE_NAME+"/search_max_range", 3)
-        self.init_goal_x = rospy.get_param(NODE_NAME+"/init_goal_x", 3) # Initial goal's coordinate from robot frame (m)
+        self.max_range = rospy.get_param(NODE_NAME+"/search_max_range", 2)
+        self.init_goal_x = rospy.get_param(NODE_NAME+"/init_goal_x", 3.0) # Initial goal's coordinate from robot frame (m)
         self.goal_tolerance = rospy.get_param(NODE_NAME+"/goal_tolerance", 2) # (m)
         # Other variables
         self.current_goal = [self.init_goal_x, 0]
@@ -49,11 +50,33 @@ class LaneFollower:
         self.client = actionlib.SimpleActionClient("move_base", MoveBaseAction)
         self.cv_bridge = CvBridge()
         self.t_counter = TimeCounter(10)
+        #
+        self.waypoints_file = rospy.get_param("waypoints_file")
+        self.waypoints = []
+        self.dist = []
+        self.select_goal_flag = True
+        self.waypoints_goal = 2
+        self.messgase_flag = True
     
 
 
     ##########  Costmap callback function  ##########
     def costmap_callback(self, msg: OccupancyGrid):
+        # ----- For node changing -----
+        node_array = str(rospy.get_param("node_array",1))
+        node_index = rospy.get_param("node_index",1)
+        node_flag = int(node_array[node_index-1])
+        if (node_flag!=1 and node_flag!=3) or len(msg.data)==0:    return
+        
+        if self.messgase_flag:
+            start_msg = """
+###################
+  Node1 started!!
+###################
+"""
+            print("\033[35m" + start_msg + "\033[0m")
+            self.messgase_flag = False
+
         # ----- Listen tf map -> robot_frame -----
         try:
             stamp = msg.header.stamp
@@ -157,6 +180,78 @@ class LaneFollower:
         n_goal_img_rc = self.global_to_image(self.next_goal[0], self.next_goal[1], robot_pose)
         rgb_costmap = cv2.circle(rgb_costmap, (n_goal_img_rc[1], n_goal_img_rc[0]), 3, (100,0,0), thickness=-1)
         self.image_pub.publish(self.cv_bridge.cv2_to_imgmsg((rgb_costmap/100*255).astype(np.uint8)))
+
+        #-----mori: edited-----
+        if self.select_goal_flag:
+            self.dist = []
+            yaml = ruamel.yaml.YAML()
+            with open(self.waypoints_file) as file:
+                self.waypoints = yaml.load(file) # IGVC2022 has 4 pre-defined gps waypoint
+            for i in range(len(self.waypoints["waypoints"])):
+                self.dist.append(self.calc_dist(robot_pose, i, 0))
+            self.dist.append(self.calc_dist(robot_pose, 0, 1)) # 5th in the list is the distance from the origin
+
+            if self.dist.index(min(self.dist)) == 0: # if the robot is close to waypoint1
+                self.waypoints_goal = 0 # origin
+            elif self.dist.index(min(self.dist)) == 1: # if the robot is close to waypoint2
+                self.waypoints_goal = 3 # waypoint3
+            elif self.dist.index(min(self.dist)) == 2: # if the robot is close to waypoint3
+                self.waypoints_goal = 2 # waypoint2
+            elif self.dist.index(min(self.dist)) == 3: # if the robot is close to waypoint4
+                self.waypoints_goal = 0 # origin
+            elif self.dist.index(min(self.dist)) == 4: # if the robot is close to origin
+                self.waypoints_goal = 1 # waypoint1 or waypoint4
+            self.select_goal_flag = False
+
+        if self.waypoints_goal == 0:
+            print("\r" + "\033[34m" + "Distance from goal: " + str(self.calc_dist(robot_pose, 0, 2)) + "\033[0m", end = "")
+        elif self.waypoints_goal == 1:
+            if self.calc_dist(robot_pose, 0, 0) < self.calc_dist(robot_pose, 3, 0):
+                print("\r" + "\033[34m" + "Distance from waypoint1: " + str(self.calc_dist(robot_pose, 0, 0)) + "\033[0m", end = "")
+            else:
+                print("\r" + "\033[34m" + "Distance from waypoint4: " + str(self.calc_dist(robot_pose, 3, 0)) + "\033[0m", end = "")
+        elif node_flag == 1 and self.waypoints_goal == 2:
+            print("\r" + "\033[34m" + "Distance from waypoint2: " + str(self.calc_dist(robot_pose, 1, 0)) + "\033[0m", end = "")
+        elif node_flag == 1 and self.waypoints_goal == 3:
+            print("\r" + "\033[34m" + "Distance from waypoint3: " + str(self.calc_dist(robot_pose, 2, 0)) + "\033[0m", end = "")
+    
+
+        distance = 10 # [m]
+        if self.waypoints_goal == 0 and self.calc_dist(robot_pose, 4, 2) < 0.5:
+            goal_msg = """
+###################
+  Goal reached!!
+###################
+"""
+            print("\033[35m" + goal_msg + "\033[0m")
+            node_index += 1
+            rospy.set_param("node_index", node_index)
+            self.messgase_flag = True
+            return
+        elif self.waypoints_goal == 1 and (self.calc_dist(robot_pose, 0, 0) < distance or self.calc_dist(robot_pose, 3, 0) < distance):
+            print("")
+            print("\033[32m" + "Activate next node!!" + "\033[0m")
+            node_index += 1
+            rospy.set_param("node_index", node_index)
+            self.messgase_flag = True
+            self.select_goal_flag = True
+            return
+        elif self.waypoints_goal == 2 and node_flag == 1 and self.calc_dist(robot_pose, 1, 0) < distance:
+            print("")
+            print("\033[32m" + "Activate next node!!" + "\033[0m")
+            node_index += 1
+            rospy.set_param("node_index", node_index)
+            self.messgase_flag = True
+            self.select_goal_flag = True
+            return
+        elif self.waypoints_goal == 3 and node_flag == 1 and self.calc_dist(robot_pose, 2, 0) < distance:
+            print("")
+            print("\033[32m" + "Activate next node!!" + "\033[0m")
+            node_index += 1
+            rospy.set_param("node_index", node_index)
+            self.messgase_flag = True
+            self.select_goal_flag = True
+            return
         return
     
 
@@ -236,6 +331,16 @@ class LaneFollower:
 
     def lane_yaw_callback(self, msg):
         self.lane_yaw = msg.data
+    
+
+    #-----mori: edited-----
+    def calc_dist(self, robot_pose, num, stat):
+        if stat == 0:
+            return math.sqrt((robot_pose[0] - self.waypoints["waypoints"][num]["point"]["x"]) ** 2 + (robot_pose[1] - self.waypoints["waypoints"][num]["point"]["y"]) ** 2)
+        elif stat == 1:
+            return math.sqrt(robot_pose[0] ** 2 + robot_pose[1] ** 2)
+        else:
+            return math.sqrt((robot_pose[0] + 1) ** 2 + robot_pose[1] ** 2)
 
 
 
