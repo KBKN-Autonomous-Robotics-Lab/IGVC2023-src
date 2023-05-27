@@ -6,6 +6,8 @@ import math
 import pcd_tools
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import Float32
+from nav_msgs.msg import Odometry
+from tf.transformations import euler_from_quaternion
 from dynamic_reconfigure.server import Server
 from line_detection_vlp16.cfg import reconfigConfig
 
@@ -20,6 +22,7 @@ class LineDetector:
     def __init__(self):
         # Subscriber, Publisher
         self.pcd_sub = rospy.Subscriber("/points_in", PointCloud2, self.pcd_callback)
+        self.odom_sub = rospy.Subscriber("/odom", Odometry, self.odom_callback)
         self.ground_pub = rospy.Publisher("/ground_points", PointCloud2, queue_size=1)
         self.obstacle_pub = rospy.Publisher("/obstacle_points", PointCloud2, queue_size=1)
         self.lane_pub = rospy.Publisher("/lane_points", PointCloud2, queue_size=1)
@@ -38,9 +41,16 @@ class LineDetector:
         self.h_angle_partition = np.linspace(math.pi, -math.pi, self.h_resolution+1) # descend order (clock wise)
         self.sigma = 0.1
         # Others
+        self.odom_yaw = [0, 0] # pre & current yaw
         self.lane_dir = 0.0
         self.lane_width_ang = np.zeros(self.v_sample_num, dtype=np.float16)
-        self.lost_lane = False
+    
+
+
+    def odom_callback(self, msg: Odometry):
+        self.odom_yaw[0] = self.odom_yaw[1]
+        q = msg.pose.pose.orientation
+        (_, _, self.odom_yaw[1]) = euler_from_quaternion([q.x, q.y, q.z, q.w])
     
 
 
@@ -179,10 +189,11 @@ class LineDetector:
             dir = center_dir[vi]
 
         # lane direction
-        dir = np.mean(center_dir)
-        if abs(dir - self.lane_dir) < math.pi/10:
-            self.lane_dir = (self.lane_dir + dir)/2
-            self.lane_yaw_pub.publish(self.lane_dir)
+        dir1 = np.mean(center_dir) # detect from lane
+        dir2 = self.lane_dir - (self.odom_yaw[1] - self.odom_yaw[0]) # detect from odom change
+        lane_dir = (dir1 + dir2)/2
+        if abs(self.lane_dir - lane_dir) < 0.1:
+            self.lane_dir = lane_dir
         
 
         # ----- Publish -----
