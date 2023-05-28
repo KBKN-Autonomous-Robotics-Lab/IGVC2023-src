@@ -2,7 +2,7 @@
 
 <launch>
     <arg name="scan_topic"      default="/scan"/>
-    <arg name="odom_topic"      default="/combine_dr_measurements/odom_combined"/>
+    <arg name="odom_topic"      default="/odom"/>
     <arg name="cmd_vel"         default="/cmd_vel"/>
     <!-- <arg name="waypoints_file"  default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_north.yaml"/> -->
     <arg name="waypoints_file"  default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_simulation.yaml"/>

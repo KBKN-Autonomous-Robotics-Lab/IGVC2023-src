@@ -5,7 +5,7 @@ import numpy as np
 import math
 import pcd_tools
 from sensor_msgs.msg import PointCloud2
-from std_msgs.msg import Float32
+from std_msgs.msg import Float32, Header
 from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
 from dynamic_reconfigure.server import Server
@@ -197,17 +197,21 @@ class LineDetector:
         
 
         # ----- Publish -----
+        header = Header()
+        header.frame_id = msg.header.frame_id
+        header.stamp = rospy.Time.now()
+
         pub_idx = exist_mat & ground_mat
         X, Y, Z, I = X_mat[pub_idx], Y_mat[pub_idx], Z_mat[pub_idx], I_mat[pub_idx]
-        self.ground_pub.publish(pcd_tools.create_pcd_msg(msg.header, X, Y, Z, I))
+        self.ground_pub.publish(pcd_tools.create_pcd_msg(header, X, Y, Z, I))
 
         pub_idx = exist_mat & obs_mat
         X, Y, Z, I = X_mat[pub_idx], Y_mat[pub_idx], Z_mat[pub_idx], I_mat[pub_idx]
-        self.obstacle_pub.publish(pcd_tools.create_pcd_msg(msg.header, X, Y, Z, I))
+        self.obstacle_pub.publish(pcd_tools.create_pcd_msg(header, X, Y, Z, I))
 
         pub_idx = np.logical_not(np.all(lane_pcd==0, axis=1))
         X, Y, Z, I = lane_pcd[pub_idx,0], lane_pcd[pub_idx,1], lane_pcd[pub_idx,2], lane_pcd[pub_idx,3]
-        self.lane_pub.publish(pcd_tools.create_pcd_msg(msg.header, X, Y, Z, I))
+        self.lane_pub.publish(pcd_tools.create_pcd_msg(header, X, Y, Z, I))
         return
     
 
@@ -227,5 +231,5 @@ if __name__ == "__main__":
 
     detector = LineDetector()
     recfg_srv = Server(reconfigConfig, detector.reconfigCallback)
-    rospy.sleep(0.5)
+    rospy.sleep(1)
     rospy.spin()

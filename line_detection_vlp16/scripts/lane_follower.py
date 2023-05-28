@@ -127,10 +127,17 @@ class LaneFollower:
         
         # ----- Get next goal -----
         max_arg = np.argmax(scores)
-        angle = self.search_angles[max_arg]
         reduction = 0.7
-        score = scores[max_arg] * reduction
-        if score > 3:
+
+        if (max_arg > 0) and (max_arg < self.angle_num-1):
+            score = np.average(scores[max_arg-1:max_arg+2])
+            weight = [(w/score)**3 for w in scores[max_arg-1:max_arg+2]] # to increase score difference, **3
+            angle = np.average(self.search_angles[max_arg-1:max_arg+2], weights=weight)
+        else:
+            score = scores[max_arg] * reduction
+            angle = self.search_angles[max_arg]
+
+        if score > 0:
             resolution = self.costmap_info.resolution
             local_goal_x = (height/2 - goal_img_rc[0] + score*math.cos(angle)) * resolution
             local_goal_y = (width/2 - goal_img_rc[1] + score*math.sin(angle)) * resolution
@@ -216,7 +223,7 @@ class LaneFollower:
             print("\r" + "\033[34m" + "Distance from waypoint3: " + str(self.calc_dist(robot_pose, 2, 0)) + "\033[0m", end = "")
     
 
-        distance = 10 # [m]
+        distance = 5 # [m]
         if self.waypoints_goal == 0 and self.calc_dist(robot_pose, 4, 2) < 0.5:
             goal_msg = """
 ###################
@@ -262,7 +269,8 @@ class LaneFollower:
         ref_idx_c = goal_img_rc[1] + self.refer_idx[1][angle_idx]
         window = 3
         image[goal_img_rc[0]-window:goal_img_rc[0]+window, goal_img_rc[1]-window:goal_img_rc[1]+window] = 0
-        score = self.max_range/self.costmap_info.resolution
+        # score = self.max_range/self.costmap_info.resolution
+        score = min([goal_img_rc[0]-window, self.max_range/self.costmap_info.resolution])
         for i in range(0, len(ref_idx_r)):
             r, c = ref_idx_r[i], ref_idx_c[i]
             if ((r-window < 0) or (c-window < 0) or (c+window >= self.costmap_info.width)
@@ -325,7 +333,7 @@ class LaneFollower:
         resolution = self.costmap_info.resolution
         x = width/2 - lgy/resolution
         y = height/2 - lgx/resolution
-        return round(y), round(x)
+        return int(round(y)), int(round(x))
     
 
 

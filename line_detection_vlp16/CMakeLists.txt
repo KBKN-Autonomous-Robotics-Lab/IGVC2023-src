@@ -12,13 +12,14 @@ find_package(catkin REQUIRED COMPONENTS
   ros_numpy
   sensor_msgs
   gazebo_msgs
+  cv_bridge
   dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
-
+find_package(OpenCV REQUIRED)
 find_package(PkgConfig)
 
 
