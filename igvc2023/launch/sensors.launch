@@ -108,9 +108,6 @@
             <remap from="/points_in"    to="/velodyne_points"/>
             <rosparam command="load" file="$(find line_detection_vlp16)/param/line_detection_params.yaml" />
         </node>
-
-        <!-- Dynamic reconfigure -->
-        <node pkg="rqt_gui" type="rqt_gui" name="reconfigure" args="-s reconfigure"/>
     </group>
 
 
