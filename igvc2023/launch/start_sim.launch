@@ -58,7 +58,7 @@
         <!-- Publish detected line as pointcloud -->
         <node pkg="line_detection_vlp16" type="line_detection.py" name="line_detection" output="screen">
             <remap from="/points_in"    to="/velodyne_points_sim"/>
-            <rosparam command="load" file="$(find line_detection_vlp16)/param/line_detection_params.yaml" />
+            <rosparam command="load" file="$(find line_detection_vlp16)/param/line_detection_params_sim.yaml" />
         </node>
     </group>
 
