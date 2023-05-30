@@ -72,10 +72,10 @@ def handleSerialData(raw_data):
             stamp = rospy.get_rostime()
 
             imu_msg.header.stamp = stamp
-            imu_msg.header.frame_id = "base_link"
+            imu_msg.header.frame_id = "imu_link"
 
             mag_msg.header.stamp = stamp
-            mag_msg.header.frame_id = "base_link"
+            mag_msg.header.frame_id = "mag_link"
 
             angle_radian = [angle_degree[i] * math.pi / 180 for i in range(3)]
             qua = quaternion_from_euler(angle_radian[0], angle_radian[1], angle_radian[2])
