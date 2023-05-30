@@ -12,6 +12,10 @@
     <arg name="gps2_dev"         default="/dev/sensors/GNSSrover"/>
     <arg name="use_ekf"          default="true"/>
     <arg name="urg_ip"           default="192.168.3.11"/>
+
+    <arg name="use_wit_imu"      default="false"/>
+    <arg name="type"             default="normal" doc="type [normal, modbus]"/>
+    <arg name="wit_imu_dev"      default="/dev/ttyUSB0"/>
     
     
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
@@ -24,10 +28,16 @@
         <param name="use_gui" value="true"/>
         <param name="rate"    value="50"/>
     </node>
-    
-    
+
+    <!-- wit_imu python -->
+    <node if="$(arg use_wit_imu)" pkg="wit_ros_imu" type="wit_$(arg type)_ros.py" name="imu" output="screen">
+        <remap from="wit/imu" to="imu"/>
+        <param name="port" type = "str" value="$(arg wit_imu_dev)"/>
+        <param name="baud" type = "int" value="9600"/>
+    </node>
+
     <!-- Node to setting up Arduino serial communication for IMU sensor -->
-    <node pkg="rosserial_python" type="serial_node.py" name="serial_node_IMU">
+    <node unless="$(arg use_wit_imu)" pkg="rosserial_python" type="serial_node.py" name="serial_node_IMU">
         <param name="port" value="$(arg imu_dev)"/>
         <param name="baud" value="115200"/>
     </node>
