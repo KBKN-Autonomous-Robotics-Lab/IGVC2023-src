@@ -28,9 +28,9 @@ class RampDetector:
 		self.pitch = 0.0
 		self.scan_img_size = (150, 299)
 		self.center = (self.scan_img_size[0]-1, int(self.scan_img_size[1]/2))
-		self.max_range = 5.0 #[m]
 		self.scale = (self.scan_img_size[0]-1)/self.max_range
 		self.process_id = 0 # 0:approach, 1:climb, 2:down
+		self.max_range = 5.0 #[m]
 		self.approach_range = 0.5
 		self.climb_speed = 0.8
 		self.down_speed = 0.5
