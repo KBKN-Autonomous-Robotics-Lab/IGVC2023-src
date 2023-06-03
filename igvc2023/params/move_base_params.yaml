@@ -3,7 +3,7 @@
 #  http://www.ros.org/wiki/move_base
 #
 
-shutdown_costmaps: false  # false for change map
+shutdown_costmaps: true  # false for change map
 
 controller_frequency: 5
 controller_patience: 5.0

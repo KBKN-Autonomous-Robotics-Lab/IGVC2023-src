@@ -111,7 +111,7 @@ class LocalGoalSetter:
 		#-----Frequency control-----
 		""""""
 		self.run_counter += 1
-		if self.run_counter != 3:
+		if self.run_counter != 1:
 			return
 		else:
 			self.run_counter = 0
@@ -237,7 +237,7 @@ class LocalGoalSetter:
 				self.waypoints_goal = 1 # waypoint1 or waypoint4
 			self.select_goal_flag = False
 
-		distance = 10 # [m]
+		distance = 3 # [m]
 		if self.waypoints_goal == 0:
 			print("\r" + "\033[34m" + "Distance from goal: " + str(self.calc_dist(robot_pose, 0, 2)) + "\033[0m", end = "")
 		elif self.waypoints_goal == 1:

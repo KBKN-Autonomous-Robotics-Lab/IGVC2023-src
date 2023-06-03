@@ -26,11 +26,16 @@
     </node>
     
     
-    <!-- Node to setting up Arduino serial communication for IMU sensor -->
+    <!-- Node to setting up Arduino serial communication for IMU sensor --> 
     <node pkg="rosserial_python" type="serial_node.py" name="serial_node_IMU">
         <param name="port" value="$(arg imu_dev)"/>
         <param name="baud" value="115200"/>
+    </node> 
+    
+    <!--
+    <node pkg="igvc2023" type="wit_normal_ros.py" name="imu" output="screen">
     </node>
+    -->
     
     <!-- Node to setting up Arduino serial communication for LEDs -->
     <node pkg="rosserial_python" type="serial_node.py" name="serial_node_LED">

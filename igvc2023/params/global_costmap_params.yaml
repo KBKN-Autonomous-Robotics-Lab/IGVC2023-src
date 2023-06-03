@@ -52,5 +52,5 @@
           observation_persistence: 0.0
             
       inflater_layer:
-        inflation_radius: 0.5
-        cost_scaling_factor: 2.0
+        inflation_radius: 2.0
+        cost_scaling_factor: 3.0

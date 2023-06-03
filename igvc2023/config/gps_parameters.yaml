@@ -1,7 +1,7 @@
 # maintainer:kbkn/mori
 #
 # name of the port that connects to gps device
-dev_name: /dev/sensors/GNSSbase
+dev_name: /dev/sensors/GNSSrover
 # directory of the file where waypoints will be saved
 output_file: /home/ubuntu/catkin_ws/src/igvc2023/config/gps_waypoints/gps_waypoints.yaml
 #output_file: /home/ubuntu/catkin_ws/src/igvc2023/config/gps_waypoints/qualification_waypoints.yaml
@@ -9,23 +9,62 @@ output_file: /home/ubuntu/catkin_ws/src/igvc2023/config/gps_waypoints/gps_waypoi
 # country_id: 1, then USA
 country_id: 0
 # true north is 0 degrees, clockwise angle
-azimuth: 180
+azimuth: 357
 # latitude and longitude information given by the organizer at IGVC
 #  - - latitude(1)
 #    - longitude(1)
 #  - - latitude(2)
 #    - longitude(2)
 #      ............
-latitude_longitude:
-  - - 42.66792770
-    - -83.21932764
-  - - 42.66807663
-    - -83.21935915
-  - - 42.66812064
-    - -83.21936060
-  - - 42.66826972
-    - -83.21934030
 
+latitude_longitude:
+  - - 42.6682697222222
+    - -83.2193403027778
+  - - 42.6681206444444
+    - -83.2193606083333
+  - - 42.6680766333333
+    - -83.2193591583333
+  - - 42.6679277055556
+    - -83.2193276416667
+
+#latitude_longitude: #azi about 180
+#  - - 42.6679277055556
+#    - -83.2193276416667
+#  - - 42.6680766333333
+#    - -83.2193591583333
+#  - - 42.6681206444444
+#    - -83.2193606083333
+#  - - 42.6682697222222
+#    - -83.2193403027778
+
+#latitude_longitude: #azi about 0
+#  - - 42.6682697222222
+#    - -83.2193403027778
+#  - - 42.6681206444444
+#    - -83.2193606083333
+#  - - 42.6680766333333
+#    - -83.2193591583333
+#  - - 42.6679277055556
+#    - -83.2193276416667
+
+#practice
+#  - - 42.6682118194444
+#    - -83.2184587333333
+#  - - 42.668085961111
+#    - -83.2184456444444
+#  - - 42.6679600583333
+#    - -83.2184326555556
+#  - - 42.6679600583333
+#    - -83.2184346555556
+
+#  - - 42.6679600583333
+#    - -83.2184346555556
+#  - - 42.6679600583333
+#    - -83.2184326555556
+#  - - 42.668085961111
+#    - -83.2184456444444
+#  - - 42.6682118194444
+#    - -83.2184587333333
 
 #  - - 42.66826972
 #    - -83,21934030

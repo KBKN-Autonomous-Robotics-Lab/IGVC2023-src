@@ -4,9 +4,9 @@
   <arg name="scan_topic" default="/scan"/>
   <arg name="odom_topic" default="/combine_dr_measurements/odom_combined"/>
   <arg name="cmd_vel" default="/cmd_vel"/>
-  <arg name="waypoints_file" default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_north.yaml"/>
+  <arg name="waypoints_file" default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_south.yaml"/>
   <!--<arg name="waypoints_file" default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_south.yaml"/>
-  <arg name="odom_topic" default="/odometry/filtered"/> -->
+  <arg name="odom_topic" default="/odometry/filtered"/> north-->
 
   <!-- Node for LED contoroll -->
   <node pkg="igvc2023" type="LED_control.py" name="LED_controller" output="screen"/>
@@ -46,12 +46,12 @@
   <!--<param name="node_flag" value="1"/>-->
 
   <!-- Select node -->
-  <param name="node_array" value="121215"/>
+  <param name="node_array" value="123421"/>
   <param name="node_index" value="1"/>
 
   <node pkg="igvc2023" type="local_goal_setter2.py" name="local_goal_setter" output="screen"/>
   <node pkg="igvc2023" type="gps_goal_setter2.py" name="gps_goal_setter" output="screen"/>
-  <!--<node pkg="igvc2023" type="ramp_detect.py" name="ramp_detector" output="screen"/>-->
+  <node pkg="igvc2023" type="ramp_detect.py" name="ramp_detector" output="screen"/>
 
   <node pkg="igvc2023" type="marker_setter.py" name="marker_setter"/>
 
