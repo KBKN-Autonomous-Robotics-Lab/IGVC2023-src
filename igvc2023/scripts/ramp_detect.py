@@ -7,6 +7,7 @@ import actionlib
 import numpy as np
 import cv2
 import math
+from std_srvs.srv import Empty
 from sensor_msgs.msg import LaserScan, Imu
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Twist
@@ -19,17 +20,20 @@ class RampDetector:
 		self.scan_sub = rospy.Subscriber("/hokuyo_scan", LaserScan, self.scanCallback)
 		self.imu_sub = rospy.Subscriber("/imu", Imu, self.imuCallback)
 		self.goal_pub = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1)
-		self.cmd_pub = rospy.Publisher("/igvc_robot/cmd_vel", Twist, queue_size=1)
+		self.cmd_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
 		self.tfBuffer = tf2_ros.Buffer()
 		self.listener = tf2_ros.TransformListener(self.tfBuffer)
 		self.client = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+		self.clear_costmap = rospy.ServiceProxy("/move_base/clear_costmaps", Empty)
 		self.pitch = 0.0
 		self.scan_img_size = (150, 299)
 		self.center = (self.scan_img_size[0]-1, int(self.scan_img_size[1]/2))
-		self.max_range = 6.0 #[m]
+		self.max_range = 5.0 #[m]
 		self.scale = (self.scan_img_size[0]-1)/self.max_range
 		self.process_id = 0 # 0:approach, 1:climb, 2:down
-		#self.latest_range_num = 0
+		self.approach_range = 0.5
+		self.climb_speed = 0.8
+		self.down_speed = 0.5
 		self.run_counter = 0
 		self.run_hz = 30
 
@@ -42,7 +46,9 @@ class RampDetector:
 
 	#==========LaserScan callback function==========#
 	def scanCallback(self, msg):
-		node_flag = rospy.get_param("node_flag", 1)
+		node_array = str(rospy.get_param("node_array",1))
+		node_index = rospy.get_param("node_index",1)
+		node_flag = int(node_array[node_index-1])
 
 		#----------Frequency control----------
 		self.run_counter += 1
@@ -53,22 +59,27 @@ class RampDetector:
 
 		#----------main process----------
 		if node_flag == 3: # Only ramp detection. When detected, set node_flag to 4
-			local_goal_x, local_goal_y, _ = self.detectRamp(msg)
+			local_goal_x, local_goal_y, _, _ = self.detectRamp(msg)
 
 			if local_goal_x==-1: # can't detect ramp
 				return
 			elif np.linalg.norm([local_goal_x, local_goal_y]) < self.max_range: #<2.0
-				rospy.set_param("node_flag", 4)
+				node_index += 1
+				rospy.set_param("node_index", node_index)
 
 		elif node_flag == 4: # approach, climb, and down ramp. When finished, set node_flag to 1]
 			if self.process_id==0:
 				self.approachToRamp(msg)
 
 			elif self.process_id==1:
-				self.climbRamp(0.8)
+				self.climbRamp(self.climb_speed)
 
 			elif self.process_id==2:
-				self.downRamp(0.5) # in this function, set node_flag to 1
+				end_ramp = self.downRamp(self.down_speed) # in this function, set node_flag to 1
+				if end_ramp:
+					self.clear_costmap()
+					node_index += 1
+					rospy.set_param("node_index", node_index)
 
 		else:
 			return
@@ -94,6 +105,7 @@ class RampDetector:
 
 		if (y2-y1)==0:
 			slope_ver = math.inf   #(y2-y1)==0 -> slope=0 -> slope_ver=infinity
+			facing_th = 0
 		else:
 			slope = -(y2-y1) / (x2-x1)
 			slope_ver = -1/slope
@@ -105,6 +117,7 @@ class RampDetector:
 		#----------Convert indexes(ramp_front) to real coordinate xy----------
 		local_goal_x = (self.center[0]-ramp_front[1])/self.scale
 		local_goal_y = (self.center[1]-ramp_front[0])/self.scale
+		facing_th = math.atan2((front_x - midpoint[0]), (front_y - midpoint[1]))
 		""" """
 		#----------Show image----------
 		rgb_img = cv2.cvtColor(scan_img, cv2.COLOR_GRAY2RGB)
@@ -115,13 +128,12 @@ class RampDetector:
 		cv2.imshow("Scan Image", rgb_img)
 		cv2.waitKey(1)
 
-		return (local_goal_x, local_goal_y, slope_ver)
+		return (local_goal_x, local_goal_y, slope_ver, facing_th)
 
 
 	#==========Process to approach to ramp (node_flag is 4)==========#
 	def approachToRamp(self, scan_msg):
-		local_goal_x, local_goal_y, slope_ver= self.detectRamp(scan_msg)
-		theta = math.atan2(local_goal_y, local_goal_x)
+		local_goal_x, local_goal_y, slope_ver, face_th = self.detectRamp(scan_msg)
 		#-----Listen tf "map" -> "base_link"-----
 		try:
 			stamp = scan_msg.header.stamp
@@ -134,14 +146,18 @@ class RampDetector:
 		robot_pose = [tf.transform.translation.x, tf.transform.translation.y, yaw]
 
 		#----------Publish goal msg or command vel----------
-		goal_msg = self.newGoalMsg(local_goal_x, local_goal_y, theta, robot_pose)
+		goal_msg = self.newGoalMsg(local_goal_x, local_goal_y, face_th, robot_pose)
 		d = np.linalg.norm([robot_pose[0]-goal_msg.pose.position.x, robot_pose[1]-goal_msg.pose.position.y])
-		if d<2.0 and abs(slope_ver)>20:
+		if d < self.approach_range:
 			self.client.wait_for_server()
 			self.client.cancel_all_goals()
-			self.process_id = 1
-			self.run_hz = 10
-			#self.latest_range_num = np.count_nonzero(scan_img>0)
+			if abs(face_th) < 0.1:
+				self.process_id = 1
+				self.run_hz = 10
+			else:
+				cmd = Twist()
+				cmd.angular.z = np.sign(face_th) * 0.1
+				self.cmd_pub.publish(cmd)
 		else:
 			self.goal_pub.publish(goal_msg)
 
@@ -170,9 +186,9 @@ class RampDetector:
 	def downRamp(self, speed):
 		if abs(self.pitch) < 0.01:
 			self.goStraight(0)
-			rospy.set_param("node_flag",1)
 			cv2.destroyAllWindows()
 			rospy.sleep(1.0)
+			return True
 		else:
 			self.goStraight(speed)
 			print("Downing with speed of", speed, "m/s")
@@ -187,7 +203,7 @@ class RampDetector:
 			self.goStraight(0.5)
 			self.latest_range_num = obs_range_num
 		"""
-		return
+		return False
 
 
 	#==========Publish cmd_vel to go straight ahead (Using on the ramp)==========#
