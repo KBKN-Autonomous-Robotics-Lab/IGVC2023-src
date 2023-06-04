@@ -46,7 +46,7 @@ local_costmap:
       observation_persistence: 0.0
   
   inflater_layer:
-    inflation_radius: 0.15
-    cost_scaling_factor: 5.0
+    inflation_radius: 0.1 #0.15
+    cost_scaling_factor: 1.5 #5.0
 
 # https://answers.ros.org/question/326867/local_costmap-not-showing-every-obstacle/

@@ -237,7 +237,7 @@ class LocalGoalSetter:
 				self.waypoints_goal = 1 # waypoint1 or waypoint4
 			self.select_goal_flag = False
 
-		distance = 3 # [m]
+		distance = 1# [m]
 		if self.waypoints_goal == 0:
 			print("\r" + "\033[34m" + "Distance from goal: " + str(self.calc_dist(robot_pose, 0, 2)) + "\033[0m", end = "")
 		elif self.waypoints_goal == 1:

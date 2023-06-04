@@ -7,7 +7,7 @@
       transform_tolerance: 0.5
       always_send_full_costmap: false
       rolling_window: false
-      resolution: 0.1
+      resolution: 0.1 #0.05
       
       plugins:
         - {name: static_layer, type: "costmap_2d::StaticLayer"}
@@ -52,5 +52,5 @@
           observation_persistence: 0.0
             
       inflater_layer:
-        inflation_radius: 2.0
-        cost_scaling_factor: 3.0
+        inflation_radius: 1.5 #2.0
+        cost_scaling_factor: 1.5 #3.0

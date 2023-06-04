@@ -6,8 +6,8 @@
   <arg name="cmd_vel" default="/cmd_vel"/>
   <arg name="waypoints_file" default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_south.yaml"/>
   <!--<arg name="waypoints_file" default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_south.yaml"/>
+   <arg name="waypoints_file" default="$(find igvc2023)/config/gps_waypoints/gps_waypoints_north.yaml"/>
   <arg name="odom_topic" default="/odometry/filtered"/> north-->
-
   <!-- Node for LED contoroll -->
   <node pkg="igvc2023" type="LED_control.py" name="LED_controller" output="screen"/>
 

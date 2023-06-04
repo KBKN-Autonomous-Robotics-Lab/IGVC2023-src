@@ -9,7 +9,7 @@ output_file: /home/ubuntu/catkin_ws/src/igvc2023/config/gps_waypoints/gps_waypoi
 # country_id: 1, then USA
 country_id: 0
 # true north is 0 degrees, clockwise angle
-azimuth: 357
+azimuth: 177
 # latitude and longitude information given by the organizer at IGVC
 #  - - latitude(1)
 #    - longitude(1)
@@ -18,14 +18,14 @@ azimuth: 357
 #      ............
 
 latitude_longitude:
-  - - 42.6682697222222
-    - -83.2193403027778
-  - - 42.6681206444444
-    - -83.2193606083333
-  - - 42.6680766333333
-    - -83.2193591583333
   - - 42.6679277055556
     - -83.2193276416667
+  - - 42.6680766333333
+    - -83.2193591583333
+  - - 42.6681206444444
+    - -83.2193606083333
+  - - 42.6682697222222
+    - -83.2193403027778
 
 #latitude_longitude: #azi about 180
 #  - - 42.6679277055556
