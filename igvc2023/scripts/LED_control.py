@@ -8,6 +8,7 @@ when no_map_navigation.launch is executed.
 """
 import rospy
 from std_msgs.msg import Bool
+import time
 
 class LED_control:
 	def __init__(self):
@@ -21,6 +22,7 @@ class LED_control:
 		while not rospy.is_shutdown():
 			self.navigation_start_pub.publish(self.navBool_msg)
 			node_flag = rospy.get_param("node_flag", 1)
+			time.sleep(0.5)
 			if node_flag == 4:
 				self.navBool_msg = False
 				self.navigation_end_pub.publish(self.navBool_msg)
