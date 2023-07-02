@@ -8,7 +8,7 @@ sudo rm -rf *
 git clone https://github.com/KBKN-Autonomous-Robotics-Lab/IGVC2023-src.git .
 sudo bash setup.sh
 ```
-##使い方
+## 使い方
 0-1. 大会側から知らされるGPSウェイポイントの緯度経度を igvc2022/config/gps_parameters.yaml に記入
 場所に応じてcountry_idとazimuthも変更する。
 
