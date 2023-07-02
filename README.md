@@ -32,14 +32,14 @@ sudo bash setup.sh
 
 <!-- Select node -->
 <param name="node_array" value="121215"/>
-<param name="node_index" value="1"/>
-1→白線追従
-2→ウェイポイントナビゲーション
-3→ramp探索
-4→rampゴール
-5→ゴール
+<param name="node_index" value="1"/> <br>
+1→白線追従　<br>
+2→ウェイポイントナビゲーション <br>
+3→ramp探索 <br>
+4→rampゴール <br>
+5→ゴール <br>
 local_goal_setter2.pyの240行目distanceの所(ウェイポイントに何m近づいてゴール判定にするか)も変更
 
-##その他
+## その他
 zlacのpymodbusのversion
 pip install pymodbus==v2.5.3
