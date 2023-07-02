@@ -24,8 +24,8 @@ sudo bash setup.sh
 
 2．igvc2022/launch/no_map_navigation.launch　を実行 <br>
 .yamlの変更し忘れ注意！ <br>
- robot_localizationの場合は <arg name="odom_topic" default="/odometry/filtered"/> <br>
- robot_pose_ekfの場合は <arg name="odom_topic" default="/combine_dr_measurements/odom_combined"/> <br>
+ robot_localizationの場合は arg name="odom_topic" default="/odometry/filtered" <br>
+ robot_pose_ekfの場合は arg name="odom_topic" default="/combine_dr_measurements/odom_combined" <br>
 　・gmapping, move_base, rvizなどを起動 <br>
 　・ナビゲーション用のノードを起動 <br>
 　 →走行開始 <br>
