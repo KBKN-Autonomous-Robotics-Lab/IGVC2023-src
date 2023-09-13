@@ -139,9 +139,9 @@ void loop() {
         digitalWrite(txDenPin, HIGH);
         timercount = 0;
         Serial1.write(reset_cmd, sizeof(estop_cmd));
-        while (timercount > 1) Serial1.flush();  // delay 1 mSec
+        while (timercount < 1) Serial1.flush();  // delay 1 mSec
         digitalWrite(txDenPin, LOW);
-        while (timercount > 2) while (SERIAL_PORT.available()) SERIAL_PORT.read();
+        while (timercount < 2) while (SERIAL_PORT.available()) SERIAL_PORT.read();
         digitalWrite(LED_BUILTIN, HIGH);  //LED OFF
 #ifdef DEBUG
         SERIAL_PORT.print("RESET");
@@ -153,9 +153,9 @@ void loop() {
         digitalWrite(txDenPin, HIGH);
         timercount = 0;
         Serial1.write(estop_cmd, sizeof(estop_cmd));
-        while (timercount > 1) Serial1.flush();  // delay 1 mSec
+        while (timercount < 1) Serial1.flush();  // delay 1 mSec
         digitalWrite(txDenPin, LOW);
-        while (timercount > 2) while (SERIAL_PORT.available()) SERIAL_PORT.read();
+        while (timercount < 2) while (SERIAL_PORT.available()) SERIAL_PORT.read();
         digitalWrite(LED_BUILTIN, LOW);  //LED ON
 #ifdef DEBUG
         SERIAL_PORT.print("ESTOP");
